@@ -1,0 +1,370 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WP Menu Cart\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-04-27 17:22+0100\n"
+"PO-Revision-Date: 2013-04-27 18:00+0100\n"
+"Last-Translator: Ewout Fernhout <chocolade@extrapuur.nl>\n"
+"Language-Team: WP Overnight <support@wpovernight.com>\n"
+"Language: pt_PT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
+"_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
+"X-Poedit-Basepath: ../\n"
+"X-Textdomain-Support: yes\n"
+"X-Generator: Poedit 1.5.5\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: wp-menu-cart-pro.php:180 wp-menu-cart-pro.php:257 wp-menu-cart.php:166
+#: bundles/wp-menu-cart/wp-menu-cart.php:166
+#: bundles/wp-menu-cart-pro/wp-menu-cart-pro.php:180
+#: bundles/wp-menu-cart-pro/wp-menu-cart-pro.php:257
+msgid "View your shopping cart"
+msgstr "Veja seu carrinho de compras"
+
+#: wp-menu-cart-pro.php:181 wp-menu-cart.php:167
+#: bundles/wp-menu-cart/wp-menu-cart.php:167
+#: bundles/wp-menu-cart-pro/wp-menu-cart-pro.php:181
+msgid "Start shopping"
+msgstr "Iniciar compras"
+
+#: wp-menu-cart-pro.php:182 wp-menu-cart.php:168
+#: bundles/wp-menu-cart/wp-menu-cart.php:168
+#: bundles/wp-menu-cart-pro/wp-menu-cart-pro.php:182
+#, php-format
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] "%d item"
+msgstr[1] "%d itens"
+
+#: wp-menu-cart-pro.php:264 bundles/wp-menu-cart-pro/wp-menu-cart-pro.php:264
+msgid "your cart is currently empty"
+msgstr "O carrinho está vazio"
+
+#: wp-menu-cart-pro.php:301 wp-menu-cart.php:223
+#: bundles/wp-menu-cart/wp-menu-cart.php:216
+#: bundles/wp-menu-cart-pro/wp-menu-cart-pro.php:291
+msgid "Menu Cart requires a shop plugin to be active"
+msgstr ""
+
+#: wp-menu-cart-pro.php:307 wp-menu-cart.php:229
+msgid ""
+"An old version of WooCommerce Menu Cart is currently activated, you need to "
+"disable or uninstall it for WP Menu Cart to function properly"
+msgstr ""
+
+#: wp-menu-cart-pro.php:313
+msgid ""
+"The free version of WP Menu Cart is currently activated, you need to disable "
+"or uninstall it for WP Menu Cart Pro to function properly"
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-eshop.php:27
+#: bundles/wp-menu-cart-pro/includes/wpmenucart-eshop-pro.php:49
+#: bundles/wp-menu-cart-pro/includes/wpmenucart-eshop.php:27
+#: includes/wpmenucart-eshop-pro.php:55 includes/wpmenucart-eshop.php:33
+#, php-format
+msgid "%1$s%2$s"
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-eshop.php:27
+#: bundles/wp-menu-cart-pro/includes/wpmenucart-eshop-pro.php:49
+#: bundles/wp-menu-cart-pro/includes/wpmenucart-eshop.php:27
+#: includes/wpmenucart-eshop-pro.php:55 includes/wpmenucart-eshop.php:33
+msgid "2"
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:27
+#: bundles/wp-menu-cart-pro/includes/wpmenucart-settings-pro.php:27
+#: includes/wpmenucart-settings-pro.php:27 includes/wpmenucart-settings.php:27
+msgid "Plugin settings"
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:34
+#: bundles/wp-menu-cart-pro/includes/wpmenucart-settings-pro.php:34
+#: includes/wpmenucart-settings-pro.php:34 includes/wpmenucart-settings.php:34
+msgid "Select which e-commerce plugin you would like Menu Cart to work with"
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:49
+#: bundles/wp-menu-cart-pro/includes/wpmenucart-settings-pro.php:61
+#: includes/wpmenucart-settings-pro.php:61 includes/wpmenucart-settings.php:49
+msgid "Select the menu(s) in which you want to display the Menu Cart"
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:74
+#: bundles/wp-menu-cart-pro/includes/wpmenucart-settings-pro.php:84
+#: includes/wpmenucart-settings-pro.php:84 includes/wpmenucart-settings.php:74
+msgid "Always display cart, even if it's empty"
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:86
+#: bundles/wp-menu-cart-pro/includes/wpmenucart-settings-pro.php:96
+#: includes/wpmenucart-settings-pro.php:96 includes/wpmenucart-settings.php:86
+msgid "Display shopping cart icon."
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:98
+#: bundles/wp-menu-cart-pro/includes/wpmenucart-settings-pro.php:108
+#: includes/wpmenucart-settings-pro.php:108
+#: includes/wpmenucart-settings.php:98
+msgid "Display cart contents in menu fly-out."
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:111
+#: bundles/wp-menu-cart-pro/includes/wpmenucart-settings-pro.php:120
+#: includes/wpmenucart-settings-pro.php:120
+#: includes/wpmenucart-settings.php:111
+msgid "Set maximum number of products to display in fly-out"
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:137
+#: bundles/wp-menu-cart-pro/includes/wpmenucart-settings-pro.php:145
+#: includes/wpmenucart-settings-pro.php:145
+#: includes/wpmenucart-settings.php:137
+msgid "Choose a cart icon."
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:166
+#: bundles/wp-menu-cart-pro/includes/wpmenucart-settings-pro.php:174
+#: includes/wpmenucart-settings-pro.php:174
+#: includes/wpmenucart-settings.php:166
+msgid "What would you like to display in the menu?"
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:174
+#: bundles/wp-menu-cart-pro/includes/wpmenucart-settings-pro.php:182
+#: includes/wpmenucart-settings-pro.php:182
+#: includes/wpmenucart-settings.php:174
+msgid "Items Only."
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:175
+#: bundles/wp-menu-cart-pro/includes/wpmenucart-settings-pro.php:183
+#: includes/wpmenucart-settings-pro.php:183
+#: includes/wpmenucart-settings.php:175
+msgid "Price Only."
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:176
+#: bundles/wp-menu-cart-pro/includes/wpmenucart-settings-pro.php:184
+#: includes/wpmenucart-settings-pro.php:184
+#: includes/wpmenucart-settings.php:176
+msgid "Both price and items."
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:183
+#: bundles/wp-menu-cart-pro/includes/wpmenucart-settings-pro.php:191
+#: includes/wpmenucart-settings-pro.php:191
+#: includes/wpmenucart-settings.php:183
+msgid "Select the alignment that looks best with your menu."
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:191
+#: bundles/wp-menu-cart-pro/includes/wpmenucart-settings-pro.php:199
+#: includes/wpmenucart-settings-pro.php:199
+#: includes/wpmenucart-settings.php:191
+msgid "Align Left."
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:192
+#: bundles/wp-menu-cart-pro/includes/wpmenucart-settings-pro.php:200
+#: includes/wpmenucart-settings-pro.php:200
+#: includes/wpmenucart-settings.php:192
+msgid "Align Right."
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:193
+#: bundles/wp-menu-cart-pro/includes/wpmenucart-settings-pro.php:201
+#: includes/wpmenucart-settings-pro.php:201
+#: includes/wpmenucart-settings.php:193
+msgid "Default Menu Alignment."
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:200
+#: bundles/wp-menu-cart-pro/includes/wpmenucart-settings-pro.php:208
+#: includes/wpmenucart-settings-pro.php:208
+#: includes/wpmenucart-settings.php:200
+msgid "Enter a custom CSS class (optional)"
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:221
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:658
+#: bundles/wp-menu-cart-pro/includes/wpmenucart-settings-pro.php:600
+#: includes/wpmenucart-settings-pro.php:600
+#: includes/wpmenucart-settings.php:221 includes/wpmenucart-settings.php:664
+msgid "Menu Cart"
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:222
+#: includes/wpmenucart-settings.php:222
+msgid "Menu Cart Setup"
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:290
+#: bundles/wp-menu-cart-pro/includes/wpmenucart-settings-pro.php:298
+#: includes/wpmenucart-settings-pro.php:298
+#: includes/wpmenucart-settings.php:290
+msgid "WP Menu Cart Pro"
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:322
+#: includes/wpmenucart-settings.php:322
+msgid "Get WP Cart Pro!"
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:324
+#: includes/wpmenucart-settings.php:324
+msgid "Limited Offer:"
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:324
+#: includes/wpmenucart-settings.php:324
+#, php-format
+msgid "20% off!"
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:327
+#: includes/wpmenucart-settings.php:327
+msgid ""
+"Includes all the great standard features found in this free version plus:"
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:330
+#: includes/wpmenucart-settings.php:330
+msgid "A choice of over 10 cart icons"
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:331
+#: includes/wpmenucart-settings.php:331
+msgid "A fully featured cart details flyout"
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:332
+#: includes/wpmenucart-settings.php:332
+msgid "Ability to add cart + flyout for up to 3 menus"
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:333
+#: includes/wpmenucart-settings.php:333
+msgid "Ability to add a custom css class"
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:334
+#: includes/wpmenucart-settings.php:334
+msgid "Automatic updates on any great new features"
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:338
+#: includes/wpmenucart-settings.php:338
+#, php-format
+msgid ""
+"Need to see more? %sClick here%s to check it out. Add a product to your cart "
+"and watch what happens!"
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:339
+#: includes/wpmenucart-settings.php:339
+msgid "Buy Now"
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:342
+#: includes/wpmenucart-settings.php:342
+msgid "Want your CSS customized?"
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:344
+#: includes/wpmenucart-settings.php:344
+msgid "We can do that for you! Just click the button below to check it out."
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:346
+#: includes/wpmenucart-settings.php:346
+msgid "Customize my CSS!"
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:424
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:464
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:504
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:575
+#: includes/wpmenucart-settings.php:424 includes/wpmenucart-settings.php:464
+#: includes/wpmenucart-settings.php:504 includes/wpmenucart-settings.php:544
+#: includes/wpmenucart-settings.php:581
+msgid "This feature only available in"
+msgstr ""
+
+#: bundles/wp-menu-cart/includes/wpmenucart-settings.php:617
+#: includes/wpmenucart-settings.php:623
+msgid "Additional icons are only available in"
+msgstr ""
+
+#: bundles/wp-menu-cart-pro/includes/wpmenucart-settings-pro.php:47
+#: includes/wpmenucart-settings-pro.php:47
+msgid ""
+"Enter your order confirmation number to receive automated updates "
+"(<i>format: #xxxxx</i>)"
+msgstr ""
+
+#: bundles/wp-menu-cart-pro/includes/wpmenucart-settings-pro.php:228
+#: includes/wpmenucart-settings-pro.php:228
+msgid "Menu Cart Pro"
+msgstr ""
+
+#: bundles/wp-menu-cart-pro/includes/wpmenucart-settings-pro.php:229
+#: includes/wpmenucart-settings-pro.php:229
+msgid "Menu Cart Pro Setup"
+msgstr ""
+
+#: bundles/wp-menu-cart-pro/includes/wpmenucart-settings-pro.php:323
+#: includes/wpmenucart-settings-pro.php:323
+#, php-format
+msgid ""
+"For our custom CSS service %sClick here%s. Be sure to use the coupon code "
+"<strong>proservice</strong> at checkout. For support, visit %s or email %s"
+msgstr ""
+
+#: bundles/wp-menu-cart-pro/includes/wpmenucart-settings-pro.php:561
+#: includes/wpmenucart-settings-pro.php:561
+msgid ""
+"<strong>Please note:</strong> you need to open your website in a new tab/"
+"browser window after updating the cart icon for the change to be visible!"
+msgstr ""
+
+#: bundles/wp-menu-cart-pro/includes/wpmenucart-updater.php:76
+#: includes/wpmenucart-updater.php:76
+msgid ""
+"An Unexpected HTTP Error occurred during the API request.</p> <p><a href=\"?"
+"\" onclick=\"document.location.reload(); return false;\">Try again</a>"
+msgstr ""
+
+#: bundles/wp-menu-cart-pro/includes/wpmenucart-updater.php:81
+#: includes/wpmenucart-updater.php:81
+msgid "An unknown error occurred"
+msgstr ""
+
+#~ msgid ""
+#~ "WooCommerce Menu Cart depends on <a href=\"%s\">WooCommerce</a> to work!"
+#~ msgstr ""
+#~ "WooCommerce Menu Cart heeft <a href=\"%s\">WooCommerce</a> om te kunnen "
+#~ "functioneren!"
+
+#~ msgid "Display Flyout."
+#~ msgstr "Geef flyout weer."
+
+#~ msgid "Set the name of the menu you want to display"
+#~ msgstr ""
+#~ "Voer de naam in van het menu waarin je het winkelwagentje wilt weergeven"
+
+#~ msgid ""
+#~ "Let's keep this simple! Just check the boxes next to the features you "
+#~ "want."
+#~ msgstr ""
+#~ "Super eenvoudig: geef simpelweg de vakjes naast de features zoals jij ze "
+#~ "wilt gebruiken een vinkje."
+
+#~ msgid "Save Changes"
+#~ msgstr "Opslaan"

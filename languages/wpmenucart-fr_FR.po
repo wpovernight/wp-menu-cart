@@ -1,0 +1,177 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WooCommerce Menu Cart\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-04-16 11:20+0100\n"
+"PO-Revision-Date: 2013-08-03 10:04-0700\n"
+"Last-Translator: Jeremiah Prummer <jprummer@gmail.com>\n"
+"Language-Team: \n"
+"Language: nl_NL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
+"_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
+"X-Poedit-Basepath: ../\n"
+"X-Textdomain-Support: yes\n"
+"X-Generator: Poedit 1.5.5\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: wp-menu-cart-pro.php:182 wp-menu-cart-pro.php:259
+msgid "View your shopping cart"
+msgstr "Voir mon panier"
+
+#: wp-menu-cart-pro.php:183
+msgid "Start shopping"
+msgstr "Faire des achats"
+
+#: wp-menu-cart-pro.php:184
+#, php-format
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] "%d Article"
+msgstr[1] "%d Articles"
+
+#: wp-menu-cart-pro.php:266
+msgid "your cart is currently empty"
+msgstr "Mon panier est vide"
+
+#: wp-menu-cart-pro.php:293
+msgid "Menu Cart requires a shop plugin to be active"
+msgstr "Menu Cart a besoin d'un plugin de boutique en ligne pour s'activer"
+
+#: includes/wpmenucart-eshop-pro.php:49 includes/wpmenucart-eshop.php:27
+#, php-format
+msgid "%1$s%2$s"
+msgstr "%1$s%2$s"
+
+#: includes/wpmenucart-eshop-pro.php:49 includes/wpmenucart-eshop.php:27
+msgid "2"
+msgstr "2"
+
+#: includes/wpmenucart-settings.php:27
+msgid "Plugin settings"
+msgstr "Réglages du plugin"
+
+#: includes/wpmenucart-settings.php:34
+msgid "Select which e-commerce plugin you would like Menu Cart to work with"
+msgstr ""
+"Sélectionner quel plugin d'e-commerce vous souhaitez utiliser avec Menu Cart"
+
+#: includes/wpmenucart-settings.php:47
+msgid ""
+"Enter your order confirmation number to receive automated updates "
+"(<i>format: #xxxxx</i>)"
+msgstr ""
+"Entrer votre numéro de confirmation pour recevoir les mises à jour "
+"automatiques (<i>format: #xxxxx</i>)"
+
+#: includes/wpmenucart-settings.php:61
+msgid "Select the menu(s) in which you want to display the Menu Cart"
+msgstr "Sélectionner le(s) menu(s) où vous souhaitez afficher Menu Cart"
+
+#: includes/wpmenucart-settings.php:84
+msgid "Always display cart, even if it's empty"
+msgstr "Toujours afficher le panier, même s'il est vide"
+
+#: includes/wpmenucart-settings.php:96
+msgid "Display shopping cart icon."
+msgstr "Afficher l'icône du panier."
+
+#: includes/wpmenucart-settings.php:108
+msgid "Display cart contents in menu fly-out."
+msgstr "Afficher le contenu du panier dans le menu."
+
+#: includes/wpmenucart-settings.php:120
+msgid "Set maximum number of products to display in fly-out"
+msgstr "Sélectionner le nombre maximum de produits à afficher dans le menu"
+
+#: includes/wpmenucart-settings.php:145
+msgid "Choose a cart icon."
+msgstr "Choisir un icône de panier."
+
+#: includes/wpmenucart-settings.php:174
+msgid "What would you like to display in the menu?"
+msgstr "Que voulez-vous afficher dans le menu ?"
+
+#: includes/wpmenucart-settings.php:182
+msgid "Items Only."
+msgstr "Produits"
+
+#: includes/wpmenucart-settings.php:183
+msgid "Price Only."
+msgstr "Prix"
+
+#: includes/wpmenucart-settings.php:184
+msgid "Both price and items."
+msgstr "Prix et produits"
+
+#: includes/wpmenucart-settings.php:191
+msgid "Select the alignment that looks best with your menu."
+msgstr "Sélectionner l'alignement du menu"
+
+#: includes/wpmenucart-settings.php:199
+msgid "Align Left."
+msgstr "Alignement à gauche"
+
+#: includes/wpmenucart-settings.php:200
+msgid "Align Right."
+msgstr "Alignement à droite"
+
+#: includes/wpmenucart-settings.php:201
+msgid "Default Menu Alignment."
+msgstr "Alignement par défaut du menu"
+
+#: includes/wpmenucart-settings.php:208
+msgid "Enter a custom CSS class (optional)"
+msgstr "Entrer une classe CSS personnalisée (optionnel)"
+
+#: includes/wpmenucart-settings.php:228
+msgid "Menu Cart Pro"
+msgstr "Menu Cart Pro"
+
+#: includes/wpmenucart-settings.php:229
+msgid "Menu Cart Pro Setup"
+msgstr "Réglages de Menu Cart Pro"
+
+#: includes/wpmenucart-settings.php:298
+msgid "WordPress Menu Cart Pro"
+msgstr "WordPress Menu Cart Pro"
+
+#: includes/wpmenucart-settings.php:323
+#, php-format
+msgid ""
+"For our custom CSS service %sClick here%s. Be sure to use the coupon code "
+"<strong>proservice</strong> at checkout. For support, visit %s or email %s"
+msgstr ""
+"Pour notre service de CSS personnalisé %sCliquer ici%s. Vérifiez que vous "
+"utilisez le code de réduction <strong>proservice</strong> lors de la "
+"commande. Pour le support, visitez %s ou email %s"
+
+#: includes/wpmenucart-settings.php:561
+msgid ""
+"<strong>Please note:</strong> you need to open your website in a new tab/"
+"browser window after updating the cart icon for the change to be visible!"
+msgstr ""
+"<strong>Veuillez noter :</strong> vous avez besoin d'ouvrir votre site dans "
+"un nouvel onglet ou une nouvelle fenêtre après avoir mis à jour l'icône du "
+"panier pour que le changement soit visible !"
+
+#: includes/wpmenucart-settings.php:600
+msgid "Menu Cart"
+msgstr "Menu Cart"
+
+#: includes/wpmenucart-updater.php:76
+msgid ""
+"An Unexpected HTTP Error occurred during the API request.</p> <p><a href=\"?"
+"\" onclick=\"document.location.reload(); return false;\">Try again</a>"
+msgstr ""
+"Une erreur HTTP inatendue s'est produite durant la requête API.</p> <p><a "
+"href=\"?\" onclick=\"document.location.reload(); return false;\">Ré-essayer</"
+"a>"
+
+#: includes/wpmenucart-updater.php:81
+msgid "An unknown error occurred"
+msgstr "Une erreur inconnue s'est produite"
