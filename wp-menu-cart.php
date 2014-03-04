@@ -313,7 +313,11 @@ class WpMenuCart {
 
 		$menu_item_li = '<li class="'.$classes.'" id="wpmenucartli">' . $wpmenucart_menu_item . '</li>';
 
-		$items .= apply_filters( 'wpmenucart_menu_item_wrapper', $menu_item_li );
+		if ( apply_filters('wpmenucart_prepend_menu_item', false) ) {
+			$items = apply_filters( 'wpmenucart_menu_item_wrapper', $menu_item_li ) . $items;
+		} else {
+			$items .= apply_filters( 'wpmenucart_menu_item_wrapper', $menu_item_li );
+		}
 
 		return $items;
 	}
