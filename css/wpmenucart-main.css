@@ -2,6 +2,11 @@
 	display: none !important;
 }
 
+.wpmenucart-contents > .amount:before {
+	content: '-';
+	margin: 0 0.25em;
+}
+
 .wpmenucart-display-standard {
 	
 }
