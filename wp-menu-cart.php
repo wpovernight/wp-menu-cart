@@ -410,7 +410,8 @@ class WpMenuCart {
 		$menu_item_a_content = '';	
 		if (isset($this->options['icon_display'])) {
 			$icon = isset($this->options['cart_icon']) ? $this->options['cart_icon'] : '0';
-			$menu_item_a_content .= '<i class="wpmenucart-icon-shopping-cart-'.$icon.'"></i>';
+			$menu_item_icon = '<i class="wpmenucart-icon-shopping-cart-'.$icon.'"></i>'
+			$menu_item_a_content .= $menu_item_icon;
 		}
 		
 		switch ($this->options['items_display']) {
@@ -421,10 +422,10 @@ class WpMenuCart {
 				$menu_item_a_content .= '<span class="amount">'.$item_data['cart_total'].'</span>';
 				break;
 			case 3: //items & price
-				$menu_item_a_content .= '<span class="cartcontents">'.$cart_contents.'</span> - <span class="amount">'.$item_data['cart_total'].'</span>';
+				$menu_item_a_content .= '<span class="cartcontents">'.$cart_contents.'</span><span class="amount">'.$item_data['cart_total'].'</span>';
 				break;
 		}
-		$menu_item_a_content = apply_filters ('wpmenucart_menu_item_a_content', $menu_item_a_content);
+		$menu_item_a_content = apply_filters ('wpmenucart_menu_item_a_content', $menu_item_a_content, $menu_item_icon, $cart_contents, $item_data );
 
 		$menu_item .= $menu_item_a_content . '</a>';
 		
