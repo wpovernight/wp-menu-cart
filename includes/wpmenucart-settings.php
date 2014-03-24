@@ -268,7 +268,7 @@ class WpMenuCart_Settings {
 			$filtered_active_shop_plugins[] = dirname($value);
 		}
 
-		$first_active_shop_plugin = $filtered_active_shop_plugins[0];
+		$first_active_shop_plugin = isset($filtered_active_shop_plugins[0])?$filtered_active_shop_plugins[0]:'';
 		$default = array(
 			'menu_slugs'		=> $menu_slugs,
 			'always_display'	=> isset($wcmenucart_options['always_display']) ? $wcmenucart_options['always_display']:'',
