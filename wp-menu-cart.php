@@ -381,7 +381,7 @@ class WpMenuCart {
 
 		// Check empty cart settings
 		if ($item_data['cart_contents_count'] == 0 && ( !isset($this->options['always_display']) ) ) {
-			$empty_menu_item = '<a class="wpmenucart-contents empty-wpmenucart" href="#" style="display:none">&nbsp;</a>';
+			$empty_menu_item = '<a class="wpmenucart-contents empty-wpmenucart" style="display:none">&nbsp;</a>';
 			return $empty_menu_item;
 		}
 		
