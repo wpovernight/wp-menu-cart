@@ -405,7 +405,11 @@ class WpMenuCart {
 			$menu_item_title = apply_filters ('wpmenucart_fulltitle', $viewing_cart );
 		}
 
-		$menu_item = '<a class="wpmenucart-contents" href="'.$menu_item_href.'" title="'.$menu_item_title.'">';
+		if(defined('UBERMENU_VERSION') && (version_compare(UBERMENU_VERSION, '3.0.0') >= 0)){
+			$menu_item = '<a class="ubermenu-target wpmenucart-contents" href="'.$menu_item_href.'" title="'.$menu_item_title.'">';
+		} else {
+			$menu_item = '<a class="wpmenucart-contents" href="'.$menu_item_href.'" title="'.$menu_item_title.'">';
+		}
 		
 		$menu_item_a_content = '';	
 		if (isset($this->options['icon_display'])) {
