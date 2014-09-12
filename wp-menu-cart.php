@@ -292,9 +292,6 @@ class WpMenuCart {
 			$classes .= ' ' . $this->get_common_li_classes($items);
 
 		$active_plugins = apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
-		if ( in_array( 'ubermenu/ubermenu.php', $active_plugins ) ) {
-			$classes .= ' mega-with-sub';
-		}
 			
 		// Filter for <li> item classes
 		/* Usage (in the themes functions.php):
