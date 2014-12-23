@@ -3,7 +3,7 @@
 Plugin Name: WP Menu Cart
 Plugin URI: www.wpovernight.com/plugins
 Description: Extension for your e-commerce plugin (WooCommerce, WP-Ecommerce, Easy Digital Downloads, Eshop or Jigoshop) that places a cart icon with number of items and total cost in the menu bar. Activate the plugin, set your options and you're ready to go! Will automatically conform to your theme styles.
-Version: 2.5.3
+Version: 2.5.4
 Author: Jeremiah Prummer, Ewout Fernhout
 Author URI: www.wpovernight.com/
 License: GPL2
@@ -302,8 +302,9 @@ class WpMenuCart {
 		}
 		*/
 		$classes = apply_filters( 'wpmenucart_menu_item_classes', $classes );
+		$this->menu_items['menu']['menu_item_li_classes'] = $classes;
 
-		// DEPRICATED: These filters are now deprecated in favour of the more precise filters in the functions!
+		// DEPRECATED: These filters are now deprecated in favour of the more precise filters in the functions!
 		$wpmenucart_menu_item = apply_filters( 'wpmenucart_menu_item_filter', $this->wpmenucart_menu_item() );
 
 		$item_data = $this->shop->menu_item();
@@ -392,7 +393,9 @@ class WpMenuCart {
 			$viewing_cart = __('View your shopping cart', 'wpmenucart');
 			$start_shopping = __('Start shopping', 'wpmenucart');
 			$cart_contents = sprintf(_n('%d item', '%d items', $item_data['cart_contents_count'], 'wpmenucart'), $item_data['cart_contents_count']);
-		}
+		}	
+
+		$this->menu_items['menu']['cart_contents'] = $cart_contents;
 
 		if ($item_data['cart_contents_count'] == 0) {
 			$menu_item_href = apply_filters ('wpmenucart_emptyurl', $item_data['shop_page_url'] );
@@ -403,6 +406,9 @@ class WpMenuCart {
 			$menu_item_title = apply_filters ('wpmenucart_fulltitle', $viewing_cart );
 			$menu_item_classes = 'wpmenucart-contents';
 		}
+
+		$this->menu_items['menu']['menu_item_href'] = $menu_item_href;
+		$this->menu_items['menu']['menu_item_title'] = $menu_item_title;
 
 		if(defined('UBERMENU_VERSION') && (version_compare(UBERMENU_VERSION, '3.0.0') >= 0)){
 			$menu_item_classes .= ' ubermenu-target';
@@ -429,6 +435,8 @@ class WpMenuCart {
 				break;
 		}
 		$menu_item_a_content = apply_filters ('wpmenucart_menu_item_a_content', $menu_item_a_content, $menu_item_icon, $cart_contents, $item_data );
+
+		$this->menu_items['menu']['menu_item_a_content'] = $menu_item_a_content;
 
 		$menu_item .= $menu_item_a_content . '</a>';
 		

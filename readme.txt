@@ -4,7 +4,7 @@ Donate link: https://www.wpovernight.com/
 Tags: woocommerce, menu, bar, cart, basket, header, shopping cart, navigation, edd, ecommerce, eshop, wp-ecommerce, jigoshop, wpec
 Requires at least: 3.4
 Tested up to: 4.0
-Stable tag: 2.5.3
+Stable tag: 2.5.4
 
 Automatically displays a shopping cart in your menu bar. Works with WooCommerce, WP-Ecommerce, EDD, Eshop and Jigoshop
 
@@ -59,6 +59,7 @@ Translations:
 * Swedish
 * Persian
 * Greek
+* Czech
 
 [1] WebHostingHub
 == Installation ==
@@ -76,6 +77,16 @@ Once the plugin is activated navigate to Settings > Menu Cart Setup. Select your
 == Frequently Asked Questions ==
 
 == Changelog ==
+
+= 2.5.4 =
+
+* New: Czech Translations
+* New: Greek Translations
+* Tweak: Seperated Item Classes
+* Tweak: Removed Unnecessary submenu classes
+* Tweak: Use get_total() instead of get_cart_total()
+* Fix: Prices show tax if cart prices are set to display including tax
+* Fix: Updated Font Awesome
 
 = 2.5.3 =
 
@@ -137,6 +148,40 @@ Added WP-Ecommerce and EDD
 Initial Release
 
 == Upgrade Notice ==
+
+= 2.5.4 =
+
+* New: Czech Translations
+* New: Greek Translations
+* Tweak: Seperated Item Classes
+* Tweak: Removed Unnecessary submenu classes
+* Tweak: Use get_total() instead of get_cart_total()
+* Fix: Prices show tax if cart prices are set to display including tax
+* Fix: Updated Font Awesome
+
+= 2.5.3 =
+
+* Fix: Ubermenu
+* Added: Greek Translation
+
+= 2.5.2 =
+
+*Tweak: Merged menu cart versions
+
+= 2.5.1 =
+
+* WPML String Translation fix
+
+= 2.5 =
+
+* Major Code refactor: CLEANER, FASTER, MORE FLEXIBLE!
+* Added: Shop detection for Multisite
+* Added: WPML String Translation setting
+* Added: Persian translations
+* Updated: Font Awesome
+* Updated: Spanish, Portugese, Brazilian, French & Polish Translations
+* Fix: PHP strict warnings
+* Fix: CSS for Twenty Twelve & Twenty Fourteen
 
 = 2.2.2 =
 
