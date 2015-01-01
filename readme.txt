@@ -60,6 +60,7 @@ Translations:
 * Persian
 * Greek
 * Czech
+* Norwegian
 
 [1] WebHostingHub
 == Installation ==
