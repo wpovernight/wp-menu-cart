@@ -221,16 +221,24 @@ class WpMenuCart {
 		wp_enqueue_script(
 			'wpmenucart',
 			plugins_url( '/javascript/wpmenucart.js' , __FILE__ ),
-				array( 'jquery' )
+			array( 'jquery' )
 		);
 
-		wp_localize_script(  
-			'wpmenucart',  
-			'wpmenucart_ajax',  
-				array(  
-					'ajaxurl' => admin_url( 'admin-ajax.php' ), // URL to WordPress ajax handling page  
-					'nonce' => wp_create_nonce('wpmenucart')  
-				)  
+		// get URL to WordPress ajax handling page  
+		if ( $this->options['shop_plugin'] == 'easy-digital-downloads' && function_exists( 'edd_get_ajax_url' ) ) {
+			// use EDD function to prevent SSL issues http://git.io/V7w76A
+			$ajax_url = edd_get_ajax_url();
+		} else {
+			$ajax_url = admin_url( 'admin-ajax.php' );
+		}
+
+		wp_localize_script(
+			'wpmenucart',
+			'wpmenucart_ajax',
+			array(
+				'ajaxurl' => $ajax_url,
+				'nonce' => wp_create_nonce('wpmenucart')
+			)
 		);
 	}
 
