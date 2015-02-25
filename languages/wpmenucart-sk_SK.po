@@ -1,0 +1,308 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WP Menu Cart\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-11-17 15:27+0100\n"
+"PO-Revision-Date: 2015-02-20 13:26+0100\n"
+"Last-Translator: Ewout Fernhout <chocolade@extrapuur.nl>\n"
+"Language-Team: WP Overnight <support@wpovernight.com>\n"
+"Language: cs_CZ\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
+"_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
+"X-Poedit-Basepath: ../\n"
+"X-Textdomain-Support: yes\n"
+"X-Generator: Poedit 1.6.5\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: includes/wpmenucart-eshop.php:40
+#, php-format
+msgid "%1$s%2$s"
+msgstr ""
+
+#: includes/wpmenucart-eshop.php:40
+msgid "2"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:26
+msgid "Plugin settings"
+msgstr "Nastavenie pluginu"
+
+#: includes/wpmenucart-settings.php:33
+msgid "Select which e-commerce plugin you would like Menu Cart to work with"
+msgstr "Vyberte, ktorý e-shop plugin chcete prepojiť s Menu Cart"
+
+#: includes/wpmenucart-settings.php:46
+msgid "Select the menu(s) in which you want to display the Menu Cart"
+msgstr "Vyberte menu (1 / viac), v ktorých chcete zobraziť Menu Cart"
+
+#: includes/wpmenucart-settings.php:59
+msgid "Always display cart, even if it's empty"
+msgstr "Vždy zobraziť košík, aj keď je prázdny"
+
+#: includes/wpmenucart-settings.php:71
+msgid "Display shopping cart icon."
+msgstr "Zobrazovať ikonku nákupného košíku"
+
+#: includes/wpmenucart-settings.php:83
+msgid "Display cart contents in menu fly-out."
+msgstr "Zobrazovať obsah kosíka v rollovacom okne pri prejdení myšou na košík"
+
+#: includes/wpmenucart-settings.php:96
+msgid "Set maximum number of products to display in fly-out"
+msgstr "Nastavte max počet produktov v rollovacom okne."
+
+#: includes/wpmenucart-settings.php:122
+msgid "Choose a cart icon."
+msgstr "Vyberte ikonku košíka"
+
+#: includes/wpmenucart-settings.php:151
+msgid "What would you like to display in the menu?"
+msgstr "Čo chcete zobraziť v menu?"
+
+#: includes/wpmenucart-settings.php:159
+msgid "Items Only."
+msgstr "Len počet položiek"
+
+#: includes/wpmenucart-settings.php:160
+msgid "Price Only."
+msgstr "Len cenu"
+
+#: includes/wpmenucart-settings.php:161
+msgid "Both price and items."
+msgstr "Cenu aj počet položiek"
+
+#: includes/wpmenucart-settings.php:168
+msgid "Select the alignment that looks best with your menu."
+msgstr "Vyberte zarovnanie, ktoré najlepšie vyzerá vo vašom menu"
+
+#: includes/wpmenucart-settings.php:176
+msgid "Align Left."
+msgstr "Zarovnať vľavo"
+
+#: includes/wpmenucart-settings.php:177
+msgid "Align Right."
+msgstr "Zarovnať vpravo"
+
+#: includes/wpmenucart-settings.php:178
+msgid "Default Menu Alignment."
+msgstr "Predvolené zarovnanie"
+
+#: includes/wpmenucart-settings.php:185
+msgid "Enter a custom CSS class (optional)"
+msgstr "Vložte CSS triedu (voliteľné)"
+
+#: includes/wpmenucart-settings.php:199
+msgid "Use WPML String Translation"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:231 includes/wpmenucart-settings.php:673
+msgid "Menu Cart"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:232
+msgid "Menu Cart Setup"
+msgstr "Menu Cart nastavenie"
+
+#: includes/wpmenucart-settings.php:244
+msgid "Settings"
+msgstr "Nastavenia"
+
+#: includes/wpmenucart-settings.php:296
+msgid "WP Menu Cart"
+msgstr "Menu Cart Nastavenia"
+
+#: includes/wpmenucart-settings.php:319
+msgid "Unlimited Menus"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:320
+msgid "Choice of 14 icons"
+msgstr "14 ikoniek na výber"
+
+#: includes/wpmenucart-settings.php:321
+msgid "Access to Shortcode"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:322
+msgid "Top Notch Support"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:335
+msgid "Sell In Style With Menu Cart Pro!"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:337
+msgid ""
+"Go Pro with Menu Cart Pro. Includes all the great standard features found in "
+"this free version plus:"
+msgstr ""
+"Pro verzia Menu Cart Pro. Zahŕňa všetky skvelé funkcie vo verzii zdarma plus:"
+
+#: includes/wpmenucart-settings.php:340
+msgid "A choice of 14 icons"
+msgstr "14 ikoniek na výber"
+
+#: includes/wpmenucart-settings.php:341
+msgid "A fully featured cart details flyout"
+msgstr "Plne funkčný a detailný rollovací košík"
+
+#: includes/wpmenucart-settings.php:342
+msgid ""
+"Ability to add cart + flyout to an <strong>unlimited</strong> amount of menus"
+msgstr ""
+"Možnosť pridať košík + rollovacie menu <strong>bez obmedzenia počtu</strong>"
+
+#: includes/wpmenucart-settings.php:343
+msgid "Ability to add a custom css class"
+msgstr "Možnosť pridať vlastnú CSS triedu"
+
+#: includes/wpmenucart-settings.php:344
+msgid "Automatic updates on any great new features"
+msgstr "Automatické aktualizácie s novými funkciami"
+
+#: includes/wpmenucart-settings.php:345
+msgid "Put the cart anywhere with the [wpmenucart] shortcode"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:349
+#, php-format
+msgid ""
+"Need to see more? %sClick here%s to check it out. Add a product to your cart "
+"and watch what happens!"
+msgstr ""
+"Chcete vidieť viac? %sKliknite tu%s a pozrite sa. Pridajte produkt do košíku "
+"a sledujte, čo sa stane!"
+
+#: includes/wpmenucart-settings.php:350
+msgid "Buy Now"
+msgstr "Kúpiť"
+
+#: includes/wpmenucart-settings.php:353
+msgid "Want your CSS customized?"
+msgstr "Potrebujete upraviť svoje CSS?"
+
+#: includes/wpmenucart-settings.php:355
+msgid "We can do that for you! Just click the button below to check it out."
+msgstr "Vieme to pre vás urobiť! Kliknite na tlačítko nižšie pre viac info."
+
+#: includes/wpmenucart-settings.php:357
+msgid "Customize my CSS!"
+msgstr "Upravte moje CSS!"
+
+#: includes/wpmenucart-settings.php:426 includes/wpmenucart-settings.php:466
+#: includes/wpmenucart-settings.php:508 includes/wpmenucart-settings.php:547
+#: includes/wpmenucart-settings.php:584
+msgid "This feature only available in"
+msgstr "Táto funkcia je dostupná len v"
+
+#: includes/wpmenucart-settings.php:626
+msgid "Additional icons are only available in"
+msgstr "Ďalšie ikonky sú dostupné len v"
+
+#: wp-menu-cart.php:184
+msgid ""
+"WP Menu Cart Pro could not detect an active shop plugin. Make sure you have "
+"activated at least one of the supported plugins."
+msgstr ""
+
+#: wp-menu-cart.php:185
+msgid "Hide this notice"
+msgstr ""
+
+#: wp-menu-cart.php:190
+msgid ""
+"An old version of WooCommerce Menu Cart is currently activated, you need to "
+"disable or uninstall it for WP Menu Cart to function properly"
+msgstr ""
+"Aktuálne je aktivovaná stará verzia Menu Cart. Pre správne fungovanie modulu "
+"Menu Cart ju musíte najprv deaktivovať / odinštalovať."
+
+#: wp-menu-cart.php:392
+msgid "View your shopping cart"
+msgstr "Pozrieť košík"
+
+#: wp-menu-cart.php:393
+msgid "Start shopping"
+msgstr "Do eshopu"
+
+#: wp-menu-cart.php:394
+#, php-format
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] "%d položka"
+msgstr[1] "%d položky"
+msgstr[2] "%d položiek"
+
+#~ msgid "your cart is currently empty"
+#~ msgstr "Váš košík je prázdný."
+
+#~ msgid "Menu Cart requires a shop plugin to be active"
+#~ msgstr "Menu Cart vyžaduje ke svojí činnosti eshop plugin"
+
+#~ msgid ""
+#~ "The free version of WP Menu Cart is currently activated, you need to "
+#~ "disable or uninstall it for WP Menu Cart Pro to function properly"
+#~ msgstr ""
+#~ "Aktuálně je aktivní free verze WP Menu Cart. Aby mohl WP Menu Cart PRO "
+#~ "fungovat bez chyb, tak musíte nejdřív deaktivovat či odinstalovat verzi "
+#~ "free."
+
+#~ msgid "Get WP Cart Pro!"
+#~ msgstr "Kup WP Cart Pro!"
+
+#~ msgid "Limited Offer:"
+#~ msgstr "Časově omezená nabídka:"
+
+#~ msgid "Menu Cart Pro Setup"
+#~ msgstr "Menu Cart Pro nastavení"
+
+#~ msgid ""
+#~ "For our custom CSS service %sClick here%s. Be sure to use the coupon code "
+#~ "<strong>proservice</strong> at checkout. For support, visit %s or email %s"
+#~ msgstr ""
+#~ "Naše CSS služby můžete objednat %sTady%s. Nezapomeňte v košíku uvést "
+#~ "slevový kód <strong>proservice</strong>. For support, visit %s or email %s"
+
+#~ msgid ""
+#~ "<strong>Please note:</strong> you need to open your website in a new tab/"
+#~ "browser window after updating the cart icon for the change to be visible!"
+#~ msgstr ""
+#~ "<strong>Upozornění:</strong> aby se projevila změna ikony košíku,tak "
+#~ "musíte znovu načíst vaše stránky v novém panelu!"
+
+#~ msgid ""
+#~ "An Unexpected HTTP Error occurred during the API request.</p> <p><a href="
+#~ "\"?\" onclick=\"document.location.reload(); return false;\">Try again</a>"
+#~ msgstr ""
+#~ "Nečekaná chyba (An Unexpected HTTP Error occurred during the API request)."
+#~ "</p> <p><a href=\"?\" onclick=\"document.location.reload(); return false;"
+#~ "\">Zkuste znovu</a>"
+
+#~ msgid "An unknown error occurred"
+#~ msgstr "Nastala neznámá chyba (An unknown error occurred)"
+
+#~ msgid ""
+#~ "WooCommerce Menu Cart depends on <a href=\"%s\">WooCommerce</a> to work!"
+#~ msgstr ""
+#~ "WooCommerce Menu Cart vyžaduje <a href=\"%s\">WooCommerce</a> k chodu!"
+
+#~ msgid "Display Flyout."
+#~ msgstr "Geef flyout weer."
+
+#~ msgid "Set the name of the menu you want to display"
+#~ msgstr "Vyber menu ve kterém chceš zobrazit košík."
+
+#~ msgid ""
+#~ "Let's keep this simple! Just check the boxes next to the features you "
+#~ "want."
+#~ msgstr ""
+#~ "Super eenvoudig: geef simpelweg de vakjes naast de features zoals jij ze "
+#~ "wilt gebruiken een vinkje."
+
+#~ msgid "Save Changes"
+#~ msgstr "Uložit změny"
