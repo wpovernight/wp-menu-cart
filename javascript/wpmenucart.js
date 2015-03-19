@@ -17,6 +17,7 @@ jQuery( function( $ ) {
     '.add_to_cart_button, ' +
     '.woocommerce-cart input.minus, ' +
     '.cart_item a.remove, ' +
+    '#order_review .opc_cart_item a.remove, '+
     '.woocommerce-cart input.plus',
     function() {
       WPMenucart_Timeout();
