@@ -206,6 +206,21 @@ class WpMenuCart_Settings {
 				)
 			);
 		}
+
+		if ( class_exists( 'WooCommerce' ) || defined('JIGOSHOP_VERSION') ) {
+			add_settings_field(
+				'builtin_ajax',
+				__( 'Use Built-in AJAX', 'wpmenucart' ),
+				array( &$this, 'checkbox_element_callback' ),
+				$option,
+				'plugin_settings',
+				array(
+					'menu'			=> $option,
+					'id'			=> 'builtin_ajax',
+					'description'	=> __( 'Enable this option to use the built-in AJAX / live update functions instead of the default ones from WooCommerce or Jigoshop', 'wpmenucart' ),
+				)
+			);
+		}
 		
 		// Register settings.
 		register_setting( $option, $option, array( &$this, 'wpmenucart_options_validate' ) );
@@ -280,6 +295,7 @@ class WpMenuCart_Settings {
 			'flyout_itemnumber'	=> '5',
 			'cart_icon'			=> '0',
 			'shop_plugin'		=> $first_active_shop_plugin,
+			'builtin_ajax'		=> ''
 		);
 
 		update_option( 'wpmenucart', $default );

@@ -32,7 +32,6 @@ class WpMenuCart {
 		add_action( 'wp_enqueue_scripts', array( &$this, 'load_scripts_styles' ) ); // Load scripts
 		add_action( 'wp_ajax_wpmenucart_ajax', array( &$this, 'wpmenucart_ajax' ), 0 );
 		add_action( 'wp_ajax_nopriv_wpmenucart_ajax', array( &$this, 'wpmenucart_ajax' ), 0 );
-		add_filter( 'add_to_cart_fragments', array( &$this, 'woocommerce_ajax_fragments' ) );
 
 		// add filters to selected menus to add cart item <li>
 		add_action( 'init', array( $this, 'filter_nav_menus' ) );
@@ -53,10 +52,20 @@ class WpMenuCart {
 					case 'woocommerce':
 						include_once( 'includes/wpmenucart-woocommerce.php' );
 						$this->shop = new WPMenuCart_WooCommerce();
+						if ( isset($this->options['builtin_ajax']) ) {
+							add_action("wp_enqueue_scripts", array( &$this, 'load_custom_ajax' ), 0 );
+						} else {
+							add_filter( 'add_to_cart_fragments', array( &$this, 'woocommerce_ajax_fragments' ) );
+						}
 						break;
 					case 'jigoshop':
 						include_once( 'includes/wpmenucart-jigoshop.php' );
 						$this->shop = new WPMenuCart_Jigoshop();
+						if ( isset($this->options['builtin_ajax']) ) {
+							add_action("wp_enqueue_scripts", array( &$this, 'load_custom_ajax' ), 0 );
+						} else {
+							add_filter( 'add_to_cart_fragments', array( &$this, 'woocommerce_ajax_fragments' ) );
+						}
 						break;
 					case 'wp-e-commerce':
 						include_once( 'includes/wpmenucart-wpec.php' );
