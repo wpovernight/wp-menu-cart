@@ -52,5 +52,5 @@
 /* End hide from IE-mac */
 /* Force Inline Display */
 li.wpmenucartli a.wpmenucart-contents span{
-	display: inline-block;
+	display: inline-block !important;
 }
