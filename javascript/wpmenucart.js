@@ -8,7 +8,6 @@
  */
 
 jQuery( function( $ ) {
-
   var buttons = [
     ".edd-add-to-cart",
     ".wpsc_buy_button",
@@ -21,7 +20,7 @@ jQuery( function( $ ) {
     ".woocommerce-cart input.plus"
   ];
 
-  $(buttons.join(',')).click(function(){
+  jQuery(document.body).on('click', buttons.join(','), function(){
     WPMenucart_Timeout();
   });
     
