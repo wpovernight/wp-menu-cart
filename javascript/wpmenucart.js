@@ -30,7 +30,7 @@ jQuery( function( $ ) {
   }
 
   function WPMenucart_Load_JS() {
-    $('#wpmenucartli').load(wpmenucart_ajax.ajaxurl+'?action=wpmenucart_ajax&_wpnonce='+wpmenucart_ajax.nonce);
+    $('.wpmenucartli').load(wpmenucart_ajax.ajaxurl+'?action=wpmenucart_ajax&_wpnonce='+wpmenucart_ajax.nonce);
     $('div.wpmenucart-shortcode span.reload_shortcode').load(wpmenucart_ajax.ajaxurl+'?action=wpmenucart_ajax&_wpnonce='+wpmenucart_ajax.nonce);
   }
 });
