@@ -378,6 +378,8 @@ class WpMenuCart {
 				$common_li_classes = array_intersect($li_class, $common_li_classes);
 			}
 			$common_li_classes_flat = implode(' ', $common_li_classes);
+		} else {
+			$common_li_classes_flat = '';
 		}
 		return $common_li_classes_flat;
 	}
