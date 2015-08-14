@@ -205,6 +205,19 @@ class WpMenuCart {
 	 * Load translations.
 	 */
 	public function languages() {
+		$locale = apply_filters( 'plugin_locale', get_locale(), 'wpmenucart' );
+		$dir    = trailingslashit( WP_LANG_DIR );
+
+		/**
+		 * Frontend/global Locale. Looks in:
+		 *
+		 * 		- WP_LANG_DIR/wpmenucart/wpmenucart-LOCALE.mo
+		 * 	 	- WP_LANG_DIR/plugins/wpmenucart-LOCALE.mo
+		 * 	 	- wpmenucart/languages/wpmenucart-LOCALE.mo (which if not found falls back to:)
+		 * 	 	- WP_LANG_DIR/plugins/wpmenucart-LOCALE.mo
+		 */
+		load_textdomain( 'wpmenucart', $dir . 'wpmenucart/wpmenucart-' . $locale . '.mo' );
+		load_textdomain( 'wpmenucart', $dir . 'plugins/wpmenucart-' . $locale . '.mo' );
 		load_plugin_textdomain( 'wpmenucart', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	}
 
