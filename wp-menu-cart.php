@@ -7,6 +7,7 @@ Version: 2.5.7
 Author: Jeremiah Prummer, Ewout Fernhout
 Author URI: www.wpovernight.com/
 License: GPL2
+Text Domain: wpmenucart
 */
 
 class WpMenuCart {	 
