@@ -336,14 +336,6 @@ class WpMenuCart_Settings {
 				?>
 
 			</form>
-			<div style="position:absolute;right: 20px;top: 20px;background-color: #fff;border: 1px solid #7AD03A;border-radius: 3px;font-size: 14px;padding: 10px;">Want To Stand Out? <a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartgopro">Go Pro.</a>
-				<ul style="font-size: 12px;list-style-type:circle;margin-left: 20px">
-					<li><?php _e('Unlimited Menus','wpmenucart') ?></li>
-					<li><?php _e('Choice of 14 icons','wpmenucart') ?></li>
-					<li><?php _e('Access to Shortcode','wpmenucart') ?></li>
-					<li><?php _e('Top Notch Support','wpmenucart') ?></li>
-				</ul>
-			</div>
 			<script type="text/javascript">
 			jQuery('.hidden-input').click(function() {
 				jQuery(this).closest('.hidden-input').prev('.pro-feature').show('slow');
@@ -353,16 +345,53 @@ class WpMenuCart_Settings {
 				jQuery('.pro-icon').show('slow');
 			});
 			</script>
-			<div style="line-height: 20px; background: #F3F3F3;-moz-border-radius: 3px;border-radius: 3px;padding: 10px;-moz-box-shadow: 0 0 5px #ff0000;-webkit-box-shadow: 0 0 5px#ff0000;box-shadow: 0 0 5px #ff0000;padding: 10px;margin:0px auto; font-size: 13.8px;width: 60%;float: left"> 
+			<style type="text/css">
+			.menucart-pro-ad {
+				border: 1px solid #3D5C99;
+				background-color: #EBF5FF;	
+				border-radius: 5px;
+				padding: 15px;
+			}
+			.menucart-pro-ad-big {
+				margin-top: 15px;
+				min-height: 90px;
+				position: relative;
+				padding-left: 100px;
+			}
+			.menucart-pro-ad-small {
+				position: absolute;
+				right: 20px;
+				top: 20px;
+			}
+			img.wpo-helper {
+				position: absolute;
+				top: -20px;
+				left: 3px;
+			}
+			</style>
+			<div class="menucart-pro-ad menucart-pro-ad-small"> 
+				Want To Stand Out? <a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartgopro">Go Pro.</a>
+				<ul style="font-size: 12px;list-style-type:circle;margin-left: 20px">
+					<li><?php _e('Unlimited Menus','wpmenucart') ?></li>
+					<li><?php _e('Choice of 14 icons','wpmenucart') ?></li>
+					<li><?php _e('Packed with customization options','wpmenucart') ?></li>
+					<li><?php _e('Access to Shortcode','wpmenucart') ?></li>
+					<li><?php _e('Top Notch Support','wpmenucart') ?></li>
+				</ul>
+			</div>
+			<div class="menucart-pro-ad menucart-pro-ad-big"> 
+				<img src="<?php echo plugins_url( 'images/', dirname(__FILE__) ) . 'wpo-helper.png'; ?>" class="wpo-helper">
 				<h2><?php _e('Sell In Style With Menu Cart Pro!','wpmenucart') ?></h2>
 				<br>
 				<?php _e('Go Pro with Menu Cart Pro. Includes all the great standard features found in this free version plus:','wpmenucart') ?>
 				<br>
 				<ul style="list-style-type:circle;margin-left: 40px">
-					<li><?php _e('A choice of 14 icons','wpmenucart') ?></li>
+					<li><?php _e('A choice of over 10 cart icons','wpmenucart') ?></li>
 					<li><?php _e('A fully featured cart details flyout','wpmenucart') ?></li>
 					<li><?php _e('Ability to add cart + flyout to an <strong>unlimited</strong> amount of menus','wpmenucart') ?></li>
-					<li><?php _e('Ability to add a custom css class','wpmenucart') ?></li>
+					<li><?php _e('Adjust the content & URLs via the settings','wpmenucart') ?></li>
+					<li><?php _e('Enter custom styles and apply custom classes via the settings','wpmenucart') ?></li>
+					<li><?php _e('WPML compatible','wpmenucart') ?></li>
 					<li><?php _e('Automatic updates on any great new features','wpmenucart') ?></li>
 					<li><?php _e('Put the cart anywhere with the [wpmenucart] shortcode','wpmenucart') ?></li>
 				</ul>
@@ -370,13 +399,6 @@ class WpMenuCart_Settings {
 				$menucartadmore = '<a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartadmore">';
 				printf (__('Need to see more? %sClick here%s to check it out. Add a product to your cart and watch what happens!','wpmenucart'), $menucartadmore,'</a>'); ?><br><br>
 				<a class="button button-primary" style="text-align: center;margin: 0px auto" href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartadbuy"><?php _e('Buy Now','wpmenucart') ?></a>
-			</div>
-			<div style="line-height: 20px; background: #F3F3F3;-moz-border-radius: 3px;border-radius: 3px;padding: 10px;-moz-box-shadow: 0 0 5px #ff0000;-webkit-box-shadow: 0 0 5px#ff0000;box-shadow: 0 0 5px #ff0000;padding: 10px;margin:0px auto; margin-left: 30px; font-size: 13.8px;width: 30%;float: left">
-				<h2><?php _e('Want your CSS customized?','wpmenucart') ?></h2>
-				<br>
-				<?php _e('We can do that for you! Just click the button below to check it out.','wpmenucart') ?>
-				<br><br>
-				<a class="button button-primary" style="text-align: center" href="https://wpovernight.com/downloads/menu-cart-pro/?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartcustomcss"><?php _e('Customize my CSS!','wpmenucart') ?></a>
 			</div>
 		</div>
 		<?php
