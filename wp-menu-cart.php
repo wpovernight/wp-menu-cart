@@ -56,7 +56,11 @@ class WpMenuCart {
 						if ( isset($this->options['builtin_ajax']) ) {
 							add_action("wp_enqueue_scripts", array( &$this, 'load_custom_ajax' ), 0 );
 						} else {
-							add_filter( 'add_to_cart_fragments', array( &$this, 'woocommerce_ajax_fragments' ) );
+							if ( defined('WOOCOMMERCE_VERSION') && version_compare( WOOCOMMERCE_VERSION, '2.7', '>=' ) ) {
+								add_filter( 'woocommerce_add_to_cart_fragments', array( $this, 'woocommerce_ajax_fragments' ) );
+							} else {
+								add_filter( 'add_to_cart_fragments', array( $this, 'woocommerce_ajax_fragments' ) );
+							}
 						}
 						break;
 					case 'jigoshop':
@@ -410,6 +414,10 @@ class WpMenuCart {
 	 * Ajaxify Menu Cart
 	 */
 	public function woocommerce_ajax_fragments( $fragments ) {
+		if ( ! defined('WOOCOMMERCE_CART') ) {
+			define( 'WOOCOMMERCE_CART', true );
+		}
+
 		$fragments['a.wpmenucart-contents'] = $this->wpmenucart_menu_item();
 		return $fragments;
 	}
