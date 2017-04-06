@@ -241,8 +241,14 @@ class WpMenuCart_Settings {
 	 * Add menu page
 	 */
 	public function wpmenucart_add_page() {
+		if (class_exists('WooCommerce')) {
+			$parent_slug = 'woocommerce';
+		} else {
+			$parent_slug = 'options-general.php';
+		}
+
 		$wpmenucart_page = add_submenu_page(
-			'options-general.php',
+			$parent_slug,
 			__( 'Menu Cart', 'wpmenucart' ),
 			__( 'Menu Cart Setup', 'wpmenucart' ),
 			'manage_options',
@@ -256,7 +262,7 @@ class WpMenuCart_Settings {
 	 * Add settings link to plugins page
 	 */
 	public function wpmenucart_add_settings_link( $links ) {
-		$settings_link = '<a href="options-general.php?page=wpmenucart_options_page">'. __( 'Settings', 'woocommerce' ) . '</a>';
+		$settings_link = '<a href="admin.php?page=wpmenucart_options_page">'. __( 'Settings', 'woocommerce' ) . '</a>';
 		array_push( $links, $settings_link );
 		return $links;
 	}
