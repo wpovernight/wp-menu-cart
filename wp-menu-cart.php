@@ -19,11 +19,10 @@ class WpMenuCart {
 	 * Construct.
 	 */
 	public function __construct() {
+		
 		self::$plugin_slug = basename(dirname(__FILE__));
 		self::$plugin_basename = plugin_basename(__FILE__);
-
 		$this->options = get_option('wpmenucart');
-
 		// load the localisation & classes
 		add_action( 'plugins_loaded', array( &$this, 'languages' ), 0 ); // or use init?
 		add_action( 'init', array( &$this, 'wpml' ), 0 );
@@ -63,7 +62,7 @@ class WpMenuCart {
 							}
 						}
 						break;
-					case 'jigoshop':
+					case 'Jigoshop-eCommerce':
 						include_once( 'includes/wpmenucart-jigoshop.php' );
 						$this->shop = new WPMenuCart_Jigoshop();
 						if ( isset($this->options['builtin_ajax']) ) {
@@ -157,7 +156,7 @@ class WpMenuCart {
 
 		$shop_plugins = array (
 			'WooCommerce'				=> 'woocommerce/woocommerce.php',
-			'Jigoshop'					=> 'jigoshop/jigoshop.php',
+			'Jigoshop'					=> 'Jigoshop-eCommerce/jigoshop.php',
 			'WP e-Commerce'				=> 'wp-e-commerce/wp-shopping-cart.php',
 			'eShop'						=> 'eshop/eshop.php',
 			'Easy Digital Downloads'	=> 'easy-digital-downloads/easy-digital-downloads.php',
