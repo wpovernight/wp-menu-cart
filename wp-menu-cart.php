@@ -302,6 +302,22 @@ class WpMenuCart {
 			wp_register_style( 'wpmenucart-twentyfourteen', plugins_url( '/css/wpmenucart-twentyfourteen.css', __FILE__ ), array(), '', 'all' );
 			wp_enqueue_style( 'wpmenucart-twentyfourteen' );
 		}		
+
+		// extra script that improves AJAX behavior when 'Always display cart' is disabled
+		wp_enqueue_script(
+			'wpmenucart-ajax-assist',
+			plugins_url( '/javascript/wpmenucart-ajax-assist.js', __FILE__ )
+			array( 'jquery' ),
+		);
+		wp_localize_script(
+			'wpmenucart-ajax-assist',
+			'wpmenucart_ajax_assist',
+			array(  
+				'shop_plugin' => isset($this->options['shop_plugin']) ? $this->options['shop_plugin'] : '',,
+				'always_display' => isset($this->options['always_display']) ? $this->options['always_display'] : '',
+			)
+		);
+
 	}
 
 	/**
