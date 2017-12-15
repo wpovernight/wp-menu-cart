@@ -40,6 +40,22 @@ class WpMenuCart_Settings {
 				'options'	=> (array) $this->get_shop_plugins(),
 			)
 		);			
+
+		if( $parent_theme = wp_get_theme(get_template()) ) {
+			if (in_array($parent_theme->get('Name'), array('Storefront','Divi'))) {
+				add_settings_field(
+					'hide_theme_cart',
+					__( 'Hide theme shopping cart icon', 'wpmenucart' ),
+					array( &$this, 'checkbox_element_callback' ),
+					$option,
+					'plugin_settings',
+					array(
+						'menu'	=> $option,
+						'id'			=> 'hide_theme_cart',
+					)
+				);
+			}
+		}
 		
 		add_settings_field(
 			'menu_slugs',
@@ -301,7 +317,8 @@ class WpMenuCart_Settings {
 			'flyout_itemnumber'	=> '5',
 			'cart_icon'			=> '0',
 			'shop_plugin'		=> $first_active_shop_plugin,
-			'builtin_ajax'		=> ''
+			'builtin_ajax'		=> '',
+			'hide_theme_cart'	=> 1,
 		);
 
 		update_option( 'wpmenucart', $default );
