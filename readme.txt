@@ -3,7 +3,7 @@ Contributors: jprummer, pomegranate
 Donate link: https://www.wpovernight.com/
 Tags: woocommerce, menu, bar, cart, basket, header, shopping cart, navigation, edd, ecommerce, eshop, wp-ecommerce, jigoshop, wpec
 Requires at least: 3.4
-Tested up to: 4.6
+Tested up to: 4.9
 Requires PHP: 5.3
 Stable tag: 2.6.0
 
