@@ -1,0 +1,278 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WP Menu Cart\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-12-19 12:28+0300\n"
+"PO-Revision-Date: 2017-12-19 12:44+0300\n"
+"Last-Translator: Ewout Fernhout <chocolade@extrapuur.nl>\n"
+"Language-Team: WP Overnight <support@wpovernight.com>\n"
+"Language: tr_TR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
+"_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
+"X-Poedit-Basepath: ..\n"
+"X-Textdomain-Support: yes\n"
+"X-Generator: Poedit 2.0.5\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: includes/wpmenucart-eshop.php:40
+#, php-format
+msgid "%1$s%2$s"
+msgstr "%1$s%2$s"
+
+#: includes/wpmenucart-eshop.php:40
+msgid "2"
+msgstr "2"
+
+#: includes/wpmenucart-settings.php:26
+msgid "Plugin settings"
+msgstr "Eklenti Ayarları"
+
+#: includes/wpmenucart-settings.php:33
+msgid "Select which e-commerce plugin you would like Menu Cart to work with"
+msgstr "Menü Sepetinin çalışmasını istediğiniz e-ticaret eklentisini seçin"
+
+#: includes/wpmenucart-settings.php:48
+#, fuzzy
+#| msgid "View your shopping cart"
+msgid "Hide theme shopping cart icon"
+msgstr "Alışveriş sepetinizi görüntüleyin"
+
+#: includes/wpmenucart-settings.php:62
+msgid "Select the menu(s) in which you want to display the Menu Cart"
+msgstr "Menü sepetinin görüntülenmesini istediğiniz menüleri seçin."
+
+#: includes/wpmenucart-settings.php:75
+msgid "Always display cart, even if it's empty"
+msgstr "Boş olsa bile sepeti her zaman göster."
+
+#: includes/wpmenucart-settings.php:87
+msgid "Display shopping cart icon."
+msgstr "Alışveriş sepeti simgesini görüntüle."
+
+#: includes/wpmenucart-settings.php:99
+msgid "Display cart contents in menu fly-out."
+msgstr "Sepet içeriğini menüden çıkışa görüntüle."
+
+#: includes/wpmenucart-settings.php:112
+msgid "Set maximum number of products to display in fly-out"
+msgstr "Görüntülenecek maksimum ürün sayısını ayarlayın."
+
+#: includes/wpmenucart-settings.php:138
+msgid "Choose a cart icon."
+msgstr "Bir alışveriş sepeti simgesi seçin."
+
+#: includes/wpmenucart-settings.php:167
+msgid "What would you like to display in the menu?"
+msgstr "Menüde ne göstermek istersiniz?"
+
+#: includes/wpmenucart-settings.php:175
+msgid "Items Only."
+msgstr "Sadece Ürünler"
+
+#: includes/wpmenucart-settings.php:176
+msgid "Price Only."
+msgstr "Sadece Fiyat"
+
+#: includes/wpmenucart-settings.php:177
+msgid "Both price and items."
+msgstr "Ürün ve Fiyatlar"
+
+#: includes/wpmenucart-settings.php:184
+msgid "Select the alignment that looks best with your menu."
+msgstr "Menünüzle en iyi görünen hizalamayı seçin."
+
+#: includes/wpmenucart-settings.php:192
+msgid "Align Left."
+msgstr "Sola Hizala"
+
+#: includes/wpmenucart-settings.php:193
+msgid "Align Right."
+msgstr "Sağa Hizala"
+
+#: includes/wpmenucart-settings.php:194
+msgid "Default Menu Alignment."
+msgstr "Varsayılan Menü Hizalaması"
+
+#: includes/wpmenucart-settings.php:201
+msgid "Enter a custom CSS class (optional)"
+msgstr "Opsiyonel Css Ekle (Zorunlu Değil)"
+
+#: includes/wpmenucart-settings.php:215
+msgid "Use WPML String Translation"
+msgstr "WPML Çevirisi Kullan"
+
+#: includes/wpmenucart-settings.php:229
+msgid "Use Built-in AJAX"
+msgstr "Dahili AJAX'ı kullanın"
+
+#: includes/wpmenucart-settings.php:236
+msgid ""
+"Enable this option to use the built-in AJAX / live update functions instead "
+"of the default ones from WooCommerce or Jigoshop"
+msgstr ""
+"WooCommerce veya Jigoshop'un varsayılanları yerine yerleşik AJAX / canlı "
+"güncelleme işlevlerini kullanmak için bu seçeneği etkinleştirin."
+
+#: includes/wpmenucart-settings.php:268 includes/wpmenucart-settings.php:734
+msgid "Menu Cart"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:269
+msgid "Menu Cart Setup"
+msgstr "Menü Sepeti Ayarları"
+
+#: includes/wpmenucart-settings.php:281
+msgid "Settings"
+msgstr "Ayarlar"
+
+#: includes/wpmenucart-settings.php:335
+msgid "WP Menu Cart"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:392
+msgid "Unlimited Menus"
+msgstr "Limitsiz Menüler"
+
+#: includes/wpmenucart-settings.php:393
+msgid "Choice of 14 icons"
+msgstr "14 Simgeden Seçim"
+
+#: includes/wpmenucart-settings.php:394
+msgid "Packed with customization options"
+msgstr "Özelleştirme seçenekleri ile paketlenmiş."
+
+#: includes/wpmenucart-settings.php:395
+msgid "Access to Shortcode"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:396
+msgid "Top Notch Support"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:401
+msgid "Sell In Style With Menu Cart Pro!"
+msgstr "Menü Cart Pro Sürümü Satın Al !"
+
+#: includes/wpmenucart-settings.php:403
+msgid ""
+"Go Pro with Menu Cart Pro. Includes all the great standard features found in "
+"this free version plus:"
+msgstr "Pro sürümü satın aldığınız da alacağınız ek özellikler:"
+
+#: includes/wpmenucart-settings.php:406
+msgid "A choice of over 10 cart icons"
+msgstr "10'dan fazla sepet simgesi arasından seçim imkanı."
+
+#: includes/wpmenucart-settings.php:407
+msgid "A fully featured cart details flyout"
+msgstr "Tam özellikli bir alışeveriş sepeti görüntüsü."
+
+#: includes/wpmenucart-settings.php:408
+msgid ""
+"Ability to add cart + flyout to an <strong>unlimited</strong> amount of menus"
+msgstr "Sınırsız miktarda <strong>menüye</strong> sepet + ekleme imkanı"
+
+#: includes/wpmenucart-settings.php:409
+msgid "Adjust the content & URLs via the settings"
+msgstr "Ayarları kullanarak içeriği ve URL'leri ayarlayın."
+
+#: includes/wpmenucart-settings.php:410
+msgid "Enter custom styles and apply custom classes via the settings"
+msgstr "Özel stiller girin ve ayarları kullanarak özel sınıfları uygulayın."
+
+#: includes/wpmenucart-settings.php:411
+msgid "WPML compatible"
+msgstr "WPML uyumluluğu."
+
+#: includes/wpmenucart-settings.php:412
+msgid "Automatic updates on any great new features"
+msgstr "Harika, yeni özelliklerle ilgili otomatik güncellemeler."
+
+#: includes/wpmenucart-settings.php:413
+msgid "Put the cart anywhere with the [wpmenucart] shortcode"
+msgstr "Sepeti [wpmenucart] kısa koduyla istediğiniz yere yerleştirin."
+
+#: includes/wpmenucart-settings.php:417
+#, php-format
+msgid ""
+"Need to see more? %sClick here%s to check it out. Add a product to your cart "
+"and watch what happens!"
+msgstr ""
+"Daha fazlasını görmek mi istiyorsunuz? Kontrol etmek için% sburayı tıklayın"
+"% s. Sepetinize bir ürün ekleyin ve neler olduğunu seyredin!"
+
+#: includes/wpmenucart-settings.php:418
+msgid "Buy Now"
+msgstr "Satın Al"
+
+#: includes/wpmenucart-settings.php:487 includes/wpmenucart-settings.php:527
+#: includes/wpmenucart-settings.php:569 includes/wpmenucart-settings.php:608
+#: includes/wpmenucart-settings.php:645
+msgid "This feature only available in"
+msgstr "Bu işlemi yapabilmek için Pro Sürümü Satın Almalısınız!"
+
+#: includes/wpmenucart-settings.php:687
+msgid "Additional icons are only available in"
+msgstr ""
+
+#: wp-menu-cart.php:200
+msgid ""
+"WP Menu Cart Pro could not detect an active shop plugin. Make sure you have "
+"activated at least one of the supported plugins."
+msgstr ""
+
+#: wp-menu-cart.php:201
+msgid "Hide this notice"
+msgstr ""
+
+#: wp-menu-cart.php:206
+msgid ""
+"An old version of WooCommerce Menu Cart is currently activated, you need to "
+"disable or uninstall it for WP Menu Cart to function properly"
+msgstr ""
+
+#: wp-menu-cart.php:469
+msgid "View your shopping cart"
+msgstr "Alışveriş sepetinizi görüntüleyin"
+
+#: wp-menu-cart.php:470
+msgid "Start shopping"
+msgstr "Alışverişe Başla"
+
+#: wp-menu-cart.php:471
+#, php-format
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] "%d Ürün"
+msgstr[1] "%d Ürünler"
+
+#~ msgid "your cart is currently empty"
+#~ msgstr "Alışveriş Sepetiniz Boş"
+
+#~ msgid ""
+#~ "WooCommerce Menu Cart depends on <a href=\"%s\">WooCommerce</a> to work!"
+#~ msgstr ""
+#~ "WooCommerce Menu Cart heeft <a href=\"%s\">WooCommerce</a> om te kunnen "
+#~ "functioneren!"
+
+#~ msgid "Display Flyout."
+#~ msgstr "Geef flyout weer."
+
+#~ msgid "Set the name of the menu you want to display"
+#~ msgstr ""
+#~ "Voer de naam in van het menu waarin je het winkelwagentje wilt weergeven"
+
+#~ msgid ""
+#~ "Let's keep this simple! Just check the boxes next to the features you "
+#~ "want."
+#~ msgstr ""
+#~ "Super eenvoudig: geef simpelweg de vakjes naast de features zoals jij ze "
+#~ "wilt gebruiken een vinkje."
+
+#~ msgid "Save Changes"
+#~ msgstr "Opslaan"
