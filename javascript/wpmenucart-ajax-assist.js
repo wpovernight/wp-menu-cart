@@ -1,7 +1,7 @@
 /* This script is intended for sites with server side caching enabled - normally the classes in the menu would follow the cart state */
 jQuery( function( $ ) {
 	/* Cart Hiding */
-	if (wpmenucart_ajax_assist.shop_plugin == 'WooCommerce' ) {
+	if ( typeof wpmenucart_ajax_assist.shop_plugin !== 'undefined' && wpmenucart_ajax_assist.shop_plugin.toLowerCase() == 'woocommerce' ) {
 		// update on page load
 		wpmenucart_update_menu_classes();
 		// update when cart is updated
