@@ -223,17 +223,17 @@ class WpMenuCart_Settings {
 			);
 		}
 
-		if ( class_exists( 'WooCommerce' ) || defined('JIGOSHOP_VERSION') ) {
+		if ( class_exists( 'WooCommerce' ) || defined('JIGOSHOP_VERSION') || class_exists( 'Easy_Digital_Downloads' ) ) {
 			add_settings_field(
 				'builtin_ajax',
-				__( 'Use Built-in AJAX', 'wpmenucart' ),
+				__( 'Use custom AJAX', 'wpmenucart' ),
 				array( &$this, 'checkbox_element_callback' ),
 				$option,
 				'plugin_settings',
 				array(
 					'menu'			=> $option,
 					'id'			=> 'builtin_ajax',
-					'description'	=> __( 'Enable this option to use the built-in AJAX / live update functions instead of the default ones from WooCommerce or Jigoshop', 'wpmenucart' ),
+					'description'	=> __( 'Enable this option to use the custom AJAX / live update functions instead of the default ones from your shop plugin. Only use when you have issues with AJAX!', 'wpmenucart' ),
 				)
 			);
 		}

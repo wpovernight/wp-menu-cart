@@ -55,9 +55,7 @@ class WpMenuCart {
 					case 'woocommerce':
 						include_once( 'includes/wpmenucart-woocommerce.php' );
 						$this->shop = new WPMenuCart_WooCommerce();
-						if ( isset($this->options['builtin_ajax']) ) {
-							add_action("wp_enqueue_scripts", array( &$this, 'load_custom_ajax' ), 0 );
-						} else {
+						if ( !isset($this->options['builtin_ajax']) ) {
 							if ( defined('WOOCOMMERCE_VERSION') && version_compare( WOOCOMMERCE_VERSION, '2.7', '>=' ) ) {
 								add_filter( 'woocommerce_add_to_cart_fragments', array( $this, 'woocommerce_ajax_fragments' ) );
 							} else {
@@ -68,28 +66,30 @@ class WpMenuCart {
 					case 'jigoshop':
 						include_once( 'includes/wpmenucart-jigoshop.php' );
 						$this->shop = new WPMenuCart_Jigoshop();
-						if ( isset($this->options['builtin_ajax']) ) {
-							add_action("wp_enqueue_scripts", array( &$this, 'load_custom_ajax' ), 0 );
-						} else {
+						if ( !isset($this->options['builtin_ajax']) ) {
 							add_filter( 'add_to_cart_fragments', array( &$this, 'woocommerce_ajax_fragments' ) );
 						}
 						break;
 					case 'wp-e-commerce':
 						include_once( 'includes/wpmenucart-wpec.php' );
 						$this->shop = new WPMenuCart_WPEC();
-						add_action("wp_enqueue_scripts", array( &$this, 'load_custom_ajax' ), 0 );
 						break;
 					case 'eshop':
 						include_once( 'includes/wpmenucart-eshop.php' );
 						$this->shop = new WPMenuCart_eShop();
-						add_action("wp_enqueue_scripts", array( &$this, 'load_custom_ajax' ), 0 );
 						break;
 					case 'easy-digital-downloads':
 						include_once( 'includes/wpmenucart-edd.php' );
 						$this->shop = new WPMenuCart_EDD();
-						add_action("wp_enqueue_scripts", array( &$this, 'load_custom_ajax' ), 0 );
+						if ( !isset($this->options['builtin_ajax']) ) {
+							add_action("wp_enqueue_scripts", array( &$this, 'load_edd_ajax' ), 0 );
+						}
 						break;
 				}
+				if ( isset( $this->options['builtin_ajax'] ) || in_array( $this->options['shop_plugin'], array( 'WP e-Commerce', 'wp-e-commerce', 'eShop', 'eshop' ) ) ) {
+					add_action("wp_enqueue_scripts", array( &$this, 'load_custom_ajax' ), 0 );
+				}
+
 			}
 		}
 	}
@@ -272,6 +272,29 @@ class WpMenuCart {
 			)
 		);
 	}
+
+	/**
+	 * Load EDD ajax helper
+	 */
+	public function load_edd_ajax() {
+		wp_enqueue_script(
+			'wpmenucart-edd-ajax',
+			plugins_url( '/javascript/wpmenucart-edd-ajax.js', __FILE__ ),
+			array( 'jquery' ),
+			'2.6.2'
+		);
+
+		wp_localize_script(
+			'wpmenucart-edd-ajax',
+			'wpmenucart_ajax',
+			array(  
+				'ajaxurl'        => function_exists( 'edd_get_ajax_url' ) ? edd_get_ajax_url() : admin_url( 'admin-ajax.php' ),
+				'nonce'          => wp_create_nonce('wpmenucart'),
+				'always_display' => isset($this->options['always_display']) ? $this->options['always_display'] : '',
+			)
+		);
+	}
+
 
 	/**
 	 * Load CSS
