@@ -9,7 +9,7 @@
  * License: GPL2
  * Text Domain: wpmenucart
  * WC requires at least: 2.0.0
- * WC tested up to: 3.2.0
+ * WC tested up to: 3.3.0
  */
 
 class WpMenuCart {	 
