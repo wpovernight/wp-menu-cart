@@ -289,6 +289,8 @@ class WpMenuCart_Settings {
 	public function wpmenucart_admin_styles() {
 		wp_register_style( 'wpmenucart-admin', plugins_url( 'css/wpmenucart-icons.css', dirname(__FILE__) ), array(), '', 'all' );
 		wp_enqueue_style( 'wpmenucart-admin' );
+		wp_register_style( 'wpmenucart-fontawesome', plugins_url( '/css/wpmenucart-fontawesome.css',  dirname(__FILE__) ), array(), '', 'all' );
+		wp_enqueue_style( 'wpmenucart-fontawesome' );
 	}
 	 
 	/**
