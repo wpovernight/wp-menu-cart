@@ -196,6 +196,25 @@ class WpMenuCart_Settings {
 			)
 		);
 
+		if ( class_exists( 'WooCommerce' ) ) {
+			add_settings_field(
+				'total_price_type',
+				__( 'Price to display', 'wpmenucart' ),
+				array( &$this, 'select_element_callback' ),
+				$option,
+				'plugin_settings',
+				array(
+					'menu'			=> $option,
+					'id'			=> 'total_price_type',
+					'options' 		=> array(
+						'total'			=> __( 'Total (including fees)' , 'wpmenucart' ),
+						'subtotal'		=> __( 'Subtotal (total of products)' , 'wpmenucart' ),
+					),
+					'default'		=> 'total',
+				)
+			);
+		}
+
 		add_settings_field(
 			'custom_class',
 			__( 'Enter a custom CSS class (optional)', 'wpmenucart' ),
