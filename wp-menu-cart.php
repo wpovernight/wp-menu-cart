@@ -545,6 +545,8 @@ class WpMenuCart {
 	}
 	
 	public function wpmenucart_ajax() {
+		check_ajax_referer( 'wpmenucart', 'security' );
+
 		$variable = $this->wpmenucart_menu_item();
 		echo $variable;
 		die();
