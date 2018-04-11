@@ -439,8 +439,8 @@ class WpMenuCart {
 	 * @return string        flat (imploded) list of common classes
 	 */
 	public function get_common_li_classes($items) {
-		if (empty($items)) return;
-		if (!class_exists('DOMDocument')) return;
+		if (empty($items)) return '';
+		if (!class_exists('DOMDocument')) return '';
 		
 		$libxml_previous_state = libxml_use_internal_errors(true); // enable user error handling
 
