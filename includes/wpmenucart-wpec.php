@@ -1,13 +1,13 @@
 <?php
 if ( ! class_exists( 'WPMenuCart_WPEC' ) ) {
-	class WPMenuCart_WPEC {     
+	class WPMenuCart_WPEC {
 	
-	    /**
-	     * Construct.
-	     */
-	    public function __construct() {
+		/**
+		 * Construct.
+		 */
+		public function __construct() {
 			add_action('wpsc_alternate_cart_html', array( &$this, 'wpec_cart_ajax' ) );
-	    }
+		}
 	
 		public function menu_item() {
 		global $wpsc_cart, $options;
@@ -24,10 +24,10 @@ if ( ! class_exists( 'WPMenuCart_WPEC' ) ) {
 		* action hook for wp-e-commerce to provide our own AJAX cart updates
 		*/
 		
-                public function wpec_cart_ajax() {
-                    /*
+		public function wpec_cart_ajax() {
+			/*
 			$item_data = $this->menu_item();
-			$cart_contents = sprintf(_n('%d item', '%d items', $item_data['cart_contents_count'], 'wpmenucart'), $item_data['cart_contents_count']);
+			$cart_contents = sprintf(_n('%d item', '%d items', $item_data['cart_contents_count'], 'wp-menu-cart'), $item_data['cart_contents_count']);
 			$cart_total = $item_data['cart_total'];
 			$cart_url = $item_data['cart_url'];
 			?>
@@ -35,9 +35,7 @@ if ( ! class_exists( 'WPMenuCart_WPEC' ) ) {
 			jQuery("span.pricedisplay").html("<?php echo $cart_total;?>");
 			jQuery("a.wpmenucart-contents").attr("href", "<?php echo $cart_url;?>");
 			<?php
-                     * 
-                     */
+			 */
 		}
-                 
 	}
 }

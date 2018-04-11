@@ -23,14 +23,14 @@ class WpMenuCart_Settings {
 		// Section.
 		add_settings_section(
 			'plugin_settings',
-			__( 'Plugin settings', 'wpmenucart' ),
+			__( 'Plugin settings', 'wp-menu-cart' ),
 			array( &$this, 'section_options_callback' ),
 			$option
 		);
 
 		add_settings_field(
 			'shop_plugin',
-			__( 'Select which e-commerce plugin you would like Menu Cart to work with', 'wpmenucart' ),
+			__( 'Select which e-commerce plugin you would like Menu Cart to work with', 'wp-menu-cart' ),
 			array( &$this, 'select_element_callback' ),
 			$option,
 			'plugin_settings',
@@ -45,7 +45,7 @@ class WpMenuCart_Settings {
 			if (in_array($parent_theme->get('Name'), array('Storefront','Divi'))) {
 				add_settings_field(
 					'hide_theme_cart',
-					__( 'Hide theme shopping cart icon', 'wpmenucart' ),
+					__( 'Hide theme shopping cart icon', 'wp-menu-cart' ),
 					array( &$this, 'checkbox_element_callback' ),
 					$option,
 					'plugin_settings',
@@ -59,7 +59,7 @@ class WpMenuCart_Settings {
 		
 		add_settings_field(
 			'menu_slugs',
-			__( 'Select the menu(s) in which you want to display the Menu Cart', 'wpmenucart' ),
+			__( 'Select the menu(s) in which you want to display the Menu Cart', 'wp-menu-cart' ),
 			array( &$this, 'menus_select_element_callback' ),
 			$option,
 			'plugin_settings',
@@ -72,7 +72,7 @@ class WpMenuCart_Settings {
 
 		add_settings_field(
 			'always_display',
-			__( "Always display cart, even if it's empty", 'wpmenucart' ),
+			__( "Always display cart, even if it's empty", 'wp-menu-cart' ),
 			array( &$this, 'checkbox_element_callback' ),
 			$option,
 			'plugin_settings',
@@ -84,7 +84,7 @@ class WpMenuCart_Settings {
 
 		add_settings_field(
 			'icon_display',
-			__( 'Display shopping cart icon.', 'wpmenucart' ),
+			__( 'Display shopping cart icon.', 'wp-menu-cart' ),
 			array( &$this, 'checkbox_element_callback' ),
 			$option,
 			'plugin_settings',
@@ -96,7 +96,7 @@ class WpMenuCart_Settings {
 
 		add_settings_field(
 			'flyout_display',
-			__( 'Display cart contents in menu fly-out.', 'wpmenucart' ),
+			__( 'Display cart contents in menu fly-out.', 'wp-menu-cart' ),
 			array( &$this, 'checkbox_element_callback' ),
 			$option,
 			'plugin_settings',
@@ -109,7 +109,7 @@ class WpMenuCart_Settings {
 		
 		add_settings_field(
 			'flyout_itemnumber',
-			__( 'Set maximum number of products to display in fly-out', 'wpmenucart' ),
+			__( 'Set maximum number of products to display in fly-out', 'wp-menu-cart' ),
 			array( &$this, 'select_element_callback' ),
 			$option,
 			'plugin_settings',
@@ -135,7 +135,7 @@ class WpMenuCart_Settings {
 
 		add_settings_field(
 			'cart_icon',
-			__( 'Choose a cart icon.', 'wpmenucart' ),
+			__( 'Choose a cart icon.', 'wp-menu-cart' ),
 			array( &$this, 'icons_radio_element_callback' ),
 			$option,
 			'plugin_settings',
@@ -164,7 +164,7 @@ class WpMenuCart_Settings {
 
 		add_settings_field(
 			'items_display',
-			__( 'What would you like to display in the menu?', 'wpmenucart' ),
+			__( 'What would you like to display in the menu?', 'wp-menu-cart' ),
 			array( &$this, 'radio_element_callback' ),
 			$option,
 			'plugin_settings',
@@ -172,16 +172,16 @@ class WpMenuCart_Settings {
 				'menu'			=> $option,
 				'id'			=> 'items_display',
 				'options' 		=> array(
-					'1'			=> __( 'Items Only.' , 'wpmenucart' ),
-					'2'			=> __( 'Price Only.' , 'wpmenucart' ),
-					'3'			=> __( 'Both price and items.' , 'wpmenucart' ),
+					'1'			=> __( 'Items Only.' , 'wp-menu-cart' ),
+					'2'			=> __( 'Price Only.' , 'wp-menu-cart' ),
+					'3'			=> __( 'Both price and items.' , 'wp-menu-cart' ),
 				),
 			)
 		);
 		
 		add_settings_field(
 			'items_alignment',
-			__( 'Select the alignment that looks best with your menu.', 'wpmenucart' ),
+			__( 'Select the alignment that looks best with your menu.', 'wp-menu-cart' ),
 			array( &$this, 'radio_element_callback' ),
 			$option,
 			'plugin_settings',
@@ -189,9 +189,9 @@ class WpMenuCart_Settings {
 				'menu'			=> $option,
 				'id'			=> 'items_alignment',
 				'options' 		=> array(
-					'left'			=> __( 'Align Left.' , 'wpmenucart' ),
-					'right'			=> __( 'Align Right.' , 'wpmenucart' ),
-					'standard'		=> __( 'Default Menu Alignment.' , 'wpmenucart' ),
+					'left'			=> __( 'Align Left.' , 'wp-menu-cart' ),
+					'right'			=> __( 'Align Right.' , 'wp-menu-cart' ),
+					'standard'		=> __( 'Default Menu Alignment.' , 'wp-menu-cart' ),
 				),
 			)
 		);
@@ -199,7 +199,7 @@ class WpMenuCart_Settings {
 		if ( class_exists( 'WooCommerce' ) ) {
 			add_settings_field(
 				'total_price_type',
-				__( 'Price to display', 'wpmenucart' ),
+				__( 'Price to display', 'wp-menu-cart' ),
 				array( &$this, 'select_element_callback' ),
 				$option,
 				'plugin_settings',
@@ -207,8 +207,8 @@ class WpMenuCart_Settings {
 					'menu'			=> $option,
 					'id'			=> 'total_price_type',
 					'options' 		=> array(
-						'total'			=> __( 'Total (including fees)' , 'wpmenucart' ),
-						'subtotal'		=> __( 'Subtotal (total of products)' , 'wpmenucart' ),
+						'total'			=> __( 'Total (including fees)' , 'wp-menu-cart' ),
+						'subtotal'		=> __( 'Subtotal (total of products)' , 'wp-menu-cart' ),
 					),
 					'default'		=> 'total',
 				)
@@ -217,7 +217,7 @@ class WpMenuCart_Settings {
 
 		add_settings_field(
 			'custom_class',
-			__( 'Enter a custom CSS class (optional)', 'wpmenucart' ),
+			__( 'Enter a custom CSS class (optional)', 'wp-menu-cart' ),
 			array( &$this, 'text_element_callback' ),
 			$option,
 			'plugin_settings',
@@ -231,7 +231,7 @@ class WpMenuCart_Settings {
 		if ( function_exists( 'icl_register_string' ) ) {
 			add_settings_field(
 				'wpml_string_translation',
-				__( "Use WPML String Translation", 'wpmenucart' ),
+				__( "Use WPML String Translation", 'wp-menu-cart' ),
 				array( &$this, 'checkbox_element_callback' ),
 				$option,
 				'plugin_settings',
@@ -245,14 +245,14 @@ class WpMenuCart_Settings {
 		if ( class_exists( 'WooCommerce' ) || defined('JIGOSHOP_VERSION') || class_exists( 'Easy_Digital_Downloads' ) ) {
 			add_settings_field(
 				'builtin_ajax',
-				__( 'Use custom AJAX', 'wpmenucart' ),
+				__( 'Use custom AJAX', 'wp-menu-cart' ),
 				array( &$this, 'checkbox_element_callback' ),
 				$option,
 				'plugin_settings',
 				array(
 					'menu'			=> $option,
 					'id'			=> 'builtin_ajax',
-					'description'	=> __( 'Enable this option to use the custom AJAX / live update functions instead of the default ones from your shop plugin. Only use when you have issues with AJAX!', 'wpmenucart' ),
+					'description'	=> __( 'Enable this option to use the custom AJAX / live update functions instead of the default ones from your shop plugin. Only use when you have issues with AJAX!', 'wp-menu-cart' ),
 				)
 			);
 		}
@@ -284,8 +284,8 @@ class WpMenuCart_Settings {
 
 		$wpmenucart_page = add_submenu_page(
 			$parent_slug,
-			__( 'Menu Cart', 'wpmenucart' ),
-			__( 'Menu Cart Setup', 'wpmenucart' ),
+			__( 'Menu Cart', 'wp-menu-cart' ),
+			__( 'Menu Cart Setup', 'wp-menu-cart' ),
 			'manage_options',
 			'wpmenucart_options_page',
 			array( $this, 'wpmenucart_options_do_page' )
@@ -353,7 +353,7 @@ class WpMenuCart_Settings {
 	
 		<div class="wrap">
 			<div class="icon32" id="icon-options-general"><br /></div>
-			<h2><?php _e('WP Menu Cart','wpmenucart') ?></h2>
+			<h2><?php _e('WP Menu Cart', 'wp-menu-cart' ) ?></h2>
 				<?php 
 				// print_r(get_option('wpmenucart')); //for debugging
 				//print_r($this->get_shop_plugins());
@@ -410,33 +410,33 @@ class WpMenuCart_Settings {
 			<div class="menucart-pro-ad menucart-pro-ad-small"> 
 				Want To Stand Out? <a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartgopro">Go Pro.</a>
 				<ul style="font-size: 12px;list-style-type:circle;margin-left: 20px">
-					<li><?php _e('Unlimited Menus','wpmenucart') ?></li>
-					<li><?php _e('Choice of 14 icons','wpmenucart') ?></li>
-					<li><?php _e('Packed with customization options','wpmenucart') ?></li>
-					<li><?php _e('Access to Shortcode','wpmenucart') ?></li>
-					<li><?php _e('Top Notch Support','wpmenucart') ?></li>
+					<li><?php _e('Unlimited Menus', 'wp-menu-cart' ) ?></li>
+					<li><?php _e('Choice of 14 icons', 'wp-menu-cart' ) ?></li>
+					<li><?php _e('Packed with customization options', 'wp-menu-cart' ) ?></li>
+					<li><?php _e('Access to Shortcode', 'wp-menu-cart' ) ?></li>
+					<li><?php _e('Top Notch Support', 'wp-menu-cart' ) ?></li>
 				</ul>
 			</div>
 			<div class="menucart-pro-ad menucart-pro-ad-big"> 
 				<img src="<?php echo plugins_url( 'images/', dirname(__FILE__) ) . 'wpo-helper.png'; ?>" class="wpo-helper">
-				<h2><?php _e('Sell In Style With Menu Cart Pro!','wpmenucart') ?></h2>
+				<h2><?php _e('Sell In Style With Menu Cart Pro!', 'wp-menu-cart' ) ?></h2>
 				<br>
-				<?php _e('Go Pro with Menu Cart Pro. Includes all the great standard features found in this free version plus:','wpmenucart') ?>
+				<?php _e('Go Pro with Menu Cart Pro. Includes all the great standard features found in this free version plus:', 'wp-menu-cart' ) ?>
 				<br>
 				<ul style="list-style-type:circle;margin-left: 40px">
-					<li><?php _e('A choice of over 10 cart icons','wpmenucart') ?></li>
-					<li><?php _e('A fully featured cart details flyout','wpmenucart') ?></li>
-					<li><?php _e('Ability to add cart + flyout to an <strong>unlimited</strong> amount of menus','wpmenucart') ?></li>
-					<li><?php _e('Adjust the content & URLs via the settings','wpmenucart') ?></li>
-					<li><?php _e('Enter custom styles and apply custom classes via the settings','wpmenucart') ?></li>
-					<li><?php _e('WPML compatible','wpmenucart') ?></li>
-					<li><?php _e('Automatic updates on any great new features','wpmenucart') ?></li>
-					<li><?php _e('Put the cart anywhere with the [wpmenucart] shortcode','wpmenucart') ?></li>
+					<li><?php _e('A choice of over 10 cart icons', 'wp-menu-cart' ) ?></li>
+					<li><?php _e('A fully featured cart details flyout', 'wp-menu-cart' ) ?></li>
+					<li><?php _e('Ability to add cart + flyout to an <strong>unlimited</strong> amount of menus', 'wp-menu-cart' ) ?></li>
+					<li><?php _e('Adjust the content & URLs via the settings', 'wp-menu-cart' ) ?></li>
+					<li><?php _e('Enter custom styles and apply custom classes via the settings', 'wp-menu-cart' ) ?></li>
+					<li><?php _e('WPML compatible', 'wp-menu-cart' ) ?></li>
+					<li><?php _e('Automatic updates on any great new features', 'wp-menu-cart' ) ?></li>
+					<li><?php _e('Put the cart anywhere with the [wpmenucart] shortcode', 'wp-menu-cart' ) ?></li>
 				</ul>
 				<?php
 				$menucartadmore = '<a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartadmore">';
-				printf (__('Need to see more? %sClick here%s to check it out. Add a product to your cart and watch what happens!','wpmenucart'), $menucartadmore,'</a>'); ?><br><br>
-				<a class="button button-primary" style="text-align: center;margin: 0px auto" href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartadbuy"><?php _e('Buy Now','wpmenucart') ?></a>
+				printf (__('Need to see more? %sClick here%s to check it out. Add a product to your cart and watch what happens!', 'wp-menu-cart' ), $menucartadmore,'</a>'); ?><br><br>
+				<a class="button button-primary" style="text-align: center;margin: 0px auto" href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartadbuy"><?php _e('Buy Now', 'wp-menu-cart' ) ?></a>
 			</div>
 		</div>
 		<?php
@@ -505,7 +505,7 @@ class WpMenuCart_Settings {
 		}
 	
 		if (isset( $args['disabled'] )) {
-			$html .= ' <span style="display:none;" class="pro-feature"><i>'. __('This feature only available in', 'wpmenucart') .' <a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartcustomclass">Menu Cart Pro</a></i></span>';
+			$html .= ' <span style="display:none;" class="pro-feature"><i>'. __('This feature only available in', 'wp-menu-cart' ) .' <a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartcustomclass">Menu Cart Pro</a></i></span>';
 			$html .= '<div style="position:absolute; left:0; right:0; top:0; bottom:0; background-color:white; -moz-opacity: 0; opacity:0;filter: alpha(opacity=0);" class="hidden-input"></div>';
 			$html = '<div style="display:inline-block; position:relative;">'.$html.'</div>';
 		}
@@ -545,7 +545,7 @@ class WpMenuCart_Settings {
 		}
 		
 		if (isset( $args['disabled'] )) {
-			$html .= ' <span style="display:none;" class="pro-feature"><i>'. __('This feature only available in', 'wpmenucart') .' <a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartflyout">Menu Cart Pro</a></i></span>';
+			$html .= ' <span style="display:none;" class="pro-feature"><i>'. __('This feature only available in', 'wp-menu-cart' ) .' <a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartflyout">Menu Cart Pro</a></i></span>';
 			$html .= '<div style="position:absolute; left:0; right:0; top:0; bottom:0; background-color:white; -moz-opacity: 0; opacity:0;filter: alpha(opacity=0);" class="hidden-input"></div>';
 			$html = '<div style="display:inline-block; position:relative;">'.$html.'</div>';
 		}
@@ -587,7 +587,7 @@ class WpMenuCart_Settings {
 				$html .= sprintf( '<p class="description">%s</p>', $args['description'] );
 			}
 			if ( $x > 1 ) {
-				$html .= ' <span style="display:none;" class="pro-feature"><i>'. __('This feature only available in', 'wpmenucart') .' <a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartmultiplemenus">Menu Cart Pro</a></i></span>';
+				$html .= ' <span style="display:none;" class="pro-feature"><i>'. __('This feature only available in', 'wp-menu-cart' ) .' <a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartmultiplemenus">Menu Cart Pro</a></i></span>';
 				$html .= '<div style="position:absolute; left:0; right:0; top:0; bottom:0; background-color:white; -moz-opacity: 0; opacity:0;filter: alpha(opacity=0);" class="hidden-input"></div>';
 				$html = '<div style="display:inline-block; position:relative;">'.$html.'</div>';
 			}
@@ -626,7 +626,7 @@ class WpMenuCart_Settings {
 		}
 	
 		if (isset( $args['disabled'] )) {
-			$html .= ' <span style="display:none;" class="pro-feature"><i>'. __('This feature only available in', 'wpmenucart') .' <a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartflyout">Menu Cart Pro</a></i></span>';
+			$html .= ' <span style="display:none;" class="pro-feature"><i>'. __('This feature only available in', 'wp-menu-cart' ) .' <a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartflyout">Menu Cart Pro</a></i></span>';
 			$html .= '<div style="position:absolute; left:0; right:0; top:0; bottom:0; background-color:white; -moz-opacity: 0; opacity:0;filter: alpha(opacity=0);" class="hidden-input"></div>';
 			$html = '<div style="display:inline-block; position:relative;">'.$html.'</div>';
 		}
@@ -663,7 +663,7 @@ class WpMenuCart_Settings {
 		}
 
 		if (isset( $args['disabled'] )) {
-			$html .= ' <span style="display:none;" class="pro-feature"><i>'. __('This feature only available in', 'wpmenucart') .' <a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartflyout">Menu Cart Pro</a></i></span>';
+			$html .= ' <span style="display:none;" class="pro-feature"><i>'. __('This feature only available in', 'wp-menu-cart' ) .' <a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartflyout">Menu Cart Pro</a></i></span>';
 			$html .= '<div style="position:absolute; left:0; right:0; top:0; bottom:0; background-color:white; -moz-opacity: 0; opacity:0;filter: alpha(opacity=0);" class="hidden-input"></div>';
 			$html = '<div style="display:inline-block; position:relative;">'.$html.'</div>';
 		}
@@ -705,7 +705,7 @@ class WpMenuCart_Settings {
 			}
 		}
 
-		$profeature = '<span style="display:none;" class="pro-icon"><i>'. __('Additional icons are only available in', 'wpmenucart') .' <a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucarticons">Menu Cart Pro</a></i></span>';
+		$profeature = '<span style="display:none;" class="pro-icon"><i>'. __('Additional icons are only available in', 'wp-menu-cart' ) .' <a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucarticons">Menu Cart Pro</a></i></span>';
 
 		$html = '<table><tr>'.$icons.'</tr><tr>'.$radios.'</tr></table>'.$profeature;
 		
