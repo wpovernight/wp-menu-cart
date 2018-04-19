@@ -5,7 +5,7 @@ jQuery( function( $ ) {
 		// update on page load
 		wpmenucart_update_menu_classes();
 		// update when cart is updated
-		$( document.body ).on( 'adding_to_cart updated_wc_div', wpmenucart_update_menu_classes );
+		$( document.body ).on( 'adding_to_cart added_to_cart updated_wc_div', wpmenucart_update_menu_classes );
 	}
 
 	function wpmenucart_update_menu_classes() {
