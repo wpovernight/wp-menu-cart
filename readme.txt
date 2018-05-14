@@ -5,7 +5,7 @@ Tags: woocommerce, menu, bar, cart, basket, header, shopping cart, navigation, e
 Requires at least: 3.4
 Tested up to: 4.9
 Requires PHP: 5.3
-Stable tag: 2.7.0
+Stable tag: 2.7.1
 
 Automatically displays a shopping cart in your menu bar. Works with WooCommerce, WP-Ecommerce, EDD, Eshop and Jigoshop
 
@@ -84,6 +84,11 @@ Once the plugin is activated navigate to Settings > Menu Cart Setup. Select your
 == Frequently Asked Questions ==
 
 == Changelog ==
+
+= 2.7.1 =
+
+* fix label on price to display setting
+* Fix live updating cart for first product with 'Always display cart' setting enabled
 
 = 2.7.0 =
 
