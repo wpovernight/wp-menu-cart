@@ -52,6 +52,9 @@ class WpMenuCart {
 
 		if ( $this->good_to_go() ) {			
 			if (isset($this->options['shop_plugin'])) {
+				if ( false === $this->is_shop_active( $this->options['shop_plugin'] ) ) {
+					return;
+				}
 				switch ($this->options['shop_plugin']) {
 					case 'woocommerce':
 						include_once( 'includes/wpmenucart-woocommerce.php' );
@@ -123,13 +126,35 @@ class WpMenuCart {
 	 * Return true if one ore more shops are activated.
 	 * @return boolean
 	 */
-	public function is_shop_active() {
-		if ( count($this->get_active_shops()) > 0 ) {
-			return TRUE;
+	public function is_shop_active( $shop = '' ) {
+		if ( empty($shop) ) {
+			if ( count( $this->get_active_shops() ) > 0 ) {
+				return TRUE;
+			} else {
+				return FALSE;
+			}
 		} else {
-			return FALSE;
+			switch ( $shop ) {
+				case 'woocommerce':
+					return function_exists('WC');
+					break;
+				case 'easy-digital-downloads':
+					return function_exists('EDD');
+					break;
+				case 'jigoshop':
+					return class_exists('jigoshop_cart');
+					break;
+				case 'wp-e-commerce':
+					return function_exists('wpsc_cart_item_count');
+					break;
+				case 'eshop':
+					return !empty($GLOBALS['eshopoptions']);
+					break;
+				default:
+					return false;
+					break;
+			}
 		}
-
 	}
 
 	/**
