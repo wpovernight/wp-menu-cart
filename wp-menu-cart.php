@@ -566,6 +566,8 @@ class WpMenuCart {
 			$icon = isset($this->options['cart_icon']) ? $this->options['cart_icon'] : '0';
 			$menu_item_icon = '<i class="wpmenucart-icon-shopping-cart-'.$icon.'"></i>';
 			$menu_item_a_content .= $menu_item_icon;
+		} else {
+			$menu_item_icon = '';
 		}
 		
 		switch ($this->options['items_display']) {
