@@ -418,9 +418,15 @@ class WpMenuCart {
 	public function add_itemcart_to_menu( $items ) {
 		// WooCommerce specific: check if woocommerce cart object is actually loaded
 		if ( isset($this->options['shop_plugin']) && $this->options['shop_plugin'] == 'woocommerce' ) {
-			global $woocommerce;
-			if (empty($woocommerce) || !is_object($woocommerce) || !isset($woocommerce->cart) || !is_object($woocommerce->cart)) {
-				return $items; // nothing to load data from, return menu without cart item
+			if ( function_exists( 'WC' ) ) {
+				if ( empty( WC()->cart ) ) {
+					return $items; // nothing to load data from, return menu without cart item
+				}
+			} else {
+				global $woocommerce;
+				if ( empty($woocommerce) || !is_object($woocommerce) || !isset($woocommerce->cart) || !is_object($woocommerce->cart) ) {
+					return $items; // nothing to load data from, return menu without cart item
+				}
 			}
 		}
 
