@@ -430,7 +430,7 @@ class WpMenuCart {
 			}
 		}
 
-		$classes = 'wpmenucartli wpmenucart-display-'.$this->options['items_alignment'];
+		$classes = 'menu-item wpmenucartli wpmenucart-display-'.$this->options['items_alignment'];
 		
 		if ($this->get_common_li_classes($items) != '')
 			$classes .= ' ' . $this->get_common_li_classes($items);
