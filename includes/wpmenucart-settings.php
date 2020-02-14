@@ -394,7 +394,7 @@ class WpMenuCart_Settings {
 				margin-top: 15px;
 				min-height: 90px;
 				position: relative;
-				padding-left: 100px;
+				padding-left: 120px;
 			}
 			.menucart-pro-ad-small {
 				position: absolute;
@@ -403,8 +403,8 @@ class WpMenuCart_Settings {
 			}
 			img.wpo-helper {
 				position: absolute;
-				top: -20px;
-				left: 3px;
+				bottom: 64px;
+				left: -10px;
 			}
 			</style>
 			<div class="menucart-pro-ad menucart-pro-ad-small"> 
