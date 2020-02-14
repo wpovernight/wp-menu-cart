@@ -244,18 +244,16 @@ class WpMenuCart {
 			$locale = is_admin() && function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
 		}
 		$locale = apply_filters( 'plugin_locale', $locale, 'wp-menu-cart' );
-		$dir    = trailingslashit( WP_LANG_DIR );
 
 		/**
 		 * Frontend/global Locale. Looks in:
 		 *
 		 * 		- WP_LANG_DIR/wp-menu-cart/wp-menu-cart-LOCALE.mo
-		 * 	 	- WP_LANG_DIR/plugins/wp-menu-cart-LOCALE.mo
 		 * 	 	- wp-menu-cart/languages/wp-menu-cart-LOCALE.mo (which if not found falls back to:)
 		 * 	 	- WP_LANG_DIR/plugins/wp-menu-cart-LOCALE.mo
 		 */
-		load_textdomain( 'wp-menu-cart', $dir . 'wp-menu-cart/wp-menu-cart-' . $locale . '.mo' );
-		load_textdomain( 'wp-menu-cart', $dir . 'plugins/wp-menu-cart-' . $locale . '.mo' );
+		unload_textdomain( 'wp-menu-cart');
+		load_textdomain( 'wp-menu-cart', WP_LANG_DIR . '/wp-menu-cart/wp-menu-cart-' . $locale . '.mo' );
 		load_plugin_textdomain( 'wp-menu-cart', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	}
 
@@ -270,8 +268,16 @@ class WpMenuCart {
 		// check if this is filtering the mofile for this plugin
 		if ( $textdomain === $main_domain ) {
 			$wc_mofile = str_replace( "{$textdomain}-", "{$wc_domain}-", $mofile ); // with trailing dash to target file and not folder
-			if ( file_exists( $wc_mofile ) ) {
-				// we have a wc override - use it
+			if ( file_exists( $wc_mofile ) && ! file_exists( $mofile ) ) {
+				// we have a wc override - copy and use it
+				if ( is_callable('copy') && $success = copy( $wc_mofile, $mofile ) ) {
+					// copy .po too if available
+					$wc_pofile = substr_replace($wc_mofile,".po",-3);
+					if (file_exists($wc_pofile)) {
+						copy($wc_pofile,substr_replace($mofile,".po",-3));
+					}
+					return $mofile;
+				}
 				return $wc_mofile;
 			}
 		}
