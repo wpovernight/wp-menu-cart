@@ -238,7 +238,12 @@ class WpMenuCart {
 	 * Load translations.
 	 */
 	public function languages() {
-		$locale = apply_filters( 'plugin_locale', get_locale(), 'wp-menu-cart' );
+		if ( function_exists( 'determine_locale' ) ) { // WP5.0+
+			$locale = determine_locale();
+		} else {
+			$locale = is_admin() && function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
+		}
+		$locale = apply_filters( 'plugin_locale', $locale, 'wp-menu-cart' );
 		$dir    = trailingslashit( WP_LANG_DIR );
 
 		/**
