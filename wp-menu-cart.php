@@ -268,9 +268,23 @@ class WpMenuCart {
 		// check if this is filtering the mofile for this plugin
 		if ( $textdomain === $main_domain ) {
 			$wc_mofile = str_replace( "{$textdomain}-", "{$wc_domain}-", $mofile ); // with trailing dash to target file and not folder
-			if ( file_exists( $wc_mofile ) && ! file_exists( $mofile ) ) {
+			if ( file_exists( $wc_mofile ) ) {
+				if (!is_callable('copy')) {
+					$copy = false;
+				} elseif ( !file_exists( $mofile ) ) {
+					$copy = true;
+				} else { // can copy but file already exists
+					$wc_file_date   = filemtime($wc_mofile);
+					$main_file_date = filemtime($mofile);
+					// check if wc file is newer
+					if ( $wc_file_date && $main_file_date && ( $wc_file_date > $main_file_date ) ) {
+						$copy = true;
+					} else {
+						$copy = false;
+					}
+				}
 				// we have a wc override - copy and use it
-				if ( is_callable('copy') && $success = copy( $wc_mofile, $mofile ) ) {
+				if ( $copy && $success = copy( $wc_mofile, $mofile ) ) {
 					// copy .po too if available
 					$wc_pofile = substr_replace($wc_mofile,".po",-3);
 					if (file_exists($wc_pofile)) {
