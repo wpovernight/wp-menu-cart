@@ -85,6 +85,12 @@ Once the plugin is activated navigate to Settings > Menu Cart Setup. Select your
 
 == Changelog ==
 
+= 2.7.8 =
+* Improved: Site/user locale detection
+* Improved: Textdomain fallback
+* Translations: Included POT & Updated Dutch
+* Tested up to WooCommerce 4.0 & WP5.4
+
 = 2.7.7 =
 * Fix: include default classes when menu cart is the only item in the menu
 * Fix: cart existence check global usage only for old versions
