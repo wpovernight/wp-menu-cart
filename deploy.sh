@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# https://zerowp.com/?p=55
 
 # Get the plugin slug from this git repository.
 PLUGIN_SLUG="${PWD##*/}"
@@ -14,29 +13,61 @@ VERSION="${TAG//v}"
 
 # Get the SVN data from wp.org in a folder named `svn`
 # svn co --depth immediates "https://plugins.svn.wordpress.org/$PLUGIN_SLUG" ./svn
-echo "➤ Checking out .org repository..."
-svn co --depth immediates "https://plugins.svn.wordpress.org/wp-menu-cart" ./svn
+svn co --depth immediates "https://plugins.svn.wordpress.org/wp-menu-cart" ./wp-svn
 
-svn update --set-depth infinity ./svn/test
-# svn update --set-depth infinity ./svn/tags/$VERSION
+svn update --set-depth infinity ./wp-svn/trunk
+svn update --set-depth infinity ./wp-svn/tags/$VERSION
 
-# Copy files from `src` to `svn/test`
-rsync -avr --exclude-from=".distignore" ./* ./svn/test
+# Copy files from `src` to `svn/trunk`
+rsync -avr --exclude-from=".distignore" ./* ./wp-svn/trunk
 
-# 3. Switch to SVN directory
-cd ./svn
+# Switch to SVN directory
+cd ./wp-svn
 
 # Prepare the files for commit in SVN
-svn add --force test
+svn add --force trunk
 
 # Create the version tag in svn
-# svn cp trunk tags/$VERSION
+svn cp trunk tags/$VERSION
 
 # Prepare the tag for commit
-# svn add --force tags
+svn add --force tags
 
 # Commit files to wordpress.org.
-svn ci  --message "Test release $TAG" \
+svn ci  --message "Release $TAG" \
+        --username $SVN_USERNAME \
+        --password $SVN_PASSWORD \
+        --non-interactive
+
+#### REPEAT FOR woocommerce-menu-bar-cart ####
+
+# Overwrite plugin name
+sed -i -e "s/=== WP Menu Cart ===/=== WooCommerce Menu Cart ===/g" ./readme.txt
+sed -i -e "s/Plugin Name: WP Menu Cart/Plugin Name: WooCommerce Menu Cart/g" ./wp-menu-cart.txt
+
+# Get the SVN data from wp.org in a folder named `svn`
+svn co --depth immediates "https://plugins.svn.wordpress.org/woocommerce-menu-bar-cart" ./wc-svn
+
+svn update --set-depth infinity ./wc-svn/trunk
+svn update --set-depth infinity ./wc-svn/tags/$VERSION
+
+# Copy files from `src` to `svn/trunk`
+rsync -avr --exclude-from=".distignore" ./* ./wc-svn/trunk
+
+# Switch to SVN directory
+cd ./wc-svn
+
+# Prepare the files for commit in SVN
+svn add --force trunk
+
+# Create the version tag in svn
+svn cp trunk tags/$VERSION
+
+# Prepare the tag for commit
+svn add --force tags
+
+# Commit files to wordpress.org.
+svn ci  --message "Release $TAG" \
         --username $SVN_USERNAME \
         --password $SVN_PASSWORD \
         --non-interactive
