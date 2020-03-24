@@ -6,6 +6,7 @@ PLUGIN_SLUG="${PWD##*/}"
 
 # Get the current release version
 TAG=$(sed -e "s/refs\/tags\///g" <<< $GITHUB_REF)
+VERSION="${TAG//v}"
 
 # Replace the version in these 2 files.
 # sed -i -e "s/__STABLE_TAG__/$TAG/g" ./src/readme.txt
@@ -15,7 +16,7 @@ TAG=$(sed -e "s/refs\/tags\///g" <<< $GITHUB_REF)
 # svn co --depth immediates "https://plugins.svn.wordpress.org/$PLUGIN_SLUG" ./svn
 svn co --depth immediates "https://plugins.svn.wordpress.org/wp-menu-cart" ./svn
 
-touch "./svn/$TAG.txt";
+touch "./svn/$VERSION.txt";
 cd ./svn
 svn add --force *
 svn ci  --message "test" \
