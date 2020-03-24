@@ -14,7 +14,7 @@ VERSION="${TAG//v}"
 # Get the SVN data from wp.org in a folder named `svn`
 # svn co --depth immediates "https://plugins.svn.wordpress.org/$PLUGIN_SLUG" ./svn
 SVN_URL="https://plugins.svn.wordpress.org/wp-menu-cart/"
-SVN_DIR="/github/svn-wp"
+SVN_DIR="$HOME/svn-wp"
 svn checkout --depth immediates "$SVN_URL" "$SVN_DIR"
 
 # Switch to SVN directory
@@ -49,7 +49,7 @@ sed -i -e "s/Plugin Name: WP Menu Cart/Plugin Name: WooCommerce Menu Cart/g" "$G
 
 # Get the SVN data from wp.org in a folder named `svn`
 SVN_URL="https://plugins.svn.wordpress.org/woocommerce-menu-bar-cart/"
-SVN_DIR="/github/svn-wc"
+SVN_DIR="$HOME/svn-wc"
 svn checkout --depth immediates "$SVN_URL" "$SVN_DIR"
 
 # Switch to SVN directory
