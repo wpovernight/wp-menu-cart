@@ -7,12 +7,7 @@ PLUGIN_SLUG="${PWD##*/}"
 TAG=$(sed -e "s/refs\/tags\///g" <<< $GITHUB_REF)
 VERSION="${TAG//v}"
 
-# Replace the version in these 2 files.
-# sed -i -e "s/__STABLE_TAG__/$TAG/g" ./src/readme.txt
-# sed -i -e "s/__STABLE_TAG__/$TAG/g" "./src/$PLUGIN_SLUG.php"
-
 # Get the SVN data from wp.org in a folder named `svn`
-# svn co --depth immediates "https://plugins.svn.wordpress.org/$PLUGIN_SLUG" ./svn
 SVN_URL="https://plugins.svn.wordpress.org/wp-menu-cart/"
 SVN_DIR="$HOME/svn-wp"
 svn checkout --depth immediates "$SVN_URL" "$SVN_DIR"
