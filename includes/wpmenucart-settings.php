@@ -19,6 +19,7 @@ class WpMenuCart_Settings {
 		if ( false == get_option( $option ) ) {
 			add_option( $option );
 		}
+		$option_values = get_option($option);
 	
 		// Section.
 		add_settings_section(
@@ -242,7 +243,8 @@ class WpMenuCart_Settings {
 			);
 		}
 
-		if ( class_exists( 'WooCommerce' ) || defined('JIGOSHOP_VERSION') || class_exists( 'Easy_Digital_Downloads' ) ) {
+		if ( ( class_exists( 'WooCommerce' ) && isset( $option_values['builtin_ajax'] ) ) || defined('JIGOSHOP_VERSION') || class_exists( 'Easy_Digital_Downloads' ) ) {
+
 			add_settings_field(
 				'builtin_ajax',
 				__( 'Use custom AJAX', 'wp-menu-cart' ),
@@ -261,7 +263,6 @@ class WpMenuCart_Settings {
 		register_setting( $option, $option, array( &$this, 'wpmenucart_options_validate' ) );
 
 		// Register defaults if settings empty (might not work in case there's only checkboxes and they're all disabled)
-		$option_values = get_option($option);
 		if ( empty( $option_values ) )
 			$this->default_settings();
 
