@@ -87,6 +87,7 @@ Once the plugin is activated navigate to Settings > Menu Cart Setup. Select your
 
 = 2.7.9 =
 * Tested up to WooCommerce 4.1
+* Deprecated: Custom/Built-in AJAX option
 
 = 2.7.8.1 =
 * Fix: Plugin header
