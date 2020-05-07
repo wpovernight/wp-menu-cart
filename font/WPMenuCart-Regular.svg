@@ -1,0 +1,36 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
+<metadata>
+Created by FontForge 20190801 at Thu May  7 20:34:16 2020
+ By www-data
+</metadata>
+<defs>
+<font id="WPMenuCart-Regular" horiz-adv-x="500" >
+  <font-face 
+    font-family="WPMenuCart"
+    font-weight="400"
+    font-stretch="normal"
+    units-per-em="1000"
+    panose-1="0 0 5 0 0 0 0 0 0 0"
+    ascent="800"
+    descent="-200"
+    bbox="0 -200 1664 1280"
+    underline-thickness="50"
+    underline-position="-100"
+    unicode-range="U+0020-F07A"
+  />
+<missing-glyph 
+d="M410 -200h-317v1000h317v-1000zM168 733v-33h65v-37h-66v-33h166v33h-66v37h66v33h-165zM167 604v-104h166v34h-66v70h-100zM233 534h-33v36h33v-36zM167 473v-33h66v-37h-66v-33h100v70h66v33h-166zM300 413v-66h-133v-34h166v100h-33zM233 291v-56h34v23h33v-47h-100
+v80h-33v-113h166v113h-100zM167 118v-113h166v113h-166zM300 38h-100v47h100v-47zM167 -18v-33h70l-70 -47v-33h166v33h-102l70 47h32v33h-166z" />
+    <glyph glyph-name=".notdef" 
+d="M410 -200h-317v1000h317v-1000zM168 733v-33h65v-37h-66v-33h166v33h-66v37h66v33h-165zM167 604v-104h166v34h-66v70h-100zM233 534h-33v36h33v-36zM167 473v-33h66v-37h-66v-33h100v70h66v33h-166zM300 413v-66h-133v-34h166v100h-33zM233 291v-56h34v23h33v-47h-100
+v80h-33v-113h166v113h-100zM167 118v-113h166v113h-166zM300 38h-100v47h100v-47zM167 -18v-33h70l-70 -47v-33h166v33h-102l70 47h32v33h-166z" />
+    <glyph glyph-name="space" unicode=" " horiz-adv-x="0" 
+ />
+    <glyph glyph-name="uniF07A" unicode="&#xf07a;" horiz-adv-x="1664" 
+d="M1647.5 533.5q-16.5 -18.5 -40.5 -21.5l-1044 -122q2 -9 7.5 -30.5t5.5 -39.5q0 -12 -4.5 -24t-10.5 -23t-9 -17h920q26 0 45 -19t19 -45t-19 -45t-45 -19h-1024q-26 0 -45 19t-19 45q0 27 49 115l12 22l-177 823h-204q-26 0 -45 19t-19 45t19 45t45 19h256
+q38 0 52.5 -27.5t22.5 -77.5l4 -23h1201q26 0 45 -19t19 -45v-512q0 -24 -16.5 -42.5zM622.5 -63.5q-17.5 -29.5 -47 -47t-63.5 -17.5t-63.5 17.5t-47 47t-17.5 63.5t17.5 63.5t47 47t63.5 17.5t63.5 -17.5t47 -47t17.5 -63.5t-17.5 -63.5zM1518.5 -63.5
+q-17.5 -29.5 -47 -47t-63.5 -17.5t-63.5 17.5t-47 47t-17.5 63.5t17.5 63.5t47 47t63.5 17.5t63.5 -17.5t47 -47t17.5 -63.5t-17.5 -63.5z" />
+  </font>
+</defs></svg>
