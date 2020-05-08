@@ -373,8 +373,8 @@ class WpMenuCart {
 		if (isset($this->options['icon_display'])) {
 			wp_register_style( 'wpmenucart-icons', plugins_url( '/css/wpmenucart-icons.css', __FILE__ ), array(), '', 'all' );
 			wp_enqueue_style( 'wpmenucart-icons' );
-			wp_register_style( 'wpmenucart-fontawesome', plugins_url( '/css/wpmenucart-fontawesome.css', __FILE__ ), array(), '', 'all' );
-			wp_enqueue_style( 'wpmenucart-fontawesome' );
+			wp_register_style( 'wpmenucart-font', plugins_url( '/css/wpmenucart-font.css', __FILE__ ), array(), '', 'all' );
+			wp_enqueue_style( 'wpmenucart-font' );
 		}
 		
 		$css = file_exists( get_stylesheet_directory() . '/wpmenucart-main.css' )
