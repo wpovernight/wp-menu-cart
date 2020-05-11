@@ -86,7 +86,7 @@ Once the plugin is activated navigate to Settings > Menu Cart Setup. Select your
 == Changelog ==
 
 = 2.8.0 =
-* New: Drastically reduced font filesize for faster page loading
+* Improved: Drastically reduced font filesize for faster page loading
 * New: filter to enable legacy custom ajax setting
 
 = 2.7.9 =
