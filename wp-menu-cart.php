@@ -27,7 +27,7 @@ class WpMenuCart {
 
 		$this->options = get_option('wpmenucart');
 
-		$this->define_js_version_const();
+		$this->define( 'WPMENUCART_VERSION', $this->plugin_version );
 
 		// load the localisation & classes
 		add_action( 'plugins_loaded', array( &$this, 'languages' ), 0 ); // or use init?
@@ -46,6 +46,17 @@ class WpMenuCart {
 	}
 
 	/**
+	 * Define constant if not already set
+	 * @param  string $name
+	 * @param  string|bool $value
+	 */
+	private function define( $name, $value ) {
+		if ( ! defined( $name ) ) {
+			define( $name, $value );
+		}
+	}
+
+	/**
 	 * Load classes
 	 * @return void
 	 */
@@ -53,7 +64,7 @@ class WpMenuCart {
 		include_once( 'includes/wpmenucart-settings.php' );
 		$this->settings = new WpMenuCart_Settings();
 
-		if ( $this->good_to_go() ) {			
+		if ( $this->good_to_go() ) {
 			if (isset($this->options['shop_plugin'])) {
 				if ( false === $this->is_shop_active( $this->options['shop_plugin'] ) ) {
 					return;
@@ -314,14 +325,6 @@ class WpMenuCart {
 			icl_register_string('WP Menu Cart', 'empty hover text', 'Start shopping');
 		}
 	}
-
-
-	public function define_js_version_const() {
-		if ( ! defined('WPMENUCART_VERSION') ) {
-			define( 'WPMENUCART_VERSION', $this->plugin_version );
-		}
-	}
-
 
 	/**
 	 * Load custom ajax
