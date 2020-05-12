@@ -307,10 +307,8 @@ class WpMenuCart_Settings {
 	 * Styles for settings page
 	 */
 	public function wpmenucart_admin_styles() {
-		wp_register_style( 'wpmenucart-admin', plugins_url( 'css/wpmenucart-icons.css', dirname(__FILE__) ), array(), '', 'all' );
-		wp_enqueue_style( 'wpmenucart-admin' );
-		wp_register_style( 'wpmenucart-fontawesome', plugins_url( '/css/wpmenucart-fontawesome.css',  dirname(__FILE__) ), array(), '', 'all' );
-		wp_enqueue_style( 'wpmenucart-fontawesome' );
+		wp_enqueue_style( 'wpmenucart-admin', plugins_url( 'css/wpmenucart-icons.css', dirname(__FILE__) ), array(), WPMENUCART_VERSION, 'all' );
+		wp_enqueue_style( 'wpmenucart-font', plugins_url( '/css/wpmenucart-font.css',  dirname(__FILE__) ), array(), WPMENUCART_VERSION, 'all' );
 	}
 	 
 	/**
