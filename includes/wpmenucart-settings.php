@@ -208,8 +208,9 @@ class WpMenuCart_Settings {
 					'menu'			=> $option,
 					'id'			=> 'total_price_type',
 					'options' 		=> array(
-						'total'			=> __( 'Cart total (including discounts)' , 'wp-menu-cart' ),
-						'subtotal'		=> __( 'Subtotal (total of products)' , 'wp-menu-cart' ),
+						'total'			 => __( 'Cart total (including discounts)' , 'wp-menu-cart' ),
+						'subtotal'		 => __( 'Subtotal (total of products)' , 'wp-menu-cart' ),
+						'checkout_total' => __( 'Checkout total (including discounts, fees & shipping)' , 'wp-menu-cart' ),
 					),
 					'default'		=> 'total',
 				)
