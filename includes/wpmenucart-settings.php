@@ -83,6 +83,21 @@ class WpMenuCart_Settings {
 			)
 		);
 
+		if (function_exists('WC')) {
+			add_settings_field(
+				'show_on_cart_checkout_page',
+				__( 'Show on cart & checkout page', 'wp-menu-cart' ),
+				array( &$this, 'checkbox_element_callback' ),
+				$option,
+				'plugin_settings',
+				array(
+					'menu'			=> $option,
+					'id'			=> 'show_on_cart_checkout_page',
+					'description'	=> __( 'To avoid distracting your customers with duplicate information we do not display the menu cart item on the cart & checkout pages by default', 'wp-menu-cart' ),
+				)
+			);
+		}
+
 		add_settings_field(
 			'icon_display',
 			__( 'Display shopping cart icon.', 'wp-menu-cart' ),

@@ -452,6 +452,9 @@ class WpMenuCart {
 		// WooCommerce specific: check if woocommerce cart object is actually loaded
 		if ( isset($this->options['shop_plugin']) && $this->options['shop_plugin'] == 'woocommerce' ) {
 			if ( function_exists( 'WC' ) ) {
+				if ( ( is_checkout() || is_cart() ) && empty($this->options['show_on_cart_checkout_page']) ) {
+					return $items;
+				}
 				if ( empty( WC()->cart ) ) {
 					return $items; // nothing to load data from, return menu without cart item
 				}
