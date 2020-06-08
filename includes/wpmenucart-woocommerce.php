@@ -30,7 +30,7 @@ if ( ! class_exists( 'WPMenuCart_WooCommerce' ) ) {
 				global $woocommerce;
 				if ( empty( $woocommerce->cart ) ) {
 					$woocommerce->cart = new WC_Cart();
-				}				
+				}
 			}
 		}
 
@@ -76,7 +76,7 @@ if ( ! class_exists( 'WPMenuCart_WooCommerce' ) ) {
 					$cart_contents_total = wc_price( WC()->cart->get_total('edit') );
 				} else {
 					if ( WC()->cart->display_prices_including_tax() ) {
-						$cart_contents_total = wc_price( WC()->cart->get_cart_contents_total() + WC()->cart->get_fee_tax() + WC()->cart->get_cart_contents_tax() );
+						$cart_contents_total = wc_price( WC()->cart->get_cart_contents_total() + WC()->cart->get_cart_contents_tax() );
 					} else {
 						$cart_contents_total = wc_price( WC()->cart->get_cart_contents_total() );
 					}
