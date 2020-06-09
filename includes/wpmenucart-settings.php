@@ -410,6 +410,7 @@ class WpMenuCart_Settings {
 				min-height: 90px;
 				position: relative;
 				padding-left: 120px;
+				clear: both;
 			}
 			.menucart-pro-ad-small {
 				position: absolute;
