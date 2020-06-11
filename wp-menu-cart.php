@@ -471,8 +471,6 @@ class WpMenuCart {
 		if ($this->get_common_li_classes($items) != '')
 			$classes .= ' ' . $this->get_common_li_classes($items);
 
-		$active_plugins = apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
-			
 		// Filter for <li> item classes
 		/* Usage (in the themes functions.php):
 		add_filter('wpmenucart_menu_item_classes', 'add_wpmenucart_item_class', 1, 1);
