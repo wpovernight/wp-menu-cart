@@ -469,7 +469,7 @@ class WpMenuCart {
 			$classes .= ' ' . $this->get_common_li_classes($items);
 		}
 
-		if ( ( is_checkout() || is_cart() ) && empty($this->options['show_on_cart_checkout_page']) ) {
+		if ( function_exists( 'is_checkout' ) && function_exists( 'is_cart' ) && ( is_checkout() || is_cart() ) && empty($this->options['show_on_cart_checkout_page']) ) {
 			$classes .= ' hidden-wpmenucart';
 		}
 
