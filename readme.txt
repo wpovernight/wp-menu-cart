@@ -85,6 +85,9 @@ Once the plugin is activated navigate to Settings > Menu Cart Setup. Select your
 
 == Changelog ==
 
+= 2.9.4 =
+* Tested up to WooCommerce 4.4 & WP5.5
+
 = 2.9.3 =
 * Tested up to WooCommerce 4.3
 
