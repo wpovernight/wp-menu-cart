@@ -24,7 +24,7 @@ if ( ! class_exists( 'WPMenuCart_Jigoshop' ) ) {
 				'cart_total'	 => $total,
 			);
 		
-			return $menu_item;		
+			return apply_filters( 'wpmenucart_menu_item_data', $menu_item );
 		}
 	}
 }

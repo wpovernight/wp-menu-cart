@@ -18,7 +18,7 @@ if ( ! class_exists( 'WPMenuCart_WooCommerce' ) ) {
 				'cart_contents_count'	=> $this->get_cart_contents_count(),
 			);
 		
-			return $menu_item;
+			return apply_filters( 'wpmenucart_menu_item_data', $menu_item );
 		}
 
 		public function maybe_load_cart() {

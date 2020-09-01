@@ -46,7 +46,7 @@ if ( ! class_exists( 'WPMenuCart_eShop' ) ) {
 				'cart_total'			=> $eshoptotal,
 			);
 
-			return $menu_item;		
+			return apply_filters( 'wpmenucart_menu_item_data', $menu_item );
 		}
 	}
 }

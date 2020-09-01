@@ -18,7 +18,7 @@ if ( ! class_exists( 'WPMenuCart_WPEC' ) ) {
 				'cart_total'			=> wpsc_cart_total_widget( false, false ,false ),
 			);
 		
-			return $menu_item;		
+			return apply_filters( 'wpmenucart_menu_item_data', $menu_item );
 		}
 		/**
 		* action hook for wp-e-commerce to provide our own AJAX cart updates

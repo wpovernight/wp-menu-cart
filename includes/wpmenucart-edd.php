@@ -18,7 +18,7 @@ if ( ! class_exists( 'WPMenuCart_EDD' ) ) {
 				'cart_total'			=> edd_currency_filter( edd_format_amount( edd_get_cart_total() ) ),
 			);
 		
-			return $menu_item;		
+			return apply_filters( 'wpmenucart_menu_item_data', $menu_item );
 		}
 	}
 }
