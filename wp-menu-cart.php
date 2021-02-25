@@ -3,7 +3,7 @@
  * Plugin Name: WP Menu Cart
  * Plugin URI: www.wpovernight.com/plugins
  * Description: Extension for your e-commerce plugin (WooCommerce, WP-Ecommerce, Easy Digital Downloads, Eshop or Jigoshop) that places a cart icon with number of items and total cost in the menu bar. Activate the plugin, set your options and you're ready to go! Will automatically conform to your theme styles.
- * Version: 2.9.6
+ * Version: 2.9.7
  * Author: Jeremiah Prummer, Ewout Fernhout
  * Author URI: www.wpovernight.com/
  * License: GPL2
@@ -14,7 +14,7 @@
 
 class WpMenuCart {	 
 
-	protected $plugin_version = '2.9.6';
+	protected $plugin_version = '2.9.7';
 	public static $plugin_slug;
 	public static $plugin_basename;
 
