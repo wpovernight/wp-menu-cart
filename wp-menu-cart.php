@@ -12,6 +12,14 @@
  * WC tested up to: 5.1.0
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly
+}
+
+if ( class_exists( 'WpMenuCart' ) || class_exists( 'WPO_Menu_Cart_Pro' ) ) {
+	return;
+}
+
 class WpMenuCart {	 
 
 	protected $plugin_version = '2.9.7';
