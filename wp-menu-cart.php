@@ -385,7 +385,15 @@ class WpMenuCart {
 	public function load_scripts_styles() {
 		if (isset($this->options['icon_display'])) {
 			wp_enqueue_style( 'wpmenucart-icons', plugins_url( '/css/wpmenucart-icons.css', __FILE__ ), array(), WPMENUCART_VERSION, 'all' );
-			wp_enqueue_style( 'wpmenucart-font', plugins_url( '/css/wpmenucart-font.css', __FILE__ ), array(), WPMENUCART_VERSION, 'all' );
+
+			// in order to avoid issues with relative font paths, we parse the CSS file and print it inline
+			// wp_enqueue_style( 'wpmenucart-font', plugins_url( '/css/wpmenucart-font.css', __FILE__ ), array(), WPMENUCART_VERSION, 'all' );
+			ob_start();
+			if ( file_exists( plugin_dir_path( __FILE__ ) . 'css/wpmenucart-font.css' ) ) {
+				include( plugin_dir_path( __FILE__ ) . 'css/wpmenucart-font.css' ) ;
+			}
+			$font_css = str_replace( '../font', plugins_url( '/font', __FILE__ ), ob_get_clean() );
+			wp_add_inline_style( 'wpmenucart-icons', $font_css );
 		}
 		
 		$css = file_exists( get_stylesheet_directory() . '/wpmenucart-main.css' )
