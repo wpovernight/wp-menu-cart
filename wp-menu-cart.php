@@ -16,9 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-if ( class_exists( 'WpMenuCart' ) || class_exists( 'WPO_Menu_Cart_Pro' ) ) {
-	return;
-}
+if ( ! class_exists( 'WpMenuCart' ) && ! class_exists( 'WPO_Menu_Cart_Pro' ) ) :
 
 class WpMenuCart {	 
 
@@ -662,3 +660,5 @@ $wpMenuCart = new WpMenuCart();
 if ( ! empty( $_GET['hide_wpmenucart_shop_check'] ) ) {
 	update_option( 'wpmenucart_shop_check', 'hide' );
 }
+
+endif; // class_exists
