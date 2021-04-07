@@ -390,11 +390,11 @@ class WpMenuCart_Settings {
 
 			</form>
 			<script type="text/javascript">
-			jQuery('.hidden-input').click(function() {
+			jQuery('.hidden-input').on('click', function() {
 				jQuery(this).closest('.hidden-input').prev('.pro-feature').show('slow');
 				jQuery(this).closest('.hidden-input').hide();
 			});
-			jQuery('.hidden-input-icon').click(function() {
+			jQuery('.hidden-input-icon').on('click', function() {
 				jQuery('.pro-icon').show('slow');
 			});
 			</script>
