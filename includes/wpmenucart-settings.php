@@ -390,12 +390,15 @@ class WpMenuCart_Settings {
 
 			</form>
 			<script type="text/javascript">
-			jQuery('.hidden-input').on('click', function() {
-				jQuery(this).closest('.hidden-input').prev('.pro-feature').show('slow');
-				jQuery(this).closest('.hidden-input').hide();
-			});
-			jQuery('.hidden-input-icon').on('click', function() {
-				jQuery('.pro-icon').show('slow');
+			jQuery( function ( $ ) {
+				$('.hidden-input').on('click', function() {
+					$(this).closest('.hidden-input').prev('.pro-feature').show('slow');
+					$(this).closest('.hidden-input').hide();
+				});
+
+				$('.hidden-input-icon').on('click', function() {
+					$('.pro-icon').show('slow');
+				});
 			});
 			</script>
 			<style type="text/css">
