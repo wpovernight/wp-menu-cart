@@ -13,6 +13,12 @@
  * WC tested up to: 5.1.0
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly
+}
+
+if ( ! class_exists( 'WpMenuCart' ) && ! class_exists( 'WPO_Menu_Cart_Pro' ) ) :
+
 class WpMenuCart {	 
 
 	protected $plugin_version = '2.9.7';
@@ -663,3 +669,5 @@ $wpMenuCart = new WpMenuCart();
 if ( ! empty( $_GET['hide_wpmenucart_shop_check'] ) ) {
 	update_option( 'wpmenucart_shop_check', 'hide' );
 }
+
+endif; // class_exists
