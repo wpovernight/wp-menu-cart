@@ -40,6 +40,10 @@ jobs:
         with:
           directory: 'assets'
 
+      - name: Echo font CSS (after minify action)
+        run: |
+            cat ${GITHUB_WORKSPACE}/assets/css/wpmenucart-font.min.css
+
       - name: Auto committing minified files
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
