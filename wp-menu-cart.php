@@ -407,6 +407,7 @@ class WpMenuCart {
 			wp_add_inline_style( 'wpmenucart-icons', $font_css );
 		}
 		
+		// Allow wpmenucart-main.css to be overriden via the theme
 		$css = file_exists( get_stylesheet_directory() . '/wpmenucart-main.css' )
 			? get_stylesheet_directory_uri() . '/wpmenucart-main.css'
 			: plugins_url( '/assets/css/wpmenucart-main'.$suffix.'.css', __FILE__ );
