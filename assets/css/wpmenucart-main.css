@@ -37,8 +37,8 @@
 }
 
 .wpmenucart-thumbnail, .wpmenucart-order-item-info {
-   display:inline-block;
-   vertical-align:middle;
+	display:inline-block;
+	vertical-align:middle;
 }
 
 .wpmenucart-product-name, .wpmenucart-product-quantity-price {
