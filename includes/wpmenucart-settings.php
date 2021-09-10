@@ -323,8 +323,9 @@ class WpMenuCart_Settings {
 	 * Styles for settings page
 	 */
 	public function wpmenucart_admin_styles() {
-		wp_enqueue_style( 'wpmenucart-admin', plugins_url( 'css/wpmenucart-icons.css', dirname(__FILE__) ), array(), WPMENUCART_VERSION, 'all' );
-		wp_enqueue_style( 'wpmenucart-font', plugins_url( '/css/wpmenucart-font.css',  dirname(__FILE__) ), array(), WPMENUCART_VERSION, 'all' );
+		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+		wp_enqueue_style( 'wpmenucart-admin', plugins_url( '/assets/css/wpmenucart-icons'.$suffix.'.css', dirname(__FILE__) ), array(), WPMENUCART_VERSION, 'all' );
+		wp_enqueue_style( 'wpmenucart-font', plugins_url( '/assets/css/wpmenucart-font'.$suffix.'.css',  dirname(__FILE__) ), array(), WPMENUCART_VERSION, 'all' );
 	}
 	 
 	/**
@@ -437,7 +438,7 @@ class WpMenuCart_Settings {
 				</ul>
 			</div>
 			<div class="menucart-pro-ad menucart-pro-ad-big"> 
-				<img src="<?php echo plugins_url( 'images/', dirname(__FILE__) ) . 'wpo-helper.png'; ?>" class="wpo-helper">
+				<img src="<?php echo plugins_url( 'assets/images/', dirname(__FILE__) ) . 'wpo-helper.png'; ?>" class="wpo-helper">
 				<h2><?php _e('Sell In Style With Menu Cart Pro!', 'wp-menu-cart' ) ?></h2>
 				<br>
 				<?php _e('Go Pro with Menu Cart Pro. Includes all the great standard features found in this free version plus:', 'wp-menu-cart' ) ?>
@@ -715,7 +716,7 @@ class WpMenuCart_Settings {
 				$icons .= sprintf( '<td style="padding-bottom:0;font-size:16pt;" align="center"><label for="%1$s[%2$s][%3$s]"><i class="wpmenucart-icon-shopping-cart-%4$s"></i></label></td>', $menu, $id, $key, $iconnumber);
 				$radios .= sprintf( '<td style="padding-top:0" align="center"><input type="radio" class="radio" id="%1$s[%2$s][%3$s]" name="%1$s[%2$s]" value="%3$s"%4$s /></td>', $menu, $id, $key, checked( $current, $key, false ) );
 			} else {
-				$icons .= sprintf( '<td style="padding-bottom:0;font-size:16pt;" align="center"><label for="%1$s[%2$s][%3$s]"><img src="%4$scart-icon-%5$s.png" /></label></td>', $menu, $id, $key, plugins_url( 'images/', dirname(__FILE__) ), $iconnumber);
+				$icons .= sprintf( '<td style="padding-bottom:0;font-size:16pt;" align="center"><label for="%1$s[%2$s][%3$s]"><img src="%4$scart-icon-%5$s.png" /></label></td>', $menu, $id, $key, plugins_url( 'assets/images/', dirname(__FILE__) ), $iconnumber);
 				$radio = sprintf( '<input type="radio" class="radio" id="%1$s[%2$s][%3$s]" name="%1$s[%2$s]" value="%3$s" disabled />', $menu, $id, $key);
 				$radio .= '<div style="position:absolute; left:0; right:0; top:0; bottom:0; background-color:white; -moz-opacity: 0; opacity:0;filter: alpha(opacity=0);" class="hidden-input-icon"></div>';
 				$radio = '<div style="display:inline-block; position:relative;">'.$radio.'</div>';
