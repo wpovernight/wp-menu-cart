@@ -39,6 +39,7 @@ jobs:
         uses: Spreeuw/auto-minify@workspace-environment-variable
         with:
           directory: 'assets'
+          js_engine: 'uglify-js'
 
       - name: Echo font CSS (after minify action)
         run: |
