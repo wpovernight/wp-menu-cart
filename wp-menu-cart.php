@@ -403,7 +403,7 @@ class WpMenuCart {
 			if ( file_exists( plugin_dir_path( __FILE__ ) . 'assets/css/wpmenucart-font'.$suffix.'.css' ) ) {
 				include( plugin_dir_path( __FILE__ ) . 'assets/css/wpmenucart-font'.$suffix.'.css' ) ;
 			}
-			$font_css = str_replace( '../../assets/fonts', plugins_url( '/assets/fonts', __FILE__ ), ob_get_clean() );
+			$font_css = str_replace( '../fonts', plugins_url( '/assets/fonts', __FILE__ ), ob_get_clean() );
 			wp_add_inline_style( 'wpmenucart-icons', $font_css );
 		}
 		
