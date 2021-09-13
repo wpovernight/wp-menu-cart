@@ -10,7 +10,7 @@
  * License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * Text Domain: wp-menu-cart
  * WC requires at least: 2.0.0
- * WC tested up to: 5.4.0
+ * WC tested up to: 5.7.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
