@@ -33,12 +33,12 @@
 
 .wpmenucart-submenu-item a {
 	overflow: hidden;
-    white-space:nowrap !important;
+	white-space:nowrap !important;
 }
 
 .wpmenucart-thumbnail, .wpmenucart-order-item-info {
-   display:inline-block;
-   vertical-align:middle;
+	display:inline-block;
+	vertical-align:middle;
 }
 
 .wpmenucart-product-name, .wpmenucart-product-quantity-price {
