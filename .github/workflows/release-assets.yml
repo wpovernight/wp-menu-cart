@@ -1,0 +1,33 @@
+name: Add release ZIP
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  create-zip:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Git repository
+        uses: actions/checkout@v2
+        with:
+          ref: master
+
+      - name: Create ZIP
+        env:
+          TAG_NAME: ${{ github.event.release.tag_name }}
+        run: |
+          PLUGIN_SLUG="${PWD##*/}"
+          VERSION="${TAG_NAME//v}"
+          ZIP_FILE_NAME=$PLUGIN_SLUG.$VERSION.zip
+          echo "zip_file_name=$ZIP_FILE_NAME" >> $GITHUB_ENV
+          zip -r $ZIP_FILE_NAME . -x ".git/*" ".github/*"
+          echo "created $ZIP_FILE_NAME"
+
+      - name: Add ZIP to release asseets
+        uses: meeDamian/github-release@2.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          files: ${{ env.zip_file_name }}
+          gzip: false
+          allow_override: true

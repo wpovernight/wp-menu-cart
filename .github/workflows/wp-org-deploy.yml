@@ -1,4 +1,4 @@
-name: CI
+name: Deploy to wordpress.org
 
 on:
   push:
@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@master
-      - name: Deploy
+      - name: SVN deployment
         run: chmod +x ./deploy.sh && ./deploy.sh
         env:
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
