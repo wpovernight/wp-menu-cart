@@ -19,7 +19,7 @@ svn update --set-depth infinity trunk
 svn update --set-depth infinity tags/$VERSION
 
 # Copy files from release to `svn/trunk`
-rsync -rc --exclude-from="$GITHUB_WORKSPACE/.distignore" "$GITHUB_WORKSPACE/" trunk/ --delete --delete-excluded 
+rsync -rcm --exclude-from="$GITHUB_WORKSPACE/.distignore" "$GITHUB_WORKSPACE/" trunk/ --delete --delete-excluded 
 
 # Prepare the files for commit in SVN
 svn add --force trunk
@@ -54,7 +54,7 @@ svn update --set-depth infinity trunk
 svn update --set-depth infinity tags/$VERSION
 
 # Copy files from release to `svn/trunk`
-rsync -rc --exclude-from="$GITHUB_WORKSPACE/.distignore" "$GITHUB_WORKSPACE/" trunk/ --delete --delete-excluded 
+rsync -rcm --exclude-from="$GITHUB_WORKSPACE/.distignore" "$GITHUB_WORKSPACE/" trunk/ --delete --delete-excluded 
 
 # Prepare the files for commit in SVN
 svn add --force trunk
