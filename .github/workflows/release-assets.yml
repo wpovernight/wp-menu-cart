@@ -21,7 +21,7 @@ jobs:
           VERSION="${TAG_NAME//v}"
           ZIP_FILE_NAME=$PLUGIN_SLUG.$VERSION.zip
           echo "zip_file_name=$ZIP_FILE_NAME" >> $GITHUB_ENV
-          zip -r $ZIP_FILE_NAME . -x ".git/*" ".github/*"
+          zip -r $ZIP_FILE_NAME . -x@.distignore
           echo "created $ZIP_FILE_NAME"
 
       - name: Add ZIP to release asseets
