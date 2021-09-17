@@ -8,21 +8,32 @@ jobs:
   create-zip:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Git repository
-        uses: actions/checkout@v2
-        with:
-          ref: master
-
-      - name: Create ZIP
+      - name: Set environment variables
         env:
           TAG_NAME: ${{ github.event.release.tag_name }}
         run: |
+          # process existing variables
           PLUGIN_SLUG="${PWD##*/}"
-          VERSION="${TAG_NAME//v}"
+          VERSION="${TAG_NAME#v}"
           ZIP_FILE_NAME=$PLUGIN_SLUG.$VERSION.zip
-          echo "zip_file_name=$ZIP_FILE_NAME" >> $GITHUB_ENV
-          zip -r $ZIP_FILE_NAME . -x@.distignore
-          echo "created $ZIP_FILE_NAME"
+
+          # set environment variables
+          echo "plugin_slug=$PLUGIN_SLUG" >> $GITHUB_ENV
+          echo "version=$VERSION" >> $GITHUB_ENV
+          echo "zip_file_name=$PLUGIN_SLUG.$VERSION.zip" >> $GITHUB_ENV
+
+      - name: Checkout Git repository
+        uses: actions/checkout@v2
+        with:
+          path: ${{ env.plugin_slug }}
+
+      - name: Create ZIP
+        run: |
+          # reformat .distignore: remove all empty lines, leading slashes and prefix with the folder
+          sed "/^[[:space:]]*$/d;s#^/##;s#^#${{ env.plugin_slug }}/#" ${{ env.plugin_slug }}/.distignore > .zipignore
+          
+          # create zip files
+          zip -rq ${{ env.zip_file_name }} ${{ env.plugin_slug }} -x@.zipignore
 
       - name: Add ZIP to release asseets
         uses: meeDamian/github-release@2.0
