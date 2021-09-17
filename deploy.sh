@@ -5,7 +5,7 @@ PLUGIN_SLUG="${PWD##*/}"
 
 # Get the current release version
 TAG=$(sed -e "s/refs\/tags\///g" <<< $GITHUB_REF)
-VERSION="${TAG//v}"
+VERSION="${TAG#v}"
 
 # Get the SVN data from wp.org in a folder named `svn`
 SVN_URL="https://plugins.svn.wordpress.org/wp-menu-cart/"
