@@ -1,14 +1,21 @@
 /* 
  * JS for WPEC, EDD and eShop
  * 
- * AJAX not working for you? Look for the (specific) class attached to your 'add to cart' button (example: YOURCLASS)
- * The add it to the list of class selectors in the jQuery command:
- * $(".edd-add-to-cart, .wpsc_buy_button, .eshopbutton, div.cartopt p label.update input#update, .YOURCLASS").on('click', function(){
+ * AJAX not working for you?
+ * You can use our custom 'wpmenucart_update_cart_ajax' handle to trigger a refresh
+ * with a custom script added to your site (in a child theme or using "Code Snippets")
+ * Here's an example:
  * 
+ * jQuery( function( $ ) {
+ * 	$(document).on('click', '.YOURCLASS', function(){
+ * 		$(document).trigger('wpmenucart_update_cart_ajax');
+ * 	});
+ * });
  */
 
 jQuery( function( $ ) {
-	var buttons = [
+	let wpmenucart_ajax_timer;
+	let buttons = [
 		".edd-add-to-cart",
 		".wpsc_buy_button",
 		".eshopbutton",
@@ -18,27 +25,34 @@ jQuery( function( $ ) {
 		".cart_item a.remove",
 		"#order_review .opc_cart_item a.remove",
 		".woocommerce-cart input.plus",
-		".single_add_to_cart_button"
+		".single_add_to_cart_button",
+		".emptycart"
 	];
 
-	var inputs = [
+	let inputs = [
 		"input.edd-item-quantity"
 	];
 
-	jQuery(document.body).on('click', buttons.join(','), function(){
+	$(document.body).on('click', buttons.join(','), function(){
 		WPMenucart_Timeout();
 	});
 
-	jQuery(document.body).on('change', inputs.join(','), function(){
+	$(document.body).on('change', inputs.join(','), function(){
+		WPMenucart_Timeout();
+	});
+
+	// allow triggering refresh with a custom handle
+	$(document).on('wpmenucart_update_cart_ajax', function( event ) {
 		WPMenucart_Timeout();
 	});
 		
 	function WPMenucart_Timeout() {
-		setTimeout( WPMenucart_Load_AJAX, 1000);
+		clearTimeout( wpmenucart_ajax_timer );
+		wpmenucart_ajax_timer = setTimeout( WPMenucart_Load_AJAX, 1000);
 	}
 
 	function WPMenucart_Load_AJAX() {
-		var data = {
+		let data = {
 			security:	wpmenucart_ajax.nonce,
 			action:		"wpmenucart_ajax",
 		};
