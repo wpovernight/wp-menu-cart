@@ -1,10 +1,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce Menu Cart\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-16 11:20+0100\n"
-"PO-Revision-Date: 2015-03-10 18:25+0700\n"
-"Last-Translator: Tri BUi <ductrib@gmail.com>\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-menu-cart\n"
+"POT-Creation-Date: 2021-10-22T18:01:05+00:00\n"
+"PO-Revision-Date: 2021-10-22 14:16-0400\n"
+"Last-Translator: WP Overnight <support@wpovernight.com>\n"
 "Language-Team: Tri Bui <ductrib@gmail.com>\n"
 "Language: vi\n"
 "MIME-Version: 1.0\n"
@@ -14,41 +14,32 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
 "_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
-"X-Poedit-Basepath: ../\n"
+"X-Poedit-Basepath: ..\n"
 "X-Textdomain-Support: yes\n"
-"X-Generator: Poedit 1.7.4\n"
+"X-Generator: Poedit 3.0\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: wp-menu-cart-pro.php:182 wp-menu-cart-pro.php:259
-msgid "View your shopping cart"
-msgstr "Xem giỏ hàng"
+#. Plugin Name of the plugin
+#: includes/wpmenucart-settings.php:372
+msgid "WP Menu Cart"
+msgstr "WP Menu Cart"
 
-#: wp-menu-cart-pro.php:183
-msgid "Start shopping"
-msgstr "Bắt đầu mua hàng"
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+msgid "https://wpovernight.com/"
+msgstr "https://wpovernight.com/"
 
-#: wp-menu-cart-pro.php:184
-#, php-format
-msgid "%d item"
-msgid_plural "%d items"
-msgstr[0] "%d sp"
+#. Description of the plugin
+msgid ""
+"Extension for your e-commerce plugin (WooCommerce, WP-Ecommerce, Easy "
+"Digital Downloads, Eshop or Jigoshop) that places a cart icon with number of "
+"items and total cost in the menu bar. Activate the plugin, set your options "
+"and you're ready to go! Will automatically conform to your theme styles."
+msgstr ""
 
-#: wp-menu-cart-pro.php:266
-msgid "your cart is currently empty"
-msgstr "giỏ hàng của bạn hiện còn trống"
-
-#: wp-menu-cart-pro.php:293
-msgid "Menu Cart requires a shop plugin to be active"
-msgstr "Bạn cần kích hoạt một plug-in bán hàng để sử dụng Menu "
-
-#: includes/wpmenucart-eshop-pro.php:49 includes/wpmenucart-eshop.php:27
-#, php-format
-msgid "%1$s%2$s"
-msgstr "%1$s%2$s"
-
-#: includes/wpmenucart-eshop-pro.php:49 includes/wpmenucart-eshop.php:27
-msgid "2"
-msgstr "2"
+#. Author of the plugin
+msgid "Jeremiah Prummer, Ewout Fernhout"
+msgstr "Jeremiah Prummer, Ewout Fernhout"
 
 #: includes/wpmenucart-settings.php:27
 msgid "Plugin settings"
@@ -58,117 +49,251 @@ msgstr "Thiết lập plug-in"
 msgid "Select which e-commerce plugin you would like Menu Cart to work with"
 msgstr "Lựa chọn plug-in e-commerce mà bạn muốn sử dụng cùng Menu Cart"
 
-#: includes/wpmenucart-settings.php:47
-msgid ""
-"Enter your order confirmation number to receive automated updates "
-"(<i>format: #xxxxx</i>)"
+#: includes/wpmenucart-settings.php:49
+msgid "Hide theme shopping cart icon"
 msgstr ""
-"Nhập mã xác nhận của bạn để được tải các cập nhật tự động <i>format: "
-"#xxxxx</i>)"
 
-#: includes/wpmenucart-settings.php:61
+#: includes/wpmenucart-settings.php:63
 msgid "Select the menu(s) in which you want to display the Menu Cart"
 msgstr "Lựa chọn (các) menu mà bạn muốn cho hiển thị Menu "
 
-#: includes/wpmenucart-settings.php:84
+#: includes/wpmenucart-settings.php:76
 msgid "Always display cart, even if it's empty"
 msgstr "Luôn hiển thị giỏ, kể cả khi không có hàng"
 
+#: includes/wpmenucart-settings.php:89
+msgid "Show on cart & checkout page"
+msgstr ""
+
 #: includes/wpmenucart-settings.php:96
+msgid ""
+"To avoid distracting your customers with duplicate information we do not "
+"display the menu cart item on the cart & checkout pages by default"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:103
 msgid "Display shopping cart icon."
 msgstr "Hiển thị biểu tượng giỏ hàng"
 
-#: includes/wpmenucart-settings.php:108
+#: includes/wpmenucart-settings.php:115
 msgid "Display cart contents in menu fly-out."
 msgstr "Hiển thị nội dung giỏ hàng ở dạng menu fly-"
 
-#: includes/wpmenucart-settings.php:120
+#: includes/wpmenucart-settings.php:128
 msgid "Set maximum number of products to display in fly-out"
 msgstr "Cài đặt số lượng tối đa sản phẩm hiển thị trên menu fly-out"
 
-#: includes/wpmenucart-settings.php:145
+#: includes/wpmenucart-settings.php:154
 msgid "Choose a cart icon."
 msgstr "Chọn biểu tượng giỏ hàng"
 
-#: includes/wpmenucart-settings.php:174
+#: includes/wpmenucart-settings.php:183
 msgid "What would you like to display in the menu?"
 msgstr "Bạn muốn hiển thị thông tin gì trên menu?"
 
-#: includes/wpmenucart-settings.php:182
+#: includes/wpmenucart-settings.php:191
 msgid "Items Only."
 msgstr "Chỉ hiển thị sản phẩm"
 
-#: includes/wpmenucart-settings.php:183
+#: includes/wpmenucart-settings.php:192
 msgid "Price Only."
 msgstr "Chỉ hiển thị giá"
 
-#: includes/wpmenucart-settings.php:184
+#: includes/wpmenucart-settings.php:193
 msgid "Both price and items."
 msgstr "Cả giá và sản phẩm."
 
-#: includes/wpmenucart-settings.php:191
+#: includes/wpmenucart-settings.php:200
 msgid "Select the alignment that looks best with your menu."
 msgstr "Lựa chọn vị trí giỏ hàng sao cho phù hợp với menu của bạn"
 
-#: includes/wpmenucart-settings.php:199
+#: includes/wpmenucart-settings.php:208
 msgid "Align Left."
 msgstr "Lề trái"
 
-#: includes/wpmenucart-settings.php:200
+#: includes/wpmenucart-settings.php:209
 msgid "Align Right."
 msgstr "Lề phải"
 
-#: includes/wpmenucart-settings.php:201
+#: includes/wpmenucart-settings.php:210
 msgid "Default Menu Alignment."
 msgstr "Theo thiết lập mặc định của menu"
 
-#: includes/wpmenucart-settings.php:208
+#: includes/wpmenucart-settings.php:218
+msgid "Price to display"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:226
+msgid "Cart total (including discounts)"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:227
+msgid "Subtotal (total of products)"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:228
+msgid "Checkout total (including discounts, fees & shipping)"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:237
 msgid "Enter a custom CSS class (optional)"
 msgstr "Điền một CSS class tuỳ biến (không bắt buộc)"
 
-#: includes/wpmenucart-settings.php:228
-msgid "Menu Cart Pro"
-msgstr "Phiên bản Menu Cart Pro"
-
-#: includes/wpmenucart-settings.php:229
-msgid "Menu Cart Pro Setup"
-msgstr "Cài đặt cho Menu Cart "
-
-#: includes/wpmenucart-settings.php:298
-msgid "WordPress Menu Cart Pro"
-msgstr "WordPress Menu Cart Pro"
-
-#: includes/wpmenucart-settings.php:323
-#, php-format
-msgid ""
-"For our custom CSS service %sClick here%s. Be sure to use the coupon code "
-"<strong>proservice</strong> at checkout. For support, visit %s or email %s"
+#: includes/wpmenucart-settings.php:251
+msgid "Use WPML String Translation"
 msgstr ""
-"Để sử dụng dịch vụ CSS tuỳ biến riêng của chúng tôi, %sBấm vào đây%s. Đừng "
-"quên sử dụng mã giảm giá <strong>proservice</strong> tại trang thanh toán. "
-"Để hỗ trợ, vui lòng truy cập %s hoặc %s"
 
-#: includes/wpmenucart-settings.php:561
-msgid ""
-"<strong>Please note:</strong> you need to open your website in a new tab/"
-"browser window after updating the cart icon for the change to be visible!"
+#: includes/wpmenucart-settings.php:266
+msgid "Use custom AJAX"
 msgstr ""
-"<strong>Lưu ý:</strong> quý vị cần mở website của mình ở một tab/cửa sổ "
-"trình duyệt mới sau khi cập nhật biểu tượng giỏ hàng thì mới xem được thay "
-"đổi vừa tạo!"
 
-#: includes/wpmenucart-settings.php:600
+#: includes/wpmenucart-settings.php:273
+msgid ""
+"Enable this option to use the custom AJAX / live update functions instead of "
+"the default ones from your shop plugin. Only use when you have issues with "
+"AJAX!"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:304
 msgid "Menu Cart"
 msgstr "Menu Cart"
 
-#: includes/wpmenucart-updater.php:76
-msgid ""
-"An Unexpected HTTP Error occurred during the API request.</p> <p><a href=\"?"
-"\" onclick=\"document.location.reload(); return false;\">Try again</a>"
+#: includes/wpmenucart-settings.php:305
+msgid "Menu Cart Setup"
 msgstr ""
-"Một lỗi HTTP bất ngờ xảy ra khi yêu cầu API.</p> <p><a href=\"?\" onclick="
-"\"document.location.reload(); return false;\">Vui lòng thử lại</a>"
 
-#: includes/wpmenucart-updater.php:81
-msgid "An unknown error occurred"
-msgstr "Một lỗi không rõ nguyên nhân đã xảy "
+#: includes/wpmenucart-settings.php:380
+msgid ""
+"You need to create a menu before you can use Menu Cart. Go to "
+"<strong>Appearence > Menus</strong> and create menu to add the cart to."
+msgstr ""
+
+#: includes/wpmenucart-settings.php:431
+msgid "Want To Stand Out?"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:431
+msgid "Go Pro."
+msgstr ""
+
+#: includes/wpmenucart-settings.php:433
+msgid "Unlimited Menus"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:434
+msgid "Choice of 14 icons"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:435
+msgid "Packed with customization options"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:436
+msgid "Access to Shortcode"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:437
+msgid "Top Notch Support"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:442
+msgid "Sell In Style With Menu Cart Pro!"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:444
+msgid ""
+"Go Pro with Menu Cart Pro. Includes all the great standard features found in "
+"this free version plus:"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:447
+msgid "A choice of over 10 cart icons"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:448
+msgid "A fully featured cart details flyout"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:449
+msgid ""
+"Ability to add cart + flyout to an <strong>unlimited</strong> amount of menus"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:450
+msgid "Adjust the content & URLs via the settings"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:451
+msgid "Enter custom styles and apply custom classes via the settings"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:452
+msgid "WPML compatible"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:453
+msgid "Automatic updates on any great new features"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:454
+msgid "Put the cart anywhere with the [wpmenucart] shortcode"
+msgstr ""
+
+#. translators: 1,2: <a> tags
+#: includes/wpmenucart-settings.php:458
+msgid ""
+"Need to see more? %1$sClick here%2$s to check it out. Add a product to your "
+"cart and watch what happens!"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:459
+msgid "Buy Now"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:528 includes/wpmenucart-settings.php:568
+#: includes/wpmenucart-settings.php:610 includes/wpmenucart-settings.php:649
+#: includes/wpmenucart-settings.php:686
+msgid "This feature only available in"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:728
+msgid "Additional icons are only available in"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:791
+msgid "Menu Item"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:796
+msgid "Add to Menu"
+msgstr ""
+
+#: wp-menu-cart.php:247
+msgid ""
+"WP Menu Cart could not detect an active shop plugin. Make sure you have "
+"activated at least one of the supported plugins."
+msgstr ""
+
+#: wp-menu-cart.php:248
+msgid "Hide this notice"
+msgstr ""
+
+#: wp-menu-cart.php:253
+msgid ""
+"An old version of WooCommerce Menu Cart is currently activated, you need to "
+"disable or uninstall it for WP Menu Cart to function properly"
+msgstr ""
+
+#: wp-menu-cart.php:600
+msgid "View your shopping cart"
+msgstr "Xem giỏ hàng"
+
+#: wp-menu-cart.php:601
+msgid "Start shopping"
+msgstr "Bắt đầu mua hàng"
+
+#. translators: item count
+#: wp-menu-cart.php:603
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] "%d sp"

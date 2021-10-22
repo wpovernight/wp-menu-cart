@@ -2,250 +2,303 @@
 # This file is distributed under the same license as the Plugins - WooCommerce Menu Cart - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-02-13 19:28+0100\n"
+"Project-Id-Version: Plugins - WooCommerce Menu Cart - Stable (latest "
+"release)\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-menu-cart\n"
+"POT-Creation-Date: 2021-10-22T18:01:05+00:00\n"
+"PO-Revision-Date: 2021-10-22 14:15-0400\n"
+"Last-Translator: WP Overnight <support@wpovernight.com>\n"
+"Language-Team: \n"
+"Language: sv_SE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 1.8.11\n"
-"Language: sv_SE\n"
-"Project-Id-Version: Plugins - WooCommerce Menu Cart - Stable (latest release)\n"
-"POT-Creation-Date: \n"
-"Last-Translator: Johan Yourstone <johan.yourstone@gmail.com>\n"
-"Language-Team: \n"
+"X-Generator: Poedit 3.0\n"
 
-#. Author URI of the plugin/theme
-msgid "www.wpovernight.com/"
-msgstr "www.wpovernight.com/"
+#. Plugin Name of the plugin
+#: includes/wpmenucart-settings.php:372
+msgid "WP Menu Cart"
+msgstr "WP Menu Cart"
 
-#. Author of the plugin/theme
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+msgid "https://wpovernight.com/"
+msgstr "https://wpovernight.com/"
+
+#. Description of the plugin
+msgid ""
+"Extension for your e-commerce plugin (WooCommerce, WP-Ecommerce, Easy "
+"Digital Downloads, Eshop or Jigoshop) that places a cart icon with number of "
+"items and total cost in the menu bar. Activate the plugin, set your options "
+"and you're ready to go! Will automatically conform to your theme styles."
+msgstr ""
+
+#. Author of the plugin
 msgid "Jeremiah Prummer, Ewout Fernhout"
 msgstr "Jeremiah Prummer, Ewout Fernhout"
 
-#. Description of the plugin/theme
-msgid "Extension for WooCommerce that places a cart icon with number of items and total cost in the menu bar. Activate the plugin, set your options and you're ready to go! Will automatically conform to your theme styles."
-msgstr "Tillägg till WooCommerce som placerar en varukorgsikon med antal varor och total kostnad i menyraden. Aktivera tillägget, ange dina inställningar och du är klar! Kommer automatiskt anpassa sig till dina mallstilar."
+#: includes/wpmenucart-settings.php:27
+msgid "Plugin settings"
+msgstr "Tilläggsinställningar"
 
-#. Plugin URI of the plugin/theme
-msgid "www.wpovernight.com/plugins"
-msgstr "www.wpovernight.com/plugins"
+#: includes/wpmenucart-settings.php:34
+msgid "Select which e-commerce plugin you would like Menu Cart to work with"
+msgstr "Välj vilket e-handelstillägg du vill att Menu Cart ska fungera med"
 
-#. Plugin Name of the plugin/theme
-msgid "WooCommerce Menu Cart"
-msgstr "WooCommerce Menu Cart"
+#: includes/wpmenucart-settings.php:49
+msgid "Hide theme shopping cart icon"
+msgstr ""
 
-#: wp-menu-cart.php:414
+#: includes/wpmenucart-settings.php:63
+msgid "Select the menu(s) in which you want to display the Menu Cart"
+msgstr "Välj menyn/menyerna du vill ska visa Menu Cart"
+
+#: includes/wpmenucart-settings.php:76
+msgid "Always display cart, even if it's empty"
+msgstr "Visa alltid varukorg, även om den är tom"
+
+#: includes/wpmenucart-settings.php:89
+msgid "Show on cart & checkout page"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:96
+msgid ""
+"To avoid distracting your customers with duplicate information we do not "
+"display the menu cart item on the cart & checkout pages by default"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:103
+msgid "Display shopping cart icon."
+msgstr "Visa varukorgsikon"
+
+#: includes/wpmenucart-settings.php:115
+msgid "Display cart contents in menu fly-out."
+msgstr "Visa varukorgsinnehåll i popup-meny"
+
+#: includes/wpmenucart-settings.php:128
+msgid "Set maximum number of products to display in fly-out"
+msgstr "Ange maximalt antal produkter att visa i popup-menyn"
+
+#: includes/wpmenucart-settings.php:154
+msgid "Choose a cart icon."
+msgstr "Välj en varukorgsikon"
+
+#: includes/wpmenucart-settings.php:183
+msgid "What would you like to display in the menu?"
+msgstr "Vad vill du visa i menyn?"
+
+#: includes/wpmenucart-settings.php:191
+msgid "Items Only."
+msgstr "Endast produkter."
+
+#: includes/wpmenucart-settings.php:192
+msgid "Price Only."
+msgstr "Endast pris."
+
+#: includes/wpmenucart-settings.php:193
+msgid "Both price and items."
+msgstr "Både produkter och pris."
+
+#: includes/wpmenucart-settings.php:200
+msgid "Select the alignment that looks best with your menu."
+msgstr "Välj den justering som passar bäst med din meny."
+
+#: includes/wpmenucart-settings.php:208
+msgid "Align Left."
+msgstr "Vänsterjusterad."
+
+#: includes/wpmenucart-settings.php:209
+msgid "Align Right."
+msgstr "Högerjusterad."
+
+#: includes/wpmenucart-settings.php:210
+msgid "Default Menu Alignment."
+msgstr "Standardjustering för meny"
+
+#: includes/wpmenucart-settings.php:218
+msgid "Price to display"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:226
+msgid "Cart total (including discounts)"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:227
+msgid "Subtotal (total of products)"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:228
+msgid "Checkout total (including discounts, fees & shipping)"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:237
+msgid "Enter a custom CSS class (optional)"
+msgstr "Ange en anpassad CSS-klass (valfritt)"
+
+#: includes/wpmenucart-settings.php:251
+msgid "Use WPML String Translation"
+msgstr "Använd WPML strängöversättning"
+
+#: includes/wpmenucart-settings.php:266
+msgid "Use custom AJAX"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:273
+msgid ""
+"Enable this option to use the custom AJAX / live update functions instead of "
+"the default ones from your shop plugin. Only use when you have issues with "
+"AJAX!"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:304
+msgid "Menu Cart"
+msgstr "Menu Cart"
+
+#: includes/wpmenucart-settings.php:305
+msgid "Menu Cart Setup"
+msgstr "Inställningar för Menu Cart"
+
+#: includes/wpmenucart-settings.php:380
+msgid ""
+"You need to create a menu before you can use Menu Cart. Go to "
+"<strong>Appearence > Menus</strong> and create menu to add the cart to."
+msgstr ""
+
+#: includes/wpmenucart-settings.php:431
+msgid "Want To Stand Out?"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:431
+msgid "Go Pro."
+msgstr ""
+
+#: includes/wpmenucart-settings.php:433
+msgid "Unlimited Menus"
+msgstr "Obegränsade menyer"
+
+#: includes/wpmenucart-settings.php:434
+msgid "Choice of 14 icons"
+msgstr "Urval av 14 ikoner"
+
+#: includes/wpmenucart-settings.php:435
+msgid "Packed with customization options"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:436
+msgid "Access to Shortcode"
+msgstr "Tillgång till kortkod"
+
+#: includes/wpmenucart-settings.php:437
+msgid "Top Notch Support"
+msgstr "Utmärkt support"
+
+#: includes/wpmenucart-settings.php:442
+msgid "Sell In Style With Menu Cart Pro!"
+msgstr "Sälj i stil med Menu Cart Pro!"
+
+#: includes/wpmenucart-settings.php:444
+msgid ""
+"Go Pro with Menu Cart Pro. Includes all the great standard features found in "
+"this free version plus:"
+msgstr ""
+"Gå över till pro med Menu Cart Pro. Inkluderar alla bra standardfunktioner "
+"som finns i gratisversionen plus:"
+
+#: includes/wpmenucart-settings.php:447
+msgid "A choice of over 10 cart icons"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:448
+msgid "A fully featured cart details flyout"
+msgstr "En fullfjädrad popup-meny för varukorgsinnehåll"
+
+#: includes/wpmenucart-settings.php:449
+msgid ""
+"Ability to add cart + flyout to an <strong>unlimited</strong> amount of menus"
+msgstr ""
+"Möjlighet att lägga till varukorg + popup-meny till <strong>obegränsat</"
+"strong> antal menyer."
+
+#: includes/wpmenucart-settings.php:450
+msgid "Adjust the content & URLs via the settings"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:451
+msgid "Enter custom styles and apply custom classes via the settings"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:452
+msgid "WPML compatible"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:453
+msgid "Automatic updates on any great new features"
+msgstr "Automatiska uppdateringar för nya bra funktioner"
+
+#: includes/wpmenucart-settings.php:454
+msgid "Put the cart anywhere with the [wpmenucart] shortcode"
+msgstr "Placera varukorgen var som helst med kortkoden [wpmenucart]"
+
+#. translators: 1,2: <a> tags
+#: includes/wpmenucart-settings.php:458
+msgid ""
+"Need to see more? %1$sClick here%2$s to check it out. Add a product to your "
+"cart and watch what happens!"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:459
+msgid "Buy Now"
+msgstr "Köp nu"
+
+#: includes/wpmenucart-settings.php:528 includes/wpmenucart-settings.php:568
+#: includes/wpmenucart-settings.php:610 includes/wpmenucart-settings.php:649
+#: includes/wpmenucart-settings.php:686
+msgid "This feature only available in"
+msgstr "Den här funktionen är endast tillgänglig i"
+
+#: includes/wpmenucart-settings.php:728
+msgid "Additional icons are only available in"
+msgstr "Ytterligare ikoner är endast tillgängliga i"
+
+#: includes/wpmenucart-settings.php:791
+msgid "Menu Item"
+msgstr "Menyobjekt"
+
+#: includes/wpmenucart-settings.php:796
+msgid "Add to Menu"
+msgstr "Lägg till i meny"
+
+#: wp-menu-cart.php:247
+msgid ""
+"WP Menu Cart could not detect an active shop plugin. Make sure you have "
+"activated at least one of the supported plugins."
+msgstr ""
+
+#: wp-menu-cart.php:248
+msgid "Hide this notice"
+msgstr "Dölj denna notis"
+
+#: wp-menu-cart.php:253
+msgid ""
+"An old version of WooCommerce Menu Cart is currently activated, you need to "
+"disable or uninstall it for WP Menu Cart to function properly"
+msgstr ""
+"En gammal version av WooCommerce Menu Cart är för närvarande aktiverad, du "
+"måste inaktivera eller avinstallera den för att WP Menu Cart ska fungera "
+"korrekt"
+
+#: wp-menu-cart.php:600
+msgid "View your shopping cart"
+msgstr "Visa din varukorg"
+
+#: wp-menu-cart.php:601
+msgid "Start shopping"
+msgstr "Till butiken"
+
+#. translators: item count
+#: wp-menu-cart.php:603
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] "%d vara"
 msgstr[1] "%d varor"
-
-#: wp-menu-cart.php:413
-msgid "Start shopping"
-msgstr "Till butiken"
-
-#: wp-menu-cart.php:412
-msgid "View your shopping cart"
-msgstr "Visa din varukorg"
-
-#: wp-menu-cart.php:199
-msgid "An old version of WooCommerce Menu Cart is currently activated, you need to disable or uninstall it for WP Menu Cart to function properly"
-msgstr "En gammal version av WooCommerce Menu Cart är för närvarande aktiverad, du måste inaktivera eller avinstallera den för att WP Menu Cart ska fungera korrekt"
-
-#: wp-menu-cart.php:194
-msgid "Hide this notice"
-msgstr "Dölj denna notis"
-
-#: wp-menu-cart.php:193
-msgid "WP Menu Cart Pro could not detect an active shop plugin. Make sure you have activated at least one of the supported plugins."
-msgstr "WP Menu Cart Pro kunde inte hitta ett aktivt e-handelstillägg. Se till att du har aktiverat minst ett av de tillägg som stöds."
-
-#: includes/wpmenucart-settings.php:710
-msgid "Add to Menu"
-msgstr "Lägg till i meny"
-
-#: includes/wpmenucart-settings.php:705
-msgid "Menu Item"
-msgstr "Menyobjekt"
-
-#: includes/wpmenucart-settings.php:642
-msgid "Additional icons are only available in"
-msgstr "Ytterligare ikoner är endast tillgängliga i"
-
-#: includes/wpmenucart-settings.php:442 includes/wpmenucart-settings.php:482
-#: includes/wpmenucart-settings.php:524 includes/wpmenucart-settings.php:563
-#: includes/wpmenucart-settings.php:600
-msgid "This feature only available in"
-msgstr "Den här funktionen är endast tillgänglig i"
-
-#: includes/wpmenucart-settings.php:373
-msgid "Customize my CSS!"
-msgstr "Anpassa min CSS!"
-
-#: includes/wpmenucart-settings.php:371
-msgid "We can do that for you! Just click the button below to check it out."
-msgstr "Vi kan göra det åt dig! Klicka bara på knappen nedan för att kolla in det."
-
-#: includes/wpmenucart-settings.php:369
-msgid "Want your CSS customized?"
-msgstr "Vill du ha din CSS anpassad?"
-
-#: includes/wpmenucart-settings.php:366
-msgid "Buy Now"
-msgstr "Köp nu"
-
-#: includes/wpmenucart-settings.php:365
-msgid "Need to see more? %sClick here%s to check it out. Add a product to your cart and watch what happens!"
-msgstr "Behöver du se mer? %sKlicka här%s för att kolla in det. Lägg en produkt i varukorgen och se vad som händer!"
-
-#: includes/wpmenucart-settings.php:361
-msgid "Put the cart anywhere with the [wpmenucart] shortcode"
-msgstr "Placera varukorgen var som helst med kortkoden [wpmenucart]"
-
-#: includes/wpmenucart-settings.php:360
-msgid "Automatic updates on any great new features"
-msgstr "Automatiska uppdateringar för nya bra funktioner"
-
-#: includes/wpmenucart-settings.php:359
-msgid "Ability to add a custom css class"
-msgstr "Möjlighet att lägga till en anpassad CSS-klass"
-
-#: includes/wpmenucart-settings.php:358
-msgid "Ability to add cart + flyout to an <strong>unlimited</strong> amount of menus"
-msgstr "Möjlighet att lägga till varukorg + popup-meny till <strong>obegränsat</strong> antal menyer."
-
-#: includes/wpmenucart-settings.php:357
-msgid "A fully featured cart details flyout"
-msgstr "En fullfjädrad popup-meny för varukorgsinnehåll"
-
-#: includes/wpmenucart-settings.php:356
-msgid "A choice of 14 icons"
-msgstr "Ett urval av 14 ikoner"
-
-#: includes/wpmenucart-settings.php:353
-msgid "Go Pro with Menu Cart Pro. Includes all the great standard features found in this free version plus:"
-msgstr "Gå över till pro med Menu Cart Pro. Inkluderar alla bra standardfunktioner som finns i gratisversionen plus:"
-
-#: includes/wpmenucart-settings.php:351
-msgid "Sell In Style With Menu Cart Pro!"
-msgstr "Sälj i stil med Menu Cart Pro!"
-
-#: includes/wpmenucart-settings.php:338
-msgid "Top Notch Support"
-msgstr "Utmärkt support"
-
-#: includes/wpmenucart-settings.php:337
-msgid "Access to Shortcode"
-msgstr "Tillgång till kortkod"
-
-#: includes/wpmenucart-settings.php:336
-msgid "Choice of 14 icons"
-msgstr "Urval av 14 ikoner"
-
-#: includes/wpmenucart-settings.php:335
-msgid "Unlimited Menus"
-msgstr "Obegränsade menyer"
-
-#: includes/wpmenucart-settings.php:312
-msgid "WP Menu Cart"
-msgstr "WP Menu Cart"
-
-#: includes/wpmenucart-settings.php:259
-msgid "Settings"
-msgstr "Inställningar"
-
-#: includes/wpmenucart-settings.php:247
-msgid "Menu Cart Setup"
-msgstr "Inställningar för Menu Cart"
-
-#: includes/wpmenucart-settings.php:246 includes/wpmenucart-settings.php:689
-msgid "Menu Cart"
-msgstr "Menu Cart"
-
-#: includes/wpmenucart-settings.php:220
-msgid "Enable this option to use the built-in AJAX / live update functions instead of the default ones from WooCommerce or Jigoshop"
-msgstr "Aktivera detta alternativ för att använda de inbyggda AJAX / live-funktionerna istället för standardfunktionerna från WooCommerce eller Jigoshop."
-
-#: includes/wpmenucart-settings.php:213
-msgid "Use Built-in AJAX"
-msgstr "Använd inbyggd AJAX"
-
-#: includes/wpmenucart-settings.php:199
-msgid "Use WPML String Translation"
-msgstr "Använd WPML strängöversättning"
-
-#: includes/wpmenucart-settings.php:185
-msgid "Enter a custom CSS class (optional)"
-msgstr "Ange en anpassad CSS-klass (valfritt)"
-
-#: includes/wpmenucart-settings.php:178
-msgid "Default Menu Alignment."
-msgstr "Standardjustering för meny"
-
-#: includes/wpmenucart-settings.php:177
-msgid "Align Right."
-msgstr "Högerjusterad."
-
-#: includes/wpmenucart-settings.php:176
-msgid "Align Left."
-msgstr "Vänsterjusterad."
-
-#: includes/wpmenucart-settings.php:168
-msgid "Select the alignment that looks best with your menu."
-msgstr "Välj den justering som passar bäst med din meny."
-
-#: includes/wpmenucart-settings.php:161
-msgid "Both price and items."
-msgstr "Både produkter och pris."
-
-#: includes/wpmenucart-settings.php:160
-msgid "Price Only."
-msgstr "Endast pris."
-
-#: includes/wpmenucart-settings.php:159
-msgid "Items Only."
-msgstr "Endast produkter."
-
-#: includes/wpmenucart-settings.php:151
-msgid "What would you like to display in the menu?"
-msgstr "Vad vill du visa i menyn?"
-
-#: includes/wpmenucart-settings.php:122
-msgid "Choose a cart icon."
-msgstr "Välj en varukorgsikon"
-
-#: includes/wpmenucart-settings.php:96
-msgid "Set maximum number of products to display in fly-out"
-msgstr "Ange maximalt antal produkter att visa i popup-menyn"
-
-#: includes/wpmenucart-settings.php:83
-msgid "Display cart contents in menu fly-out."
-msgstr "Visa varukorgsinnehåll i popup-meny"
-
-#: includes/wpmenucart-settings.php:71
-msgid "Display shopping cart icon."
-msgstr "Visa varukorgsikon"
-
-#: includes/wpmenucart-settings.php:59
-msgid "Always display cart, even if it's empty"
-msgstr "Visa alltid varukorg, även om den är tom"
-
-#: includes/wpmenucart-settings.php:46
-msgid "Select the menu(s) in which you want to display the Menu Cart"
-msgstr "Välj menyn/menyerna du vill ska visa Menu Cart"
-
-#: includes/wpmenucart-settings.php:33
-msgid "Select which e-commerce plugin you would like Menu Cart to work with"
-msgstr "Välj vilket e-handelstillägg du vill att Menu Cart ska fungera med"
-
-#: includes/wpmenucart-settings.php:26
-msgid "Plugin settings"
-msgstr "Tilläggsinställningar"
-
-#: includes/wpmenucart-eshop.php:40
-msgid "2"
-msgstr "2"
-
-#: includes/wpmenucart-eshop.php:40
-msgid "%1$s%2$s"
-msgstr "%1$s%2$s"
