@@ -1,6 +1,6 @@
 === WP Menu Cart ===
-Contributors: jprummer, pomegranate
-Donate link: https://www.wpovernight.com/
+Contributors: pomegranate, jprummer, alexmigf, yordansoares, kluver, dpeyou
+Donate link: https://wpovernight.com/downloads/menu-cart-pro/
 Tags: woocommerce, menu, bar, cart, basket, header, shopping cart, navigation, edd, ecommerce, eshop, wp-ecommerce, jigoshop, wpec
 Requires at least: 3.4
 Tested up to: 5.9
