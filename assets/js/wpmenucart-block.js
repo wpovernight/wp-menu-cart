@@ -45,7 +45,7 @@
 			}
 		} );
 
-		let finalElem = el(
+		let blockElem = el(
 			$menuCartItem.prop( 'tagName' ).toLowerCase(),
 			{
 				'className': $menuCartItem.attr( 'class' ),
@@ -62,18 +62,18 @@
 			keywords: [ 'cart' ],
 			edit:     function( props ) {
 				return (
-					finalElem
+					blockElem
 				);
 			},
 			save:     function( props ) {
 				return (
-					finalElem
+					blockElem
 				);
 			},
 		} );
 	}
 
-	function loadWPMenuCartBlock() {
+	function loadMenuCartBlock() {
 		let data = {
 			security: wpmenucart_block.nonce,
 			action:	  'wpmenucart_ajax',
@@ -90,7 +90,7 @@
 	}
 
 	// load
-	loadWPMenuCartBlock();
+	loadMenuCartBlock();
 
 } )(
 	window.wp.blocks,
