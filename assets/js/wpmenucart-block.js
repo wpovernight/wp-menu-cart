@@ -20,16 +20,16 @@
 	function createBlock( $menuCartItem ) {
 		let children = [];
 		$.each( $menuCartItem.children(), function( i, v ) {
-			let child     = $( v );
-			let childType = child.prop( 'tagName' ).toLowerCase();
+			let $child    = $( v );
+			let childType = $child.prop( 'tagName' ).toLowerCase();
 
 			if ( childType == 'i' ) {
 				children.push( el(
 					childType,
 					{
-						'className':  child.attr( 'class' ),
-						'role':       child.attr( 'role' ),
-						'aria-label': child.attr( 'aria-label' ),
+						'className':  $child.attr( 'class' ),
+						'role':       $child.attr( 'role' ),
+						'aria-label': $child.attr( 'aria-label' ),
 						'key':        i,
 					}
 				) );
@@ -37,10 +37,10 @@
 				children.push( el(
 					childType,
 					{
-						'className': child.attr( 'class' ),
+						'className': $child.attr( 'class' ),
 						'key':       i,
 					},
-					child.text()
+					$child.text()
 				) );
 			}
 		} );
