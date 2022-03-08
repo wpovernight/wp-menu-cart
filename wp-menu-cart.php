@@ -44,6 +44,8 @@ class WpMenuCart {
 
 		// enqueue scripts & ajax
 		add_action( 'wp_enqueue_scripts', array( &$this, 'load_scripts_styles' ) ); // Load scripts
+		add_action( 'admin_enqueue_scripts', array( &$this, 'load_scripts_styles' ) ); // Load admin scripts
+		add_action( 'enqueue_block_editor_assets', array( &$this, 'load_block_scripts_styles' ), 0 );
 		add_action( 'wp_ajax_wpmenucart_ajax', array( &$this, 'wpmenucart_ajax' ), 0 );
 		add_action( 'wp_ajax_nopriv_wpmenucart_ajax', array( &$this, 'wpmenucart_ajax' ), 0 );
 
@@ -112,7 +114,7 @@ class WpMenuCart {
 						break;
 				}
 				if ( isset( $this->options['builtin_ajax'] ) || in_array( $this->options['shop_plugin'], array( 'WP e-Commerce', 'wp-e-commerce', 'eShop', 'eshop' ) ) ) {
-					add_action("wp_enqueue_scripts", array( &$this, 'load_custom_ajax' ), 0 );
+					add_action( 'wp_enqueue_scripts', array( &$this, 'load_custom_ajax' ), 0 );
 				}
 
 			}
@@ -443,7 +445,34 @@ class WpMenuCart {
 				'always_display' => isset($this->options['always_display']) ? $this->options['always_display'] : '',
 			)
 		);
+	}
 
+	public function load_block_scripts_styles() {
+		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+
+		wp_enqueue_script(
+			'wpmenucart-block',
+			plugins_url( '/assets/js/wpmenucart-block'.$suffix.'.js', __FILE__ ),
+			array( 'wp-blocks', 'wp-element', 'jquery' ),
+			WPMENUCART_VERSION
+		);
+
+		// get URL to WordPress ajax handling page  
+		if ( $this->options['shop_plugin'] == 'easy-digital-downloads' && function_exists( 'edd_get_ajax_url' ) ) {
+			// use EDD function to prevent SSL issues http://git.io/V7w76A
+			$ajax_url = edd_get_ajax_url();
+		} else {
+			$ajax_url = admin_url( 'admin-ajax.php' );
+		}
+
+		wp_localize_script(
+			'wpmenucart-block',
+			'wpmenucart_block',
+			array(
+				'ajaxurl' => $ajax_url,
+				'nonce'   => wp_create_nonce( 'wpmenucart' )
+			)
+		);
 	}
 
 	/**
