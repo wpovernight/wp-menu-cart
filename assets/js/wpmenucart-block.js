@@ -18,13 +18,13 @@
 	);
 
 	function createBlock( $menuCartItem ) {
-		let children = [];
+		let blockChildren = [];
 		$.each( $menuCartItem.children(), function( i, v ) {
 			let $child    = $( v );
 			let childType = $child.prop( 'tagName' ).toLowerCase();
 
 			if ( childType == 'i' ) {
-				children.push( el(
+				blockChildren.push( el(
 					childType,
 					{
 						'className':  $child.attr( 'class' ),
@@ -34,7 +34,7 @@
 					}
 				) );
 			} else if ( childType == 'span' ) {
-				children.push( el(
+				blockChildren.push( el(
 					childType,
 					{
 						'className': $child.attr( 'class' ),
@@ -52,7 +52,7 @@
 				'href':      $menuCartItem.attr( 'href' ),
 				'title':     $menuCartItem.attr( 'title' ),
 			},
-			children
+			blockChildren
 		);
 
 		registerBlockType( 'wpo/wpmenucart', {
