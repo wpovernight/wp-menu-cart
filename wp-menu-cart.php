@@ -460,6 +460,12 @@ class WpMenuCart {
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 		add_editor_style( plugins_url( '/assets/css/wpmenucart-icons'.$suffix.'.css', __FILE__ ) );
+
+		// Allow wpmenucart-main.css to be overriden via the theme
+		$css = file_exists( get_stylesheet_directory() . '/wpmenucart-main.css' )
+			? get_stylesheet_directory_uri() . '/wpmenucart-main.css'
+			: plugins_url( '/assets/css/wpmenucart-main'.$suffix.'.css', __FILE__ );
+		add_editor_style( $css );
 	}
 
 	public function load_block_scripts() {
