@@ -29,7 +29,7 @@
 					{
 						className:  $child.attr( 'class' ),
 						role:       $child.attr( 'role' ),
-						key:        i,
+						key:        i
 					}
 				) );
 			} else if ( childType == 'span' ) {
@@ -37,8 +37,14 @@
 					childType,
 					{
 						className: $child.attr( 'class' ),
-						key:       i,
+						key:       i
 					},
+					$child.text()
+				) );
+			} else if ( childType == 'style' ) { // inline style for font
+				blockChildren.push( el(
+					childType,
+					{ key: i },
 					$child.text()
 				) );
 			}
@@ -79,6 +85,7 @@
 		let data = {
 			security: wpmenucart_block.nonce,
 			action:	  'wpmenucart_ajax',
+			wp_block: true,
 		};
 
 		xhr = $.ajax( {

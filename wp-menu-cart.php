@@ -703,6 +703,18 @@ class WpMenuCart {
 		check_ajax_referer( 'wpmenucart', 'security' );
 
 		$variable = $this->wpmenucart_menu_item();
+
+		// if it's a WP Block we need to inject the fonts inline
+		if ( isset( $_REQUEST['wp_block'] ) ) {
+			$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+			ob_start();
+			if ( file_exists( plugin_dir_path( __FILE__ ) . 'assets/css/wpmenucart-font'.$suffix.'.css' ) ) {
+				include( plugin_dir_path( __FILE__ ) . 'assets/css/wpmenucart-font'.$suffix.'.css' ) ;
+			}
+			$font_css = str_replace( '../fonts', plugins_url( '/assets/fonts', __FILE__ ), ob_get_clean() );
+			$variable = str_replace( '</a>', "<style>{$font_css}</style></a>", $variable );
+		}
+
 		echo $variable;
 		die();
 	}
