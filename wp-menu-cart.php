@@ -46,6 +46,7 @@ class WpMenuCart {
 		add_action( 'wp_enqueue_scripts', array( &$this, 'load_scripts_styles' ) );           // Load scripts
 		add_action( 'enqueue_block_editor_assets', array( &$this, 'load_block_scripts' ) );   // load block scripts
 		add_action( 'init', array( &$this, 'add_block_editor_styles' ) );                     // add block editor styles
+		add_action( 'admin_enqueue_scripts', array( &$this, 'load_font_in_block_editor' ) );  // load font in block editor
 		add_action( 'wp_ajax_wpmenucart_ajax', array( &$this, 'wpmenucart_ajax' ), 0 );
 		add_action( 'wp_ajax_nopriv_wpmenucart_ajax', array( &$this, 'wpmenucart_ajax' ), 0 );
 
@@ -452,6 +453,18 @@ class WpMenuCart {
 		);
 	}
 
+	public function load_font_in_block_editor() {
+		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+
+		// in order to avoid issues with relative font paths, we parse the CSS file and print it inline
+		ob_start();
+		if ( file_exists( plugin_dir_path( __FILE__ ) . 'assets/css/wpmenucart-font'.$suffix.'.css' ) ) {
+			include( plugin_dir_path( __FILE__ ) . 'assets/css/wpmenucart-font'.$suffix.'.css' ) ;
+		}
+		$font_css = str_replace( '../fonts', plugins_url( '/assets/fonts', __FILE__ ), ob_get_clean() );
+		wp_add_inline_style( 'wp-edit-blocks', $font_css );
+	}
+
 	/*
 	 * The Full Site Editor uses an iframe, the styles must be added using the add_editor_style() function. https://github.com/WordPress/gutenberg/pull/25775#issuecomment-703538383
 	 * The font we are injecting directly in the menu item HTML in the wpmenucart_ajax() function.
@@ -709,18 +722,6 @@ class WpMenuCart {
 		check_ajax_referer( 'wpmenucart', 'security' );
 
 		$variable = $this->wpmenucart_menu_item();
-
-		// if it's a WP Block we need to inject the fonts inline
-		if ( isset( $_REQUEST['wp_block'] ) ) {
-			$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-			ob_start();
-			if ( file_exists( plugin_dir_path( __FILE__ ) . 'assets/css/wpmenucart-font'.$suffix.'.css' ) ) {
-				include( plugin_dir_path( __FILE__ ) . 'assets/css/wpmenucart-font'.$suffix.'.css' ) ;
-			}
-			$font_css = str_replace( '../fonts', plugins_url( '/assets/fonts', __FILE__ ), ob_get_clean() );
-			$variable = str_replace( '</a>', "<style>{$font_css}</style></a>", $variable );
-		}
-
 		echo $variable;
 		die();
 	}

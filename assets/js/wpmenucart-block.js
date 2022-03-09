@@ -41,12 +41,6 @@
 					},
 					$child.text()
 				) );
-			} else if ( childType == 'style' ) { // inline style for font
-				blockChildren.push( el(
-					childType,
-					{ key: i },
-					$child.text()
-				) );
 			}
 		} );
 
