@@ -453,8 +453,8 @@ class WpMenuCart {
 	}
 
 	/*
-	 * The Full Site Editor uses an iframe, the styles must be added using the add_editor_style() function.
-	 * Reference: https://github.com/WordPress/gutenberg/pull/25775#issuecomment-703538383
+	 * The Full Site Editor uses an iframe, the styles must be added using the add_editor_style() function. https://github.com/WordPress/gutenberg/pull/25775#issuecomment-703538383
+	 * The font we are injecting directly in the menu item HTML in the wpmenucart_ajax() function.
 	 */
 	public function add_block_editor_styles() {
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
