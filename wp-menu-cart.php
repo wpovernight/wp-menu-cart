@@ -44,8 +44,8 @@ class WpMenuCart {
 
 		// enqueue scripts & ajax
 		add_action( 'wp_enqueue_scripts', array( &$this, 'load_scripts_styles' ) ); // Load scripts
-		add_action( 'admin_enqueue_scripts', array( &$this, 'load_scripts_styles' ) ); // Load admin scripts
-		add_action( 'enqueue_block_editor_assets', array( &$this, 'load_block_scripts_styles' ), 0 );
+		add_action( 'enqueue_block_editor_assets', array( &$this, 'load_block_scripts' ) );
+		add_action( 'admin_enqueue_scripts', array( &$this, 'load_styles' ) );
 		add_action( 'wp_ajax_wpmenucart_ajax', array( &$this, 'wpmenucart_ajax' ), 0 );
 		add_action( 'wp_ajax_nopriv_wpmenucart_ajax', array( &$this, 'wpmenucart_ajax' ), 0 );
 
@@ -393,7 +393,57 @@ class WpMenuCart {
 	/**
 	 * Load CSS
 	 */
-	public function load_scripts_styles() {
+	public function load_scripts() {
+		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+
+		$this->load_styles();		
+
+		// extra script that improves AJAX behavior when 'Always display cart' is disabled
+		wp_enqueue_script(
+			'wpmenucart-ajax-assist',
+			plugins_url( '/assets/js/wpmenucart-ajax-assist'.$suffix.'.js', __FILE__ ),
+			array( 'jquery' ),
+			WPMENUCART_VERSION
+		);
+		wp_localize_script(
+			'wpmenucart-ajax-assist',
+			'wpmenucart_ajax_assist',
+			array(  
+				'shop_plugin' => isset($this->options['shop_plugin']) ? $this->options['shop_plugin'] : '',
+				'always_display' => isset($this->options['always_display']) ? $this->options['always_display'] : '',
+			)
+		);
+	}
+
+	public function load_block_scripts() {
+		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+
+		wp_enqueue_script(
+			'wpmenucart-block',
+			plugins_url( '/assets/js/wpmenucart-block'.$suffix.'.js', __FILE__ ),
+			array( 'wp-blocks', 'wp-element', 'wp-i18n', 'jquery' ),
+			WPMENUCART_VERSION
+		);
+
+		// get URL to WordPress ajax handling page  
+		if ( $this->options['shop_plugin'] == 'easy-digital-downloads' && function_exists( 'edd_get_ajax_url' ) ) {
+			// use EDD function to prevent SSL issues http://git.io/V7w76A
+			$ajax_url = edd_get_ajax_url();
+		} else {
+			$ajax_url = admin_url( 'admin-ajax.php' );
+		}
+
+		wp_localize_script(
+			'wpmenucart-block',
+			'wpmenucart_block',
+			array(
+				'ajaxurl' => $ajax_url,
+				'nonce'   => wp_create_nonce( 'wpmenucart' )
+			)
+		);
+	}
+
+	public function load_styles() {
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 		if (isset($this->options['icon_display'])) {
@@ -428,51 +478,12 @@ class WpMenuCart {
 		//Load Stylesheet if twentyfourteen is active
 		if ( wp_get_theme() == 'Twenty Fourteen' ) {
 			wp_enqueue_style( 'wpmenucart-twentyfourteen', plugins_url( '/assets/css/wpmenucart-twentyfourteen'.$suffix.'.css', __FILE__ ), array(), WPMENUCART_VERSION, 'all' );
-		}		
-
-		// extra script that improves AJAX behavior when 'Always display cart' is disabled
-		wp_enqueue_script(
-			'wpmenucart-ajax-assist',
-			plugins_url( '/assets/js/wpmenucart-ajax-assist'.$suffix.'.js', __FILE__ ),
-			array( 'jquery' ),
-			WPMENUCART_VERSION
-		);
-		wp_localize_script(
-			'wpmenucart-ajax-assist',
-			'wpmenucart_ajax_assist',
-			array(  
-				'shop_plugin' => isset($this->options['shop_plugin']) ? $this->options['shop_plugin'] : '',
-				'always_display' => isset($this->options['always_display']) ? $this->options['always_display'] : '',
-			)
-		);
-	}
-
-	public function load_block_scripts_styles() {
-		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-
-		wp_enqueue_script(
-			'wpmenucart-block',
-			plugins_url( '/assets/js/wpmenucart-block'.$suffix.'.js', __FILE__ ),
-			array( 'wp-blocks', 'wp-element', 'jquery' ),
-			WPMENUCART_VERSION
-		);
-
-		// get URL to WordPress ajax handling page  
-		if ( $this->options['shop_plugin'] == 'easy-digital-downloads' && function_exists( 'edd_get_ajax_url' ) ) {
-			// use EDD function to prevent SSL issues http://git.io/V7w76A
-			$ajax_url = edd_get_ajax_url();
-		} else {
-			$ajax_url = admin_url( 'admin-ajax.php' );
 		}
 
-		wp_localize_script(
-			'wpmenucart-block',
-			'wpmenucart_block',
-			array(
-				'ajaxurl' => $ajax_url,
-				'nonce'   => wp_create_nonce( 'wpmenucart' )
-			)
-		);
+		//Load Stylesheet if twentyfourteen is active
+		if ( wp_get_theme() == 'Twenty Fourteen' ) {
+			wp_enqueue_style( 'wpmenucart-twentyfourteen', plugins_url( '/assets/css/wpmenucart-twentyfourteen'.$suffix.'.css', __FILE__ ), array(), WPMENUCART_VERSION, 'all' );
+		}
 	}
 
 	/**

@@ -1,10 +1,11 @@
-( function( blocks, element, $ ) {
+( function( blocks, element, i18n, blockEditor, $ ) {
 
-	const el = element.createElement;
+	let __                = i18n.__;
+	let el                = element.createElement;
+	let useBlockProps     = blockEditor.useBlockProps;
+	let registerBlockType = blocks.registerBlockType;
 
-	const { registerBlockType } = blocks;
-
-	const iconCart = el(
+	let iconCart = el(
 		'svg',
 		{
 			width:  20,
@@ -27,18 +28,17 @@
 				blockChildren.push( el(
 					childType,
 					{
-						'className':  $child.attr( 'class' ),
-						'role':       $child.attr( 'role' ),
-						'aria-label': $child.attr( 'aria-label' ),
-						'key':        i,
+						className:  $child.attr( 'class' ),
+						role:       $child.attr( 'role' ),
+						key:        i,
 					}
 				) );
 			} else if ( childType == 'span' ) {
 				blockChildren.push( el(
 					childType,
 					{
-						'className': $child.attr( 'class' ),
-						'key':       i,
+						className: $child.attr( 'class' ),
+						key:       i,
 					},
 					$child.text()
 				) );
@@ -48,29 +48,37 @@
 		let blockElem = el(
 			$menuCartItem.prop( 'tagName' ).toLowerCase(),
 			{
-				'className': $menuCartItem.attr( 'class' ),
-				'href':      $menuCartItem.attr( 'href' ),
-				'title':     $menuCartItem.attr( 'title' ),
+				className: $menuCartItem.attr( 'class' ),
+				href:      $menuCartItem.attr( 'href' ),
+				title:     $menuCartItem.attr( 'title' ),
 			},
 			blockChildren
 		);
 
-		registerBlockType( 'wpo/wpmenucart', {
-			title:    'Cart',
-			icon:     iconCart,
-			category: 'widgets',
-			keywords: [ 'cart' ],
-			edit:     function( props ) {
-				return (
+		let blockSettings = {
+			apiVersion: 2,
+			title:      __( 'Cart', 'wp-menu-cart' ),
+			icon:       iconCart,
+			category:   'layout',
+			keywords:   [ 'cart' ],
+			edit:       function( props ) {
+				return el(
+					'div',
+					useBlockProps( { className: 'wpmenucart-block' } ),
+					blockElem
+				);
+				
+			},
+			save:       function( props ) {
+				return el(
+					'div',
+					useBlockProps( { className: 'wpmenucart-block' } ).save(),
 					blockElem
 				);
 			},
-			save:     function( props ) {
-				return (
-					blockElem
-				);
-			},
-		} );
+		}
+
+		registerBlockType( 'wpo/wpmenucart', blockSettings );
 	}
 
 	function loadMenuCartBlock() {
@@ -95,5 +103,7 @@
 } )(
 	window.wp.blocks,
 	window.wp.element,
+	window.wp.i18n,
+	window.wp.blockEditor,
 	jQuery,
 );
