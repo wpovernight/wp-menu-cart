@@ -447,8 +447,8 @@ class WpMenuCart {
 			'wpmenucart-ajax-assist',
 			'wpmenucart_ajax_assist',
 			array(  
-				'shop_plugin' => isset($this->options['shop_plugin']) ? $this->options['shop_plugin'] : '',
-				'always_display' => isset($this->options['always_display']) ? $this->options['always_display'] : '',
+				'shop_plugin'    => isset( $this->options['shop_plugin'] ) ? $this->options['shop_plugin'] : '',
+				'always_display' => isset( $this->options['always_display'] ) ? $this->options['always_display'] : '',
 			)
 		);
 	}
