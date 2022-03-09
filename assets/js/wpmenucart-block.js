@@ -79,7 +79,6 @@
 		let data = {
 			security: wpmenucart_block.nonce,
 			action:	  'wpmenucart_ajax',
-			wp_block: true,
 		};
 
 		xhr = $.ajax( {
