@@ -44,9 +44,9 @@ class WpMenuCart {
 
 		// enqueue scripts & ajax
 		add_action( 'wp_enqueue_scripts', array( &$this, 'load_scripts_styles' ) );           // Load scripts
-		add_action( 'enqueue_block_editor_assets', array( &$this, 'load_block_scripts' ) );   // load block scripts
-		add_action( 'init', array( &$this, 'add_block_editor_styles' ) );                     // add block editor styles
 		add_action( 'admin_enqueue_scripts', array( &$this, 'load_font_in_block_editor' ) );  // load font in block editor
+		add_action( 'init', array( &$this, 'add_block_editor_styles' ) );                     // add block editor styles
+		add_action( 'init', array( &$this, 'register_cart_block_render' ) );                  // register cart block render
 		add_action( 'wp_ajax_wpmenucart_ajax', array( &$this, 'wpmenucart_ajax' ), 0 );
 		add_action( 'wp_ajax_nopriv_wpmenucart_ajax', array( &$this, 'wpmenucart_ajax' ), 0 );
 
@@ -481,33 +481,24 @@ class WpMenuCart {
 		add_editor_style( $css );
 	}
 
-	public function load_block_scripts() {
+	public function register_cart_block_render() {
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
-		wp_enqueue_script(
+		wp_register_script(
 			'wpmenucart-block',
 			plugins_url( '/assets/js/wpmenucart-block'.$suffix.'.js', __FILE__ ),
-			array( 'wp-blocks', 'wp-element', 'wp-i18n', 'jquery' ),
+			array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-server-side-render' ),
 			WPMENUCART_VERSION
 		);
 
-		// get URL to WordPress ajax handling page  
-		if ( $this->options['shop_plugin'] == 'easy-digital-downloads' && function_exists( 'edd_get_ajax_url' ) ) {
-			// use EDD function to prevent SSL issues http://git.io/V7w76A
-			$ajax_url = edd_get_ajax_url();
-		} else {
-			$ajax_url = admin_url( 'admin-ajax.php' );
-		}
+		register_block_type( 'wpo/wpmenucart', array(
+			'editor_script'   => 'wpmenucart-block',
+			'render_callback' => array( $this, 'cart_block_output' ),
+		) );
+	}
 
-		wp_localize_script(
-			'wpmenucart-block',
-			'wpmenucart_block',
-			array(
-				'ajaxurl'   => $ajax_url,
-				'nonce'     => wp_create_nonce( 'wpmenucart' ),
-				'menu_item' => $this->wpmenucart_menu_item(),
-			)
-		);
+	public function cart_block_output( $atts ) {
+		return $this->wpmenucart_menu_item();
 	}
 
 	/**

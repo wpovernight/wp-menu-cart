@@ -1,4 +1,4 @@
-( function( blocks, element, i18n, $ ) {
+( function( blocks, element, i18n, serverSideRender ) {
 
 	let __                = i18n.__;
 	let el                = element.createElement;
@@ -18,80 +18,48 @@
 		)
 	);
 
-	function createCartBlock( $menuCartItem ) {
-		let blockChildren = [];
-		$.each( $menuCartItem.children(), function( i, v ) {
-			let $child    = $( v );
-			let childType = $child.prop( 'tagName' ).toLowerCase();
-
-			if ( childType == 'i' ) {
-				blockChildren.push( el(
-					childType,
-					{
-						className:  $child.attr( 'class' ),
-						role:       $child.attr( 'role' ),
-						key:        i
-					}
-				) );
-			} else if ( childType == 'span' ) {
-				blockChildren.push( el(
-					childType,
-					{
-						className: $child.attr( 'class' ),
-						key:       i
-					},
-					$child.text()
-				) );
-			}
-		} );
-
-		let blockElem = el(
-			'div',
-			{ className: 'wpmenucart-block' },
-			el(
-				$menuCartItem.prop( 'tagName' ).toLowerCase(),
+	let blockSettings = {
+		title:      __( 'Cart', 'wp-menu-cart' ),
+		icon:       iconCart,
+		category:   'widgets',
+		parent:     [ 'core/navigation' ],
+		keywords:   [ 'cart' ],
+		support:    {
+			html: true,
+		},
+		transforms: {
+			from: [
 				{
-					className: $menuCartItem.attr( 'class' ),
-					href:      $menuCartItem.attr( 'href' ),
-					title:     $menuCartItem.attr( 'title' ),
-				},
-				blockChildren
-			)
-		);
-
-		let blockSettings = {
-			title:      __( 'Cart', 'wp-menu-cart' ),
-			icon:       iconCart,
-			category:   'widgets',
-			parent:     [ 'core/navigation' ],
-			keywords:   [ 'cart' ],
-			transforms: {
-				from: [
+					type:      'block',
+					blocks:    [ 'core/navigation-link' ],
+					transform: () => createBlock( 'wpo/wpmenucart' )
+				}
+			]
+		},
+		edit:     function( props ) {
+			return el(
+				'div',
+				{ className: 'wpmenucart-block' },
+				el(
+					serverSideRender,
 					{
-						type:      'block',
-						blocks:    [ 'core/navigation-link' ],
-						transform: () => createBlock( 'wpo/wpmenucart' )
+						block:      'wpo/wpmenucart',
+						attributes: props.attributes,
 					}
-				]
-			},
-			edit:     function() {
-				return blockElem;
-				
-			},
-			save:     function() {
-				return blockElem;
-			},
-		}
-
-		registerBlockType( 'wpo/wpmenucart', blockSettings );
+				)
+			);
+		},
+		save:     function( props ) {
+			// return null to render in php
+			return null;
+		},
 	}
 
-	// create block
-	createCartBlock( $( wpmenucart_block.menu_item ) );
+	registerBlockType( 'wpo/wpmenucart', blockSettings );
 
 } )(
 	window.wp.blocks,
 	window.wp.element,
 	window.wp.i18n,
-	jQuery,
+	window.wp.serverSideRender,
 );
