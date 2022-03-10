@@ -503,8 +503,9 @@ class WpMenuCart {
 			'wpmenucart-block',
 			'wpmenucart_block',
 			array(
-				'ajaxurl' => $ajax_url,
-				'nonce'   => wp_create_nonce( 'wpmenucart' )
+				'ajaxurl'   => $ajax_url,
+				'nonce'     => wp_create_nonce( 'wpmenucart' ),
+				'menu_item' => $this->wpmenucart_menu_item(),
 			)
 		);
 	}

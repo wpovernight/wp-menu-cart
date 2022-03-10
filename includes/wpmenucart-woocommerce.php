@@ -8,8 +8,8 @@ if ( ! class_exists( 'WPMenuCart_WooCommerce' ) ) {
 		}
 	
 		public function menu_item() {
-			// make sure cart is loaded! https://wordpress.org/support/topic/activation-breaks-customise?replies=10#post-7908988
-			$this->maybe_load_cart();
+			$this->maybe_load_session(); // in backend the wc session is null
+			$this->maybe_load_cart();    // make sure cart is loaded! https://wordpress.org/support/topic/activation-breaks-customise?replies=10#post-7908988
 
 			$menu_item = array(
 				'cart_url'				=> $this->cart_url(),
@@ -19,6 +19,14 @@ if ( ! class_exists( 'WPMenuCart_WooCommerce' ) ) {
 			);
 		
 			return apply_filters( 'wpmenucart_menu_item_data', $menu_item );
+		}
+
+		public function maybe_load_session() {
+			if ( empty( WC()->session ) ) {
+				WC()->frontend_includes();
+				WC()->session = new WC_Session_Handler();
+				WC()->session->init();
+			}
 		}
 
 		public function maybe_load_cart() {
@@ -56,7 +64,7 @@ if ( ! class_exists( 'WPMenuCart_WooCommerce' ) ) {
 		}
 
 		public function get_cart_contents_count() {
-			if ( function_exists( 'WC' ) ) {
+			if ( function_exists( 'WC' ) && ! empty( WC()->cart ) ) {
 				return WC()->cart->get_cart_contents_count();
 			} else {
 				return $GLOBALS['woocommerce']->cart->get_cart_contents_count();

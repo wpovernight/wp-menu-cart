@@ -86,24 +86,8 @@
 		registerBlockType( 'wpo/wpmenucart', blockSettings );
 	}
 
-	function loadMenuCartBlock() {
-		let data = {
-			security: wpmenucart_block.nonce,
-			action:	  'wpmenucart_ajax',
-		};
-
-		xhr = $.ajax( {
-			type:    'POST',
-			url:     wpmenucart_block.ajaxurl,
-			data:    data,
-			success: function( response ) {
-				createCartBlock( $( response ) );
-			}
-		} );
-	}
-
-	// load
-	loadMenuCartBlock();
+	// create block
+	createCartBlock( $( wpmenucart_block.menu_item ) );
 
 } )(
 	window.wp.blocks,
