@@ -1,4 +1,4 @@
-( function( blocks, element, i18n, hooks, $ ) {
+( function( blocks, element, i18n, $ ) {
 
 	let __                = i18n.__;
 	let el                = element.createElement;
@@ -93,6 +93,5 @@
 	window.wp.blocks,
 	window.wp.element,
 	window.wp.i18n,
-	window.wp.hooks,
 	jQuery,
 );
