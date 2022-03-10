@@ -1,8 +1,9 @@
-( function( blocks, element, i18n, $ ) {
+( function( blocks, element, i18n, hooks, $ ) {
 
 	let __                = i18n.__;
 	let el                = element.createElement;
 	let registerBlockType = blocks.registerBlockType;
+	let createBlock       = blocks.createBlock;
 
 	let iconCart = el(
 		'svg',
@@ -17,7 +18,7 @@
 		)
 	);
 
-	function createBlock( $menuCartItem ) {
+	function createCartBlock( $menuCartItem ) {
 		let blockChildren = [];
 		$.each( $menuCartItem.children(), function( i, v ) {
 			let $child    = $( v );
@@ -59,10 +60,20 @@
 		);
 
 		let blockSettings = {
-			title:    __( 'Cart', 'wp-menu-cart' ),
-			icon:     iconCart,
-			category: 'layout',
-			keywords: [ 'cart' ],
+			title:      __( 'Cart', 'wp-menu-cart' ),
+			icon:       iconCart,
+			category:   'widgets',
+			parent:     [ 'core/navigation' ],
+			keywords:   [ 'cart' ],
+			transforms: {
+				from: [
+					{
+						type:      'block',
+						blocks:    [ 'core/navigation-link' ],
+						transform: () => createBlock( 'wpo/wpmenucart' )
+					}
+				]
+			},
 			edit:     function() {
 				return blockElem;
 				
@@ -86,7 +97,7 @@
 			url:     wpmenucart_block.ajaxurl,
 			data:    data,
 			success: function( response ) {
-				createBlock( $( response ) );
+				createCartBlock( $( response ) );
 			}
 		} );
 	}
@@ -98,5 +109,6 @@
 	window.wp.blocks,
 	window.wp.element,
 	window.wp.i18n,
+	window.wp.hooks,
 	jQuery,
 );
