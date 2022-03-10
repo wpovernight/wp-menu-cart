@@ -19,12 +19,12 @@
 	);
 
 	let blockSettings = {
-		title:      __( 'Cart', 'wp-menu-cart' ),
-		icon:       iconCart,
-		category:   'widgets',
-		parent:     [ 'core/navigation' ],
-		keywords:   [ 'cart' ],
-		support:    {
+		title:    __( 'Cart', 'wp-menu-cart' ),
+		icon:     iconCart,
+		category: 'widgets',
+		parent:   [ 'core/navigation' ],
+		keywords: [ 'cart' ],
+		support:  {
 			html: true,
 		},
 		transforms: {
@@ -36,7 +36,7 @@
 				}
 			]
 		},
-		edit:     function( props ) {
+		edit: function( props ) {
 			return el(
 				'div',
 				{ className: 'wpmenucart-block' },
@@ -49,7 +49,7 @@
 				)
 			);
 		},
-		save:     function( props ) {
+		save: function( props ) {
 			// return null to render in php
 			return null;
 		},
