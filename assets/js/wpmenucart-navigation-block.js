@@ -39,7 +39,7 @@
 		edit: function( props ) {
 			return el(
 				'div',
-				{ className: 'wpmenucart-block' },
+				{ className: 'wpmenucart-navigation-block' },
 				el(
 					serverSideRender,
 					{

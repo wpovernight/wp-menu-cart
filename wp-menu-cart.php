@@ -476,14 +476,14 @@ class WpMenuCart {
 		add_editor_style( $css );
 
 		wp_register_script(
-			'wpmenucart-block',
-			plugins_url( '/assets/js/wpmenucart-block'.$suffix.'.js', __FILE__ ),
+			'wpmenucart-navigation-block',
+			plugins_url( '/assets/js/wpmenucart-navigation-block'.$suffix.'.js', __FILE__ ),
 			array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-server-side-render' ),
 			WPMENUCART_VERSION
 		);
 
 		register_block_type( 'wpo/wpmenucart-navigation', array(
-			'editor_script'   => 'wpmenucart-block',
+			'editor_script'   => 'wpmenucart-navigation-block',
 			'render_callback' => array( $this, 'cart_navigation_block_output' ),
 		) );
 	}
