@@ -45,8 +45,7 @@ class WpMenuCart {
 		// enqueue scripts & ajax
 		add_action( 'wp_enqueue_scripts', array( &$this, 'load_scripts_styles' ) );           // Load scripts
 		add_action( 'admin_enqueue_scripts', array( &$this, 'load_font_in_block_editor' ) );  // load font in block editor
-		add_action( 'init', array( &$this, 'add_block_editor_styles' ) );                     // add block editor styles
-		add_action( 'init', array( &$this, 'register_cart_block_render' ) );                  // register cart block render
+		add_action( 'init', array( &$this, 'register_cart_navigation_block' ) );              // register cart navigation block
 		add_action( 'wp_ajax_wpmenucart_ajax', array( &$this, 'wpmenucart_ajax' ), 0 );
 		add_action( 'wp_ajax_nopriv_wpmenucart_ajax', array( &$this, 'wpmenucart_ajax' ), 0 );
 
@@ -465,24 +464,16 @@ class WpMenuCart {
 		wp_add_inline_style( 'wp-edit-blocks', $font_css );
 	}
 
-	/*
-	 * The Full Site Editor uses an iframe, the styles must be added using the add_editor_style() function. https://github.com/WordPress/gutenberg/pull/25775#issuecomment-703538383
-	 * The font we are injecting directly in the menu item HTML in the wpmenucart_ajax() function.
-	 */
-	public function add_block_editor_styles() {
+	public function register_cart_navigation_block() {
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
+		// The Full Site Editor uses an iframe, the styles must be added using the add_editor_style() function. https://github.com/WordPress/gutenberg/pull/25775#issuecomment-703538383
 		add_editor_style( plugins_url( '/assets/css/wpmenucart-icons'.$suffix.'.css', __FILE__ ) );
-
 		// Allow wpmenucart-main.css to be overriden via the theme
 		$css = file_exists( get_stylesheet_directory() . '/wpmenucart-main.css' )
 			? get_stylesheet_directory_uri() . '/wpmenucart-main.css'
 			: plugins_url( '/assets/css/wpmenucart-main'.$suffix.'.css', __FILE__ );
 		add_editor_style( $css );
-	}
-
-	public function register_cart_block_render() {
-		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 		wp_register_script(
 			'wpmenucart-block',
@@ -491,13 +482,13 @@ class WpMenuCart {
 			WPMENUCART_VERSION
 		);
 
-		register_block_type( 'wpo/wpmenucart', array(
+		register_block_type( 'wpo/wpmenucart-navigation', array(
 			'editor_script'   => 'wpmenucart-block',
-			'render_callback' => array( $this, 'cart_block_output' ),
+			'render_callback' => array( $this, 'cart_navigation_block_output' ),
 		) );
 	}
 
-	public function cart_block_output( $atts ) {
+	public function cart_navigation_block_output( $atts ) {
 		return $this->wpmenucart_menu_item();
 	}
 

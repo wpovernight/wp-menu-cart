@@ -8,8 +8,9 @@ if ( ! class_exists( 'WPMenuCart_WooCommerce' ) ) {
 		}
 	
 		public function menu_item() {
-			$this->maybe_load_session(); // in backend the wc session is null
-			$this->maybe_load_cart();    // make sure cart is loaded! https://wordpress.org/support/topic/activation-breaks-customise?replies=10#post-7908988
+			$this->maybe_load_session();  // in backend (full site editor) the wc session is null
+			$this->maybe_load_customer();
+			$this->maybe_load_cart();     // make sure cart is loaded! https://wordpress.org/support/topic/activation-breaks-customise?replies=10#post-7908988
 
 			$menu_item = array(
 				'cart_url'				=> $this->cart_url(),
@@ -22,10 +23,17 @@ if ( ! class_exists( 'WPMenuCart_WooCommerce' ) ) {
 		}
 
 		public function maybe_load_session() {
-			if ( empty( WC()->session ) ) {
+			if ( function_exists( 'WC' ) && empty( WC()->session ) ) {
 				WC()->frontend_includes();
-				WC()->session = new WC_Session_Handler();
+				$session_class = apply_filters( 'woocommerce_session_handler', 'WC_Session_Handler' );
+				WC()->session  = new $session_class();
 				WC()->session->init();
+			}
+		}
+
+		public function maybe_load_customer() {
+			if ( function_exists( 'WC' ) && empty( WC()->customer ) ) {
+				WC()->customer = new WC_Customer( get_current_user_id(), true );
 			}
 		}
 
@@ -33,6 +41,7 @@ if ( ! class_exists( 'WPMenuCart_WooCommerce' ) ) {
 			if ( function_exists( 'WC' ) ) {
 				if ( empty( WC()->cart ) ) {
 					WC()->cart = new WC_Cart();
+					WC()->cart->get_cart(); // force cart contents refresh
 				}
 			} else {
 				global $woocommerce;

@@ -32,7 +32,7 @@
 				{
 					type:      'block',
 					blocks:    [ 'core/navigation-link' ],
-					transform: () => createBlock( 'wpo/wpmenucart' )
+					transform: () => createBlock( 'wpo/wpmenucart-navigation' )
 				}
 			]
 		},
@@ -43,19 +43,19 @@
 				el(
 					serverSideRender,
 					{
-						block:      'wpo/wpmenucart',
+						block:      'wpo/wpmenucart-navigation',
 						attributes: props.attributes,
 					}
 				)
 			);
 		},
-		save: function( props ) {
+		save: function() {
 			// return null to render in php
 			return null;
 		},
 	}
 
-	registerBlockType( 'wpo/wpmenucart', blockSettings );
+	registerBlockType( 'wpo/wpmenucart-navigation', blockSettings );
 
 } )(
 	window.wp.blocks,
