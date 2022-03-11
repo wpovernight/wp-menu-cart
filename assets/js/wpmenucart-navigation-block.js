@@ -21,7 +21,6 @@
 	let blockSettings = {
 		title:    __( 'Cart', 'wp-menu-cart' ),
 		icon:     iconCart,
-		category: 'widgets',
 		parent:   [ 'core/navigation' ],
 		keywords: [ 'cart' ],
 		support:  {
@@ -50,7 +49,7 @@
 			);
 		},
 		save: function() {
-			// return null to render in php
+			// return null to render from php
 			return null;
 		},
 	}
