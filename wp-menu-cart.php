@@ -489,6 +489,7 @@ class WpMenuCart {
 	}
 
 	public function cart_navigation_block_output( $atts ) {
+		$this->shop->is_block_editor = true;
 		return $this->wpmenucart_menu_item();
 	}
 

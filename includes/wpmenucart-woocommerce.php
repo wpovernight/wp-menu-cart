@@ -1,6 +1,12 @@
 <?php
 if ( ! class_exists( 'WPMenuCart_WooCommerce' ) ) {
 	class WPMenuCart_WooCommerce {
+
+		/**
+		 * In the Full Site Editor the menu item is loaded inside the block editor iframe, traditional WP functions aren't available there.
+		 */
+		public $is_block_editor = false;
+
 		/**
 		 * Construct.
 		 */
@@ -8,9 +14,12 @@ if ( ! class_exists( 'WPMenuCart_WooCommerce' ) ) {
 		}
 	
 		public function menu_item() {
-			$this->maybe_load_session();  // in backend (full site editor) the wc session is null
-			$this->maybe_load_customer();
-			$this->maybe_load_cart();     // make sure cart is loaded! https://wordpress.org/support/topic/activation-breaks-customise?replies=10#post-7908988
+			if ( $this->is_block_editor ) {
+				$this->maybe_load_session();  // in backend (full site editor) the wc session is null
+				$this->maybe_load_customer();
+			}
+
+			$this->maybe_load_cart(); // make sure cart is loaded! https://wordpress.org/support/topic/activation-breaks-customise?replies=10#post-7908988
 
 			$menu_item = array(
 				'cart_url'				=> $this->cart_url(),
@@ -18,6 +27,8 @@ if ( ! class_exists( 'WPMenuCart_WooCommerce' ) ) {
 				'cart_total'			=> strip_tags( $this->get_cart_total() ),
 				'cart_contents_count'	=> $this->get_cart_contents_count(),
 			);
+
+			$this->is_block_editor = false; // we are done here, reset the property
 		
 			return apply_filters( 'wpmenucart_menu_item_data', $menu_item );
 		}
@@ -25,9 +36,7 @@ if ( ! class_exists( 'WPMenuCart_WooCommerce' ) ) {
 		public function maybe_load_session() {
 			if ( function_exists( 'WC' ) && empty( WC()->session ) ) {
 				WC()->frontend_includes();
-				$session_class = apply_filters( 'woocommerce_session_handler', 'WC_Session_Handler' );
-				WC()->session  = new $session_class();
-				WC()->session->init();
+				WC()->initialize_session();
 			}
 		}
 
@@ -41,8 +50,8 @@ if ( ! class_exists( 'WPMenuCart_WooCommerce' ) ) {
 			if ( function_exists( 'WC' ) ) {
 				if ( empty( WC()->cart ) ) {
 					WC()->cart = new WC_Cart();
-					WC()->cart->get_cart(); // force cart contents refresh
 				}
+				WC()->cart->get_cart(); // force cart contents refresh
 			} else {
 				global $woocommerce;
 				if ( empty( $woocommerce->cart ) ) {
@@ -73,7 +82,7 @@ if ( ! class_exists( 'WPMenuCart_WooCommerce' ) ) {
 		}
 
 		public function get_cart_contents_count() {
-			if ( function_exists( 'WC' ) && ! empty( WC()->cart ) ) {
+			if ( function_exists( 'WC' ) ) {
 				return WC()->cart->get_cart_contents_count();
 			} else {
 				return $GLOBALS['woocommerce']->cart->get_cart_contents_count();
