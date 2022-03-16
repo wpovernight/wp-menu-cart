@@ -508,7 +508,7 @@ class WpMenuCart {
 		return preg_replace( '/(<[^>]+) href=".*?"/i', '$1', $this->wpmenucart_menu_item() );
 	}
 
-	public function is_rendering_block() {
+	public function is_rendering_navigation_block() {
 		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
 			$route = untrailingslashit( $GLOBALS['wp']->query_vars['rest_route'] );
 			if ( strpos( $route, 'wpo/wpmenucart-navigation' ) !== false || strpos( $route, '/navigation' ) !== false ) {
@@ -657,7 +657,7 @@ class WpMenuCart {
 		$item_data = $this->shop->menu_item();
 
 		// Check empty cart settings
-		if ( $item_data['cart_contents_count'] == 0 && ! isset( $this->options['always_display'] ) && ! $this->is_rendering_block() ) {
+		if ( $item_data['cart_contents_count'] == 0 && ! isset( $this->options['always_display'] ) && ! $this->is_rendering_navigation_block() ) {
 			$empty_menu_item = '<a class="wpmenucart-contents empty-wpmenucart" style="display:none">&nbsp;</a>';
 			return $empty_menu_item;
 		}
