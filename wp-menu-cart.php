@@ -511,7 +511,7 @@ class WpMenuCart {
 	public function is_rendering_block() {
 		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
 			$route = untrailingslashit( $GLOBALS['wp']->query_vars['rest_route'] );
-			if ( strpos( $route, 'wpo/wpmenucart-navigation' ) !== false ) {
+			if ( strpos( $route, 'wpo/wpmenucart-navigation' ) !== false || strpos( $route, '/navigation' ) !== false ) {
 				return true;
 			}
 		}
