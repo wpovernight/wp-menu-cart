@@ -23,19 +23,31 @@ class WpMenuCart {
 
 	protected     $plugin_version   = '2.10.4';
 	public static $plugin_slug;
-	public static $plugin_basename;
+	public        $plugin_basename;
 	public        $asset_suffix;
+
+	protected static $_instance = null;
+
+	/**
+	 * Main Plugin Instance
+	 *
+	 * Ensures only one instance of plugin is loaded or can be loaded.
+	 */
+	public static function instance() {
+		if ( is_null( self::$_instance ) ) {
+			self::$_instance = new self();
+		}
+		return self::$_instance;
+	}
 
 	/**
 	 * Construct.
 	 */
 	public function __construct() {
 		self::$plugin_slug = basename(dirname(__FILE__));
-		self::$plugin_basename = plugin_basename(__FILE__);
-
 		$this->options = get_option('wpmenucart');
-
 		$this->define( 'WPMENUCART_VERSION', $this->plugin_version );
+		$this->plugin_basename = plugin_basename(__FILE__);
 
 		$this->asset_suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		
@@ -346,7 +358,7 @@ class WpMenuCart {
 	public function load_custom_ajax() {
 		wp_enqueue_script(
 			'wpmenucart',
-			plugins_url( '/assets/js/wpmenucart'.$this->asset_suffix.'.js' , __FILE__ ),
+			$this->plugin_url() . 'assets/js/wpmenucart'.$this->asset_suffix.'.js',
 			array( 'jquery' ),
 			WPMENUCART_VERSION,
 			true
@@ -376,7 +388,7 @@ class WpMenuCart {
 	public function load_edd_ajax() {
 		wp_enqueue_script(
 			'wpmenucart-edd-ajax',
-			plugins_url( '/assets/js/wpmenucart-edd-ajax'.$this->asset_suffix.'.js', __FILE__ ),
+			$this->plugin_url() . 'assets/js/wpmenucart-edd-ajax'.$this->asset_suffix.'.js',
 			array( 'jquery' ),
 			WPMENUCART_VERSION
 		);
@@ -400,7 +412,7 @@ class WpMenuCart {
 		if ( file_exists( plugin_dir_path( __FILE__ ) . 'assets/css/wpmenucart-font'.$this->asset_suffix.'.css' ) ) {
 			include( plugin_dir_path( __FILE__ ) . 'assets/css/wpmenucart-font'.$this->asset_suffix.'.css' ) ;
 		}
-		$font_css = str_replace( '../fonts', plugins_url( '/assets/fonts', __FILE__ ), ob_get_clean() );
+		$font_css = str_replace( '../fonts', $this->plugin_url() . 'assets/fonts', ob_get_clean() );
 
 		return $font_css;
 	}
@@ -409,7 +421,7 @@ class WpMenuCart {
 	 * Allow wpmenucart-main.css to be overriden via the theme
 	 */
 	public function get_main_css_url() {
-		return file_exists( get_stylesheet_directory() . '/wpmenucart-main.css' ) ? get_stylesheet_directory_uri() . '/wpmenucart-main.css' : plugins_url( '/assets/css/wpmenucart-main'.$this->asset_suffix.'.css', __FILE__ );
+		return file_exists( get_stylesheet_directory() . '/wpmenucart-main.css' ) ? get_stylesheet_directory_uri() . '/wpmenucart-main.css' : $this->plugin_url() . 'assets/css/wpmenucart-main' . $this->asset_suffix.'.css';
 	}
 
 	/**
@@ -417,7 +429,7 @@ class WpMenuCart {
 	 */
 	public function load_scripts_styles() {
 		if ( isset( $this->options['icon_display'] ) ) {
-			wp_enqueue_style( 'wpmenucart-icons', plugins_url( '/assets/css/wpmenucart-icons'.$this->asset_suffix.'.css', __FILE__ ), array(), WPMENUCART_VERSION, 'all' );
+			wp_enqueue_style( 'wpmenucart-icons', $this->plugin_url() . 'assets/css/wpmenucart-icons'.$this->asset_suffix.'.css', array(), WPMENUCART_VERSION, 'all' );
 			wp_add_inline_style( 'wpmenucart-icons', $this->get_font_css() );
 		}
 		
@@ -430,23 +442,23 @@ class WpMenuCart {
 
 		//Load Stylesheet if twentytwelve is active
 		if ( wp_get_theme() == 'Twenty Twelve' ) {
-			wp_enqueue_style( 'wpmenucart-twentytwelve', plugins_url( '/assets/css/wpmenucart-twentytwelve'.$this->asset_suffix.'.css', __FILE__ ), array(), WPMENUCART_VERSION, 'all' );
+			wp_enqueue_style( 'wpmenucart-twentytwelve', $this->plugin_url() . 'assets/css/wpmenucart-twentytwelve'.$this->asset_suffix.'.css', array(), WPMENUCART_VERSION, 'all' );
 		}
 
 		//Load Stylesheet if twentyfourteen is active
 		if ( wp_get_theme() == 'Twenty Fourteen' ) {
-			wp_enqueue_style( 'wpmenucart-twentyfourteen', plugins_url( '/assets/css/wpmenucart-twentyfourteen'.$this->asset_suffix.'.css', __FILE__ ), array(), WPMENUCART_VERSION, 'all' );
+			wp_enqueue_style( 'wpmenucart-twentyfourteen', $this->plugin_url() . 'assets/css/wpmenucart-twentyfourteen' . $this->asset_suffix.'.css', array(), WPMENUCART_VERSION, 'all' );
 		}
 
 		//Load Stylesheet if twentyfourteen is active
 		if ( wp_get_theme() == 'Twenty Fourteen' ) {
-			wp_enqueue_style( 'wpmenucart-twentyfourteen', plugins_url( '/assets/css/wpmenucart-twentyfourteen'.$this->asset_suffix.'.css', __FILE__ ), array(), WPMENUCART_VERSION, 'all' );
+			wp_enqueue_style( 'wpmenucart-twentyfourteen',$this->plugin_url() . 'assets/css/wpmenucart-twentyfourteen'.$this->asset_suffix.'.css', array(), WPMENUCART_VERSION, 'all' );
 		}		
 
 		// extra script that improves AJAX behavior when 'Always display cart' is disabled
 		wp_enqueue_script(
 			'wpmenucart-ajax-assist',
-			plugins_url( '/assets/js/wpmenucart-ajax-assist'.$this->asset_suffix.'.js', __FILE__ ),
+			$this->plugin_url() . 'assets/js/wpmenucart-ajax-assist'.$this->asset_suffix.'.js',
 			array( 'jquery' ),
 			WPMENUCART_VERSION
 		);
@@ -478,7 +490,7 @@ class WpMenuCart {
 		foreach ( $handles as $handle ) {
 			$style = $wp_styles->query( $handle, 'registered' );
 			if ( ! $style ) {
-				$wp_styles->add( 'wpmenucart-icons', plugins_url( '/assets/css/wpmenucart-icons'.$this->asset_suffix.'.css', __FILE__ ), array(), WPMENUCART_VERSION, 'all' );
+				$wp_styles->add( 'wpmenucart-icons', $this->plugin_url() . 'assets/css/wpmenucart-icons'.$this->asset_suffix.'.css', array(), WPMENUCART_VERSION, 'all' );
 				$wp_styles->add( 'wpmenucart', $this->get_main_css_url(), array(), WPMENUCART_VERSION, 'all' );
 			}
 			if ( $wp_styles->query( $handle, 'registered' ) && ! in_array( $handle, $wp_edit_blocks->deps, true ) ) {
@@ -493,7 +505,7 @@ class WpMenuCart {
 	public function register_cart_navigation_block() {
 		wp_register_script(
 			'wpmenucart-navigation-block',
-			plugins_url( '/assets/js/wpmenucart-navigation-block'.$this->asset_suffix.'.js', __FILE__ ),
+			$this->plugin_url() . 'assets/js/wpmenucart-navigation-block'.$this->asset_suffix.'.js',
 			array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-server-side-render' ),
 			WPMENUCART_VERSION
 		);
@@ -735,9 +747,22 @@ class WpMenuCart {
 		die();
 	}
 
-}
+	/**
+	 * Get the plugin url.
+	 * @return string
+	 */
+	public function plugin_url() {
+		return untrailingslashit( plugins_url( '/', __FILE__ ) );
+	}
 
-$wpMenuCart = new WpMenuCart();
+	/**
+	 * Get the plugin path.
+	 * @return string
+	 */
+	public function plugin_path() {
+		return untrailingslashit( plugin_dir_path( __FILE__ ) );
+	}
+}
 
 /**
  * Hide notifications
@@ -748,3 +773,15 @@ if ( ! empty( $_GET['hide_wpmenucart_shop_check'] ) ) {
 }
 
 endif; // class_exists
+
+/**
+ * Returns the main instance of WP Menu Cart to prevent the need to use globals.
+ *
+ * @since  2.10.4
+ * @return WpMenuCart
+ */
+function WpMenuCart() {
+	return WpMenuCart::instance();
+}
+
+WpMenuCart(); // load plugin
