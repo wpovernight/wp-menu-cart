@@ -10,8 +10,7 @@ if ( ! class_exists( 'WPMenuCart_WooCommerce' ) ) {
 		/**
 		 * Construct.
 		 */
-		public function __construct() {
-		}
+		public function __construct() {}
 	
 		public function menu_item() {
 			if ( $this->is_block_editor ) {
