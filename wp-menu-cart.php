@@ -48,8 +48,8 @@ class WpMenuCart {
 		// enqueue scripts & styles
 		add_action( 'wp_enqueue_scripts', array( &$this, 'load_scripts_styles' ) );                   // load frontend scripts
 		add_action( 'admin_enqueue_scripts', array( &$this, 'load_font_in_block_editor' ) );          // load font in block editor
-		add_action( 'init', array( &$this, 'register_cart_navigation_block' ) );                      // register cart navigation block
 		add_action( 'admin_enqueue_scripts', array( &$this, 'load_admin_block_editor_styles' ), 99 ); // load admin block editor styles
+		add_action( 'init', array( &$this, 'register_cart_navigation_block' ) );                      // register cart navigation block
 
 		// AJAX
 		add_action( 'wp_ajax_wpmenucart_ajax', array( &$this, 'wpmenucart_ajax' ), 0 );
