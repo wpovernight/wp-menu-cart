@@ -409,8 +409,8 @@ class WpMenuCart {
 	 */
 	public function get_font_css() {
 		ob_start();
-		if ( file_exists( plugin_dir_path( __FILE__ ) . 'assets/css/wpmenucart-font'.$this->asset_suffix.'.css' ) ) {
-			include( plugin_dir_path( __FILE__ ) . 'assets/css/wpmenucart-font'.$this->asset_suffix.'.css' ) ;
+		if ( file_exists( $this->plugin_path() . 'assets/css/wpmenucart-font'.$this->asset_suffix.'.css' ) ) {
+			include( $this->plugin_path() . 'assets/css/wpmenucart-font'.$this->asset_suffix.'.css' ) ;
 		}
 		$font_css = str_replace( '../fonts', $this->plugin_url() . 'assets/fonts', ob_get_clean() );
 
