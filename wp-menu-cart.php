@@ -654,7 +654,7 @@ class WpMenuCart {
 		$item_data = $this->shop->menu_item();
 
 		// Check empty cart settings
-		if ( ( $item_data['cart_contents_count'] == 0 && ! isset( $this->options['always_display'] ) ) && ! $this::$is_block_editor ) {
+		if ( $item_data['cart_contents_count'] == 0 && ! isset( $this->options['always_display'] ) && ! $this::$is_block_editor ) {
 			$empty_menu_item = '<a class="wpmenucart-contents empty-wpmenucart" style="display:none">&nbsp;</a>';
 			return $empty_menu_item;
 		}
