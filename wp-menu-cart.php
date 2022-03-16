@@ -475,20 +475,20 @@ class WpMenuCart {
 			wp_register_style( 'wpmenucart', $this->get_main_css_url(), array(), WPMENUCART_VERSION, 'all' );
 		}
 
-		$wp_styles       = wp_styles();
-		$wc_blocks_style = $wp_styles->query( 'wc-blocks-style', 'registered' ); // to be used to attach our styles as dependencies
-		$handles         = array(
+		$wp_styles      = wp_styles();
+		$wp_edit_blocks = $wp_styles->query( 'wp-edit-blocks', 'registered' ); // to be used to attach our styles as dependencies
+		$handles        = array(
 			'wpmenucart-icons',
 			'wpmenucart',
 		);
 
-		if ( ! $wc_blocks_style ) {
+		if ( ! $wp_edit_blocks ) {
 			return;
 		}
 
 		foreach ( $handles as $handle ) {
-			if ( wp_style_is( $handle, 'registered' ) && ! in_array( $handle, $wc_blocks_style->deps, true ) ) {
-				$wc_blocks_style->deps[] = $handle;
+			if ( wp_style_is( $handle, 'registered' ) && ! in_array( $handle, $wp_edit_blocks->deps, true ) ) {
+				$wp_edit_blocks->deps[] = $handle;
 			}
 		}
 	}
