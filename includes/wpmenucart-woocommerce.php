@@ -3,17 +3,12 @@ if ( ! class_exists( 'WPMenuCart_WooCommerce' ) ) {
 	class WPMenuCart_WooCommerce {
 
 		/**
-		 * In the Full Site Editor the menu item is loaded inside the block editor iframe, traditional WP functions aren't available there.
-		 */
-		public $is_block_editor = false;
-
-		/**
 		 * Construct.
 		 */
 		public function __construct() {}
 	
 		public function menu_item() {
-			if ( $this->is_block_editor ) {
+			if ( WpMenuCart::$is_block_editor ) {
 				$this->maybe_load_session();  // in backend (full site editor) the wc session is null
 				$this->maybe_load_customer();
 			}
@@ -26,8 +21,6 @@ if ( ! class_exists( 'WPMenuCart_WooCommerce' ) ) {
 				'cart_total'			=> strip_tags( $this->get_cart_total() ),
 				'cart_contents_count'	=> $this->get_cart_contents_count(),
 			);
-
-			$this->is_block_editor = false; // we are done here, reset the property
 		
 			return apply_filters( 'wpmenucart_menu_item_data', $menu_item );
 		}

@@ -21,10 +21,12 @@ if ( ! class_exists( 'WpMenuCart' ) && ! class_exists( 'WPO_Menu_Cart_Pro' ) ) :
 
 class WpMenuCart {	 
 
-	protected     $plugin_version   = '2.10.4';
+	protected     $plugin_version         = '2.10.4';
 	public static $plugin_slug;
 	public static $plugin_basename;
+	public static $is_block_editor        = false; // In the Full Site Editor the menu item is loaded inside the block editor iframe, traditional WP functions aren't available there.
 	public        $suffix;
+	public        $is_gutenberg_installed = false;
 
 	/**
 	 * Construct.
@@ -38,6 +40,8 @@ class WpMenuCart {
 		$this->define( 'WPMENUCART_VERSION', $this->plugin_version );
 
 		$this->suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+		
+		$this->is_gutenberg_installed = defined( 'IS_GUTENBERG_PLUGIN' ) ? IS_GUTENBERG_PLUGIN : false;
 
 		// load the localisation & classes
 		add_action( 'plugins_loaded', array( &$this, 'languages' ), 0 ); // or use init?
@@ -46,10 +50,9 @@ class WpMenuCart {
 		add_action( 'init', array( $this, 'load_classes' ) );
 
 		// enqueue scripts & styles
-		add_action( 'wp_enqueue_scripts', array( &$this, 'load_scripts_styles' ) );                   // load frontend scripts
-		add_action( 'admin_enqueue_scripts', array( &$this, 'load_font_in_block_editor' ) );          // load font in block editor
-		add_action( 'admin_enqueue_scripts', array( &$this, 'load_admin_block_editor_styles' ), 99 ); // load admin block editor styles
-		add_action( 'init', array( &$this, 'register_cart_navigation_block' ) );                      // register cart navigation block
+		add_action( 'wp_enqueue_scripts', array( &$this, 'load_scripts_styles' ) );               // load frontend scripts
+		add_action( 'init', array( &$this, 'register_cart_navigation_block' ) );                  // register cart navigation block
+		add_action( 'wp_default_styles', array( &$this, 'load_block_editor_styles' ), 99 ); // load block editor styles
 
 		// AJAX
 		add_action( 'wp_ajax_wpmenucart_ajax', array( &$this, 'wpmenucart_ajax' ), 0 );
@@ -461,22 +464,11 @@ class WpMenuCart {
 		);
 	}
 
-	public function load_font_in_block_editor() {
-		wp_add_inline_style( 'wp-edit-blocks', $this->get_font_css() );
-	}
-
-	/*
-	 * Inpired by this WC function https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/c631ea42feb01f7598540ba68758c7086ff5350e/src/AssetsController.php#L232-L250
+	/**
+	 * Load Block Editor CSS
 	 */
-	public function load_admin_block_editor_styles() {
-		$screen = get_current_screen();
-		if ( $screen && $screen->is_block_editor() ) {
-			wp_register_style( 'wpmenucart-icons', plugins_url( '/assets/css/wpmenucart-icons'.$this->suffix.'.css', __FILE__ ), array(), WPMENUCART_VERSION, 'all' );
-			wp_register_style( 'wpmenucart', $this->get_main_css_url(), array(), WPMENUCART_VERSION, 'all' );
-		}
-
-		$wp_styles      = wp_styles();
-		$wp_edit_blocks = $wp_styles->query( 'wp-edit-blocks', 'registered' ); // to be used to attach our styles as dependencies
+	public function load_block_editor_styles( $wp_styles ) {
+		$wp_edit_blocks = $wp_styles->query( 'wp-edit-blocks', 'registered' );
 		$handles        = array(
 			'wpmenucart-icons',
 			'wpmenucart',
@@ -486,11 +478,20 @@ class WpMenuCart {
 			return;
 		}
 
+		// add handle css as 'wp-edit-blocks' dependency
 		foreach ( $handles as $handle ) {
-			if ( wp_style_is( $handle, 'registered' ) && ! in_array( $handle, $wp_edit_blocks->deps, true ) ) {
+			$style = $wp_styles->query( $handle, 'registered' );
+			if ( ! $style ) {
+				$wp_styles->add( 'wpmenucart-icons', plugins_url( '/assets/css/wpmenucart-icons'.$this->suffix.'.css', __FILE__ ), array(), WPMENUCART_VERSION, 'all' );
+				$wp_styles->add( 'wpmenucart', $this->get_main_css_url(), array(), WPMENUCART_VERSION, 'all' );
+			}
+			if ( $wp_styles->query( $handle, 'registered' ) && ! in_array( $handle, $wp_edit_blocks->deps, true ) ) {
 				$wp_edit_blocks->deps[] = $handle;
 			}
 		}
+
+		// add inline font css
+		$wp_styles->add_inline_style( 'wp-edit-blocks', $this->get_font_css() );
 	}
 
 	public function register_cart_navigation_block() {
@@ -508,8 +509,10 @@ class WpMenuCart {
 	}
 
 	public function cart_navigation_block_output( $atts ) {
-		$this->shop->is_block_editor = true;
-		return $this->wpmenucart_menu_item();
+		$this::$is_block_editor = true;
+		$menu_item = $this->wpmenucart_menu_item();
+		$this::$is_block_editor = false; // reset property to default value
+		return $menu_item;
 	}
 
 	/**
@@ -688,7 +691,12 @@ class WpMenuCart {
 			$menu_item_classes .= ' ubermenu-target';
 		}
 
-		$menu_item = '<a class="'.$menu_item_classes.'" href="'.$menu_item_href.'" title="'.$menu_item_title.'">';
+		// use 'div' instead of 'a' on block editor
+		if ( $this::$is_block_editor ) {
+			$menu_item = '<div class="'.$menu_item_classes.'">';
+		} else {
+			$menu_item = '<a class="'.$menu_item_classes.'" href="'.$menu_item_href.'" title="'.$menu_item_title.'">';
+		}
 		
 		$menu_item_a_content = '';	
 		if (isset($this->options['icon_display'])) {
@@ -714,7 +722,13 @@ class WpMenuCart {
 
 		$this->menu_items['menu']['menu_item_a_content'] = $menu_item_a_content;
 
-		$menu_item .= $menu_item_a_content . '</a>';
+		$menu_item .= $menu_item_a_content;
+
+		if ( $this::$is_block_editor ) {
+			$menu_item .= '</div>';
+		} else {
+			$menu_item .= '</a>';
+		}
 		
 		$menu_item = apply_filters ('wpmenucart_menu_item_a', $menu_item,  $item_data, $this->options, $menu_item_a_content, $viewing_cart, $start_shopping, $cart_contents);
 
