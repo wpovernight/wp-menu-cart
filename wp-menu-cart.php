@@ -46,8 +46,8 @@ class WpMenuCart {
 		add_action( 'init', array( $this, 'load_classes' ) );
 
 		// enqueue scripts & styles
-		add_action( 'wp_enqueue_scripts', array( &$this, 'load_scripts_styles' ) );               // load frontend scripts
-		add_action( 'init', array( &$this, 'register_cart_navigation_block' ) );                  // register cart navigation block
+		add_action( 'wp_enqueue_scripts', array( &$this, 'load_scripts_styles' ) );         // load frontend scripts
+		add_action( 'init', array( &$this, 'register_cart_navigation_block' ) );            // register cart navigation block
 		add_action( 'wp_default_styles', array( &$this, 'load_block_editor_styles' ), 99 ); // load block editor styles
 
 		// AJAX
