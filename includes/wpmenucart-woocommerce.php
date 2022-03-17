@@ -8,7 +8,7 @@ if ( ! class_exists( 'WPMenuCart_WooCommerce' ) ) {
 		public function __construct() {}
 	
 		public function menu_item() {
-			if ( $GLOBALS['wpMenuCart']->is_rendering_navigation_block() ) {
+			if ( $GLOBALS['wpMenuCart']->is_rest_request() ) {
 				$this->maybe_load_session();  // in backend (full site editor) the wc session is null
 				$this->maybe_load_customer();
 			}

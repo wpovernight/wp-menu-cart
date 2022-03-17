@@ -508,8 +508,12 @@ class WpMenuCart {
 		return preg_replace( '/(<[^>]+) href=".*?"/i', '$1', $this->wpmenucart_menu_item() );
 	}
 
+	public function is_rest_request() {
+		return defined( 'REST_REQUEST' ) && REST_REQUEST;
+	}
+
 	public function is_rendering_navigation_block() {
-		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+		if ( $this->is_rest_request() ) {
 			$route = untrailingslashit( $GLOBALS['wp']->query_vars['rest_route'] );
 			if ( strpos( $route, 'wpo/wpmenucart-navigation' ) !== false || strpos( $route, '/navigation' ) !== false ) {
 				return true;
