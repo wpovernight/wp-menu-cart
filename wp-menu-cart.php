@@ -546,14 +546,19 @@ class WpMenuCart {
 
 	/**
 	 * Gets the menu item <li>
+	 * 
+	 * @param  string $classes
+	 * @param  string $context  can be 'classic' or 'block'
 	 */
 	public function generate_menu_item_li( $classes, $context = 'classic' ) {
-		$classes .= ' menu-item wpmenucartli wpmenucart-display-'.$this->options['items_alignment'];
+		$classes .= ' wpmenucartli wpmenucart-display-'.$this->options['items_alignment'];
 		if ( function_exists( 'is_checkout' ) && function_exists( 'is_cart' ) && ( is_checkout() || is_cart() ) && empty( $this->options['show_on_cart_checkout_page'] ) ) {
 			$classes .= ' hidden-wpmenucart';
 		}
-		if ( $context == 'block' ) {
-			$classes .= '  wp-block-navigation-item wp-block-navigation-link';
+		if ( $context == 'classic' ) {
+			$classes .= ' menu-item';
+		} elseif ( $context == 'block' ) {
+			$classes .= ' wp-block-navigation-item wp-block-navigation-link';
 		}
 
 		// Filter for <li> item classes
