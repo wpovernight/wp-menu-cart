@@ -510,7 +510,7 @@ class WpMenuCart {
 			// deactivate links when using the full site or block editor to prevent navigating away from the editor
 			$menu_item = preg_replace( '/(<[^>]+) href=".*?"/i', '$1', $menu_item );
 		} elseif ( function_exists( 'is_checkout' ) && function_exists( 'is_cart' ) && ( is_checkout() || is_cart() ) && empty( $this->options['show_on_cart_checkout_page'] ) ) {
-			// hide on cart or checkout pages on setting
+			// hide on cart & checkout pages on setting
 			$menu_item = '<div class="hidden-wpmenucart">'.$menu_item.'</div>';
 
 		}
