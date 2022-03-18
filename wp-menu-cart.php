@@ -549,6 +549,8 @@ class WpMenuCart {
 	 * 
 	 * @param  string $classes
 	 * @param  string $context  can be 'classic' or 'block'
+	 * 
+	 * @return string
 	 */
 	public function generate_menu_item_li( $classes, $context = 'classic' ) {
 		$classes .= ' wpmenucartli wpmenucart-display-'.$this->options['items_alignment'];
@@ -590,7 +592,7 @@ class WpMenuCart {
 			$common_classes .= $this->get_common_li_classes( $items );
 		}
 
-		$menu_item_li = $this->generate_menu_item_li( $common_classes );
+		$menu_item_li = $this->generate_menu_item_li( $common_classes, 'classic' );
 		
 		if ( apply_filters( 'wpmenucart_prepend_menu_item', false ) ) {
 			$items = apply_filters( 'wpmenucart_menu_item_wrapper', $menu_item_li ) . $items;
