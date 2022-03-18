@@ -587,12 +587,8 @@ class WpMenuCart {
 	 * @return menu items + Menu Cart item
 	 */
 	public function add_itemcart_to_menu( $items ) {
-		$common_classes = '';
-		if ( $this->get_common_li_classes( $items ) != '' ) {
-			$common_classes .= $this->get_common_li_classes( $items );
-		}
-
-		$menu_item_li = $this->generate_menu_item_li( $common_classes, 'classic' );
+		$common_classes = $this->get_common_li_classes( $items );
+		$menu_item_li   = $this->generate_menu_item_li( $common_classes, 'classic' );
 		
 		if ( apply_filters( 'wpmenucart_prepend_menu_item', false ) ) {
 			$items = apply_filters( 'wpmenucart_menu_item_wrapper', $menu_item_li ) . $items;
