@@ -505,16 +505,12 @@ class WpMenuCart {
 	}
 
 	public function cart_navigation_block_output( $atts ) {
-		$menu_item = $this->wpmenucart_menu_item();
+		$menu = sprintf( '<ul>%s</ul>', $this->generate_menu_item_li( '', 'block' ) );
 		if ( $this->is_block_editor() ) {
 			// deactivate links when using the full site or block editor to prevent navigating away from the editor
-			$menu_item = preg_replace( '/(<[^>]+) href=".*?"/i', '$1', $menu_item );
-		} elseif ( function_exists( 'is_checkout' ) && function_exists( 'is_cart' ) && ( is_checkout() || is_cart() ) && empty( $this->options['show_on_cart_checkout_page'] ) ) {
-			// hide on cart & checkout pages on setting
-			$menu_item = '<div class="hidden-wpmenucart">'.$menu_item.'</div>';
-
+			$menu = preg_replace( '/(<[^>]+) href=".*?"/i', '$1', $menu );
 		}
-		return $menu_item;
+		return $menu;
 	}
 
 	public function is_rest_request() {
@@ -547,35 +543,17 @@ class WpMenuCart {
 			add_filter( 'wp_nav_menu_' . $this->options['menu_slugs'][1] . '_items', array( &$this, 'add_itemcart_to_menu' ) , 10, 2 );
 		}
 	}
-	
+
 	/**
-	 * Add Menu Cart to menu
-	 * 
-	 * @return menu items + Menu Cart item
+	 * Gets the menu item <li>
 	 */
-	public function add_itemcart_to_menu( $items ) {
-		// WooCommerce specific: check if woocommerce cart object is actually loaded
-		if ( isset($this->options['shop_plugin']) && $this->options['shop_plugin'] == 'woocommerce' ) {
-			if ( function_exists( 'WC' ) ) {
-				if ( empty( WC()->cart ) ) {
-					return $items; // nothing to load data from, return menu without cart item
-				}
-			} else {
-				global $woocommerce;
-				if ( empty($woocommerce) || !is_object($woocommerce) || !isset($woocommerce->cart) || !is_object($woocommerce->cart) ) {
-					return $items; // nothing to load data from, return menu without cart item
-				}
-			}
-		}
-
-		$classes = 'menu-item wpmenucartli wpmenucart-display-'.$this->options['items_alignment'];
-
-		if ($this->get_common_li_classes($items) != '') {
-			$classes .= ' ' . $this->get_common_li_classes($items);
-		}
-
+	public function generate_menu_item_li( $classes, $context = 'classic' ) {
+		$classes .= ' menu-item wpmenucartli wpmenucart-display-'.$this->options['items_alignment'];
 		if ( function_exists( 'is_checkout' ) && function_exists( 'is_cart' ) && ( is_checkout() || is_cart() ) && empty( $this->options['show_on_cart_checkout_page'] ) ) {
 			$classes .= ' hidden-wpmenucart';
+		}
+		if ( $context == 'block' ) {
+			$classes .= '  wp-block-navigation-item wp-block-navigation-link';
 		}
 
 		// Filter for <li> item classes
@@ -586,17 +564,30 @@ class WpMenuCart {
 			return $classes;
 		}
 		*/
+
 		$classes = apply_filters( 'wpmenucart_menu_item_classes', $classes );
 		$this->menu_items['menu']['menu_item_li_classes'] = $classes;
 
 		// DEPRECATED: These filters are now deprecated in favour of the more precise filters in the functions!
-		$wpmenucart_menu_item = apply_filters( 'wpmenucart_menu_item_filter', $this->wpmenucart_menu_item() );
+		$menu_item_li = apply_filters_deprecated( 'wpmenucart_menu_item_filter', array( $this->wpmenucart_menu_item() ), '2.5.3', '' );
 
-		$item_data = $this->shop->menu_item();
+		return '<li class="'.$classes.'" id="wpmenucartli">' . $menu_item_li . '</li>';
+	}
+	
+	/**
+	 * Add Menu Cart to menu
+	 * 
+	 * @return menu items + Menu Cart item
+	 */
+	public function add_itemcart_to_menu( $items ) {
+		$common_classes = '';
+		if ( $this->get_common_li_classes( $items ) != '' ) {
+			$common_classes .= $this->get_common_li_classes( $items );
+		}
 
-		$menu_item_li = '<li class="'.$classes.'" id="wpmenucartli">' . $wpmenucart_menu_item . '</li>';
-
-		if ( apply_filters('wpmenucart_prepend_menu_item', false) ) {
+		$menu_item_li = $this->generate_menu_item_li( $common_classes );
+		
+		if ( apply_filters( 'wpmenucart_prepend_menu_item', false ) ) {
 			$items = apply_filters( 'wpmenucart_menu_item_wrapper', $menu_item_li ) . $items;
 		} else {
 			$items .= apply_filters( 'wpmenucart_menu_item_wrapper', $menu_item_li );
