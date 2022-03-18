@@ -509,12 +509,33 @@ class WpMenuCart {
 		if ( $this->is_block_editor() ) {
 			// deactivate links when using the full site or block editor to prevent navigating away from the editor
 			$menu_item = preg_replace( '/(<[^>]+) href=".*?"/i', '$1', $menu_item );
+		} elseif( $this->is_rest_request_on_cart_or_checkout_pages() && empty( $this->options['show_on_cart_checkout_page'] ) ) {
+			// hide on cart or checkout pages on setting
+			$menu_item = str_replace( 'wpmenucart-contents', 'hidden-wpmenucart', $menu_item );
 		}
 		return $menu_item;
 	}
 
 	public function is_rest_request() {
 		return defined( 'REST_REQUEST' ) && REST_REQUEST;
+	}
+
+	public function is_rest_request_on_cart_or_checkout_pages() {
+		if ( function_exists( 'wc_get_page_id' ) ) {
+			$object = $GLOBALS['wp_the_query']->get_queried_object();
+			if ( $object instanceof \WP_Post && $object->post_type == 'page' ) {
+				$request_page_id        = $object->ID;
+				$cart_checkout_page_ids = array(
+					wc_get_page_id( 'cart' ),
+					wc_get_page_id( 'checkout' ),
+				);
+
+				if ( in_array( $request_page_id, $cart_checkout_page_ids ) ) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	public function is_block_editor() {
@@ -570,7 +591,7 @@ class WpMenuCart {
 			$classes .= ' ' . $this->get_common_li_classes($items);
 		}
 
-		if ( function_exists( 'is_checkout' ) && function_exists( 'is_cart' ) && ( is_checkout() || is_cart() ) && empty($this->options['show_on_cart_checkout_page']) ) {
+		if ( function_exists( 'is_checkout' ) && function_exists( 'is_cart' ) && ( is_checkout() || is_cart() ) && empty( $this->options['show_on_cart_checkout_page'] ) ) {
 			$classes .= ' hidden-wpmenucart';
 		}
 
