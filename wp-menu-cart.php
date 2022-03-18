@@ -511,7 +511,7 @@ class WpMenuCart {
 			$menu_item = preg_replace( '/(<[^>]+) href=".*?"/i', '$1', $menu_item );
 		} elseif( $this->is_rest_request_on_cart_or_checkout_pages() && empty( $this->options['show_on_cart_checkout_page'] ) ) {
 			// hide on cart or checkout pages on setting
-			$menu_item = str_replace( 'wpmenucart-contents', 'hidden-wpmenucart', $menu_item );
+			$menu_item = str_replace( 'wpmenucart-contents', 'wpmenucart-contents hidden-wpmenucart', $menu_item );
 		}
 		return $menu_item;
 	}
