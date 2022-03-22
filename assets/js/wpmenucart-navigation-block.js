@@ -5,6 +5,7 @@
 	let registerBlockType = blocks.registerBlockType;
 	let createBlock       = blocks.createBlock;
 
+	// svg icon
 	let iconCart = el(
 		'svg',
 		{
@@ -18,7 +19,8 @@
 		)
 	);
 
-	let blockSettings = {
+	// navigation block
+	let navigationBlockSettings = {
 		title:    __( 'Cart', 'wp-menu-cart' ),
 		icon:     iconCart,
 		parent:   [ 'core/navigation' ],
@@ -37,15 +39,12 @@
 		},
 		edit: function( props ) {
 			return el(
-				'div',
-				{ className: 'wpmenucart-navigation-block' },
-				el(
-					serverSideRender,
-					{
-						block:      'wpo/wpmenucart-navigation',
-						attributes: props.attributes,
-					}
-				)
+				serverSideRender,
+				{
+					block:      'wpo/wpmenucart-navigation',
+					className:  'wpmenucart-navigation-block',
+					attributes: props.attributes,
+				}
 			);
 		},
 		save: function() {
@@ -53,8 +52,7 @@
 			return null;
 		},
 	}
-
-	registerBlockType( 'wpo/wpmenucart-navigation', blockSettings );
+	registerBlockType( 'wpo/wpmenucart-navigation', navigationBlockSettings );
 
 } )(
 	window.wp.blocks,
