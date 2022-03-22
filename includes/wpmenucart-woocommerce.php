@@ -11,10 +11,10 @@ if ( ! class_exists( 'WPMenuCart_WooCommerce' ) ) {
 			$this->maybe_load_cart(); // make sure cart is loaded! https://wordpress.org/support/topic/activation-breaks-customise?replies=10#post-7908988
 
 			$menu_item = array(
-				'cart_url'				=> $this->cart_url(),
-				'shop_page_url'			=> $this->shop_url(),
-				'cart_total'			=> strip_tags( $this->get_cart_total() ),
-				'cart_contents_count'	=> $this->get_cart_contents_count(),
+				'cart_url'            => $this->cart_url(),
+				'shop_page_url'       => $this->shop_url(),
+				'cart_total'          => strip_tags( $this->get_cart_total() ),
+				'cart_contents_count' => $this->get_cart_contents_count(),
 			);
 		
 			return apply_filters( 'wpmenucart_menu_item_data', $menu_item );
