@@ -395,7 +395,7 @@ class WpMenuCart {
 	/*
 	 * In order to avoid issues with relative font paths, we parse the CSS file to print it inline
 	 */
-	public function get_font_css() {
+	public function get_parsed_font_css() {
 		ob_start();
 		if ( file_exists( plugin_dir_path( __FILE__ ) . 'assets/css/wpmenucart-font'.$this->asset_suffix.'.css' ) ) {
 			include( plugin_dir_path( __FILE__ ) . 'assets/css/wpmenucart-font'.$this->asset_suffix.'.css' ) ;
@@ -418,7 +418,7 @@ class WpMenuCart {
 	public function load_scripts_styles() {
 		if ( isset( $this->options['icon_display'] ) ) {
 			wp_enqueue_style( 'wpmenucart-icons', plugins_url( '/assets/css/wpmenucart-icons'.$this->asset_suffix.'.css', __FILE__ ), array(), WPMENUCART_VERSION, 'all' );
-			wp_add_inline_style( 'wpmenucart-icons', $this->get_font_css() );
+			wp_add_inline_style( 'wpmenucart-icons', $this->get_parsed_font_css() );
 		}
 		
 		wp_enqueue_style( 'wpmenucart', $this->get_main_css_url(), array(), WPMENUCART_VERSION, 'all' );
@@ -487,7 +487,7 @@ class WpMenuCart {
 		}
 
 		// add inline font css
-		$wp_styles->add_inline_style( 'wp-edit-blocks', $this->get_font_css() );
+		$wp_styles->add_inline_style( 'wp-edit-blocks', $this->get_parsed_font_css() );
 	}
 
 	public function register_cart_navigation_block() {
