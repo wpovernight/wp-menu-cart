@@ -491,6 +491,10 @@ class WpMenuCart {
 	}
 
 	public function register_cart_navigation_block() {
+		if ( ! function_exists( 'register_block_type' ) ) {
+			return;
+		}
+		
 		wp_register_script(
 			'wpmenucart-navigation-block',
 			plugins_url( '/assets/js/wpmenucart-navigation-block'.$this->asset_suffix.'.js', __FILE__ ),
