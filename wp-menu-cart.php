@@ -21,23 +21,36 @@ if ( ! class_exists( 'WpMenuCart' ) && ! class_exists( 'WPO_Menu_Cart_Pro' ) ) :
 
 class WpMenuCart {	 
 
-	protected     $plugin_version   = '2.11.0-beta-1';
-	public static $plugin_slug;
-	public static $plugin_basename;
-	public        $asset_suffix;
+	protected $plugin_version   = '2.11.0-beta-1';
+	public    $plugin_slug;
+	public    $plugin_basename;
+	public    $options;
+	public    $asset_suffix;
+
+	protected static $_instance = null;
+
+	/**
+	 * Main Plugin Instance
+	 *
+	 * Ensures only one instance of plugin is loaded or can be loaded.
+	 */
+	public static function instance() {
+		if ( is_null( self::$_instance ) ) {
+			self::$_instance = new self();
+		}
+		return self::$_instance;
+	}
 
 	/**
 	 * Construct.
 	 */
 	public function __construct() {
-		self::$plugin_slug = basename(dirname(__FILE__));
-		self::$plugin_basename = plugin_basename(__FILE__);
-
-		$this->options = get_option('wpmenucart');
+		$this->plugin_slug     = basename( dirname( __FILE__ ) );
+		$this->plugin_basename = plugin_basename( __FILE__ );
+		$this->options         = get_option( 'wpmenucart' );
+		$this->asset_suffix    = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 		$this->define( 'WPMENUCART_VERSION', $this->plugin_version );
-
-		$this->asset_suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		
 		// load the localisation & classes
 		add_action( 'plugins_loaded', array( &$this, 'languages' ), 0 ); // or use init?
@@ -531,6 +544,14 @@ class WpMenuCart {
 		return false;
 	}
 
+	public function is_block_theme() {
+		$theme = wp_get_theme();
+		if ( ! empty( $theme ) && is_callable( array( $theme, 'is_block_theme' ) ) ) {
+			return $theme->is_block_theme();
+		}
+		return false;
+	}
+
 	/**
 	 * Add filters to selected menus to add cart item <li>
 	 */
@@ -748,8 +769,6 @@ class WpMenuCart {
 
 }
 
-$wpMenuCart = new WpMenuCart();
-
 /**
  * Hide notifications
  */
@@ -759,3 +778,14 @@ if ( ! empty( $_GET['hide_wpmenucart_shop_check'] ) ) {
 }
 
 endif; // class_exists
+
+/**
+ * Returns the main instance of WP Menu Cart to prevent the need to use globals.
+ *
+ * @return WPO_Menu_Cart
+ */
+function WPO_Menu_Cart() {
+	return WpMenuCart::instance();
+}
+
+WPO_Menu_Cart(); // load plugin

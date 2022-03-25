@@ -4,7 +4,7 @@ class WpMenuCart_Settings {
 	public function __construct() {
 		add_action( 'admin_init', array( &$this, 'init_settings' ) ); // Registers settings
 		add_action( 'admin_menu', array( &$this, 'wpmenucart_add_page' ) );
-		add_filter( 'plugin_action_links_'.WpMenuCart::$plugin_basename, array( &$this, 'wpmenucart_add_settings_link' ) );
+		add_filter( 'plugin_action_links_'.WPO_Menu_Cart()->plugin_basename, array( &$this, 'wpmenucart_add_settings_link' ) );
 
 		//Menu admin, not using for now (very complex ajax structure...)
 		//add_action( 'admin_init', array( &$this, 'wpmenucart_add_meta_box' ) );
@@ -58,18 +58,20 @@ class WpMenuCart_Settings {
 			}
 		}
 		
-		add_settings_field(
-			'menu_slugs',
-			__( 'Select the menu(s) in which you want to display the Menu Cart', 'wp-menu-cart' ),
-			array( &$this, 'menus_select_element_callback' ),
-			$option,
-			'plugin_settings',
-			array(
-				'menu'		=> $option,
-				'id'		=> 'menu_slugs',
-				'options'	=> (array) $this->get_menu_array(),
-			)
-		);
+		if ( ! WPO_Menu_Cart()->is_block_theme() ) {
+			add_settings_field(
+				'menu_slugs',
+				__( 'Select the menu(s) in which you want to display the Menu Cart', 'wp-menu-cart' ),
+				array( &$this, 'menus_select_element_callback' ),
+				$option,
+				'plugin_settings',
+				array(
+					'menu'		=> $option,
+					'id'		=> 'menu_slugs',
+					'options'	=> (array) $this->get_menu_array(),
+				)
+			);
+		}
 
 		add_settings_field(
 			'always_display',
