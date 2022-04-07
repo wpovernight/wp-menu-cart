@@ -1,21 +1,20 @@
 <?php
 if ( ! class_exists( 'WPMenuCart_WooCommerce' ) ) {
 	class WPMenuCart_WooCommerce {
+
 		/**
 		 * Construct.
 		 */
-		public function __construct() {
-		}
+		public function __construct() {}
 	
 		public function menu_item() {
-			// make sure cart is loaded! https://wordpress.org/support/topic/activation-breaks-customise?replies=10#post-7908988
-			$this->maybe_load_cart();
+			$this->maybe_load_cart(); // make sure cart is loaded! https://wordpress.org/support/topic/activation-breaks-customise?replies=10#post-7908988
 
 			$menu_item = array(
-				'cart_url'				=> $this->cart_url(),
-				'shop_page_url'			=> $this->shop_url(),
-				'cart_total'			=> strip_tags( $this->get_cart_total() ),
-				'cart_contents_count'	=> $this->get_cart_contents_count(),
+				'cart_url'            => $this->cart_url(),
+				'shop_page_url'       => $this->shop_url(),
+				'cart_total'          => strip_tags( $this->get_cart_total() ),
+				'cart_contents_count' => $this->get_cart_contents_count(),
 			);
 		
 			return apply_filters( 'wpmenucart_menu_item_data', $menu_item );
@@ -23,9 +22,14 @@ if ( ! class_exists( 'WPMenuCart_WooCommerce' ) ) {
 
 		public function maybe_load_cart() {
 			if ( function_exists( 'WC' ) ) {
-				if ( empty( WC()->cart ) ) {
-					WC()->cart = new WC_Cart();
+				if ( function_exists( 'wc_load_cart' ) && did_action( 'before_woocommerce_init' ) ) {
+					wc_load_cart(); // loads session, customer & cart - WC 3.6.4+ 
+				} else {
+					if ( empty( WC()->cart ) ) {
+						WC()->cart = new WC_Cart();
+					}
 				}
+				WC()->cart->get_cart(); // force cart contents refresh
 			} else {
 				global $woocommerce;
 				if ( empty( $woocommerce->cart ) ) {
