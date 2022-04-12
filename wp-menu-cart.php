@@ -70,6 +70,8 @@ class WpMenuCart {
 		// add filters to selected menus to add cart item <li>
 		add_action( 'init', array( $this, 'filter_nav_menus' ) );
 		// $this->filter_nav_menus();
+
+		$this->get_current_theme_name();
 	}
 
 	/**
@@ -548,6 +550,14 @@ class WpMenuCart {
 		$theme = wp_get_theme();
 		if ( ! empty( $theme ) && is_callable( array( $theme, 'is_block_theme' ) ) ) {
 			return $theme->is_block_theme();
+		}
+		return false;
+	}
+
+	public function get_current_theme_name() {
+		$theme = wp_get_theme();
+		if ( ! empty( $theme ) && is_callable( array( $theme, 'name' ) ) ) {
+			return $theme->name;
 		}
 		return false;
 	}

@@ -42,6 +42,28 @@ class WpMenuCart_Settings {
 			)
 		);			
 
+		if ( WPO_Menu_Cart()->is_block_theme() ) {
+			add_settings_field(
+				'block_theme_enabled',
+				__( 'Current theme is block type', 'wp-menu-cart' ),
+				array( &$this, 'checkbox_element_callback' ),
+				$option,
+				'plugin_settings',
+				array(
+					'menu'        => $option,
+					'id'          => 'block_theme_enabled',
+					'disabled'    => true,
+					'default'     => 1,
+					'description' => sprintf(
+						/* translators: 1. theme name, 2. here docs link */
+						__( 'Your current theme %1$s is block type, this means that you need to configure the Cart using the navigation block. Please see the instructions %2$s.', 'wp-menu-cart' ),
+						'<strong>'.WPO_Menu_Cart()->get_current_theme_name().'</strong>',
+						'<a href="">'.__( 'here', 'wp-menu-cart' ).'</a>'
+					),
+				)
+			);
+		}
+
 		if( $parent_theme = wp_get_theme(get_template()) ) {
 			if (in_array($parent_theme->get('Name'), array('Storefront','Divi'))) {
 				add_settings_field(
