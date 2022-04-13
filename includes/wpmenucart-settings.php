@@ -392,43 +392,6 @@ class WpMenuCart_Settings {
 				?>
 
 			</form>
-			<script type="text/javascript">
-			jQuery( function ( $ ) {
-				$('.hidden-input').on('click', function() {
-					$(this).closest('.hidden-input').prev('.pro-feature').show('slow');
-					$(this).closest('.hidden-input').hide();
-				});
-
-				$('.hidden-input-icon').on('click', function() {
-					$('.pro-icon').show('slow');
-				});
-			});
-			</script>
-			<style type="text/css">
-			.menucart-pro-ad {
-				border: 1px solid #3D5C99;
-				background-color: #EBF5FF;	
-				border-radius: 5px;
-				padding: 15px;
-			}
-			.menucart-pro-ad-big {
-				margin-top: 15px;
-				min-height: 90px;
-				position: relative;
-				padding-left: 120px;
-				clear: both;
-			}
-			.menucart-pro-ad-small {
-				position: absolute;
-				right: 20px;
-				top: 20px;
-			}
-			img.wpo-helper {
-				position: absolute;
-				bottom: 64px;
-				left: -10px;
-			}
-			</style>
 			<div class="menucart-pro-ad menucart-pro-ad-small"> 
 				<?php _e( 'Want To Stand Out?', 'wp-menu-cart' ); ?> <a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartgopro"><?php _e( 'Go Pro.', 'wp-menu-cart' ); ?></a>
 				<ul style="font-size: 12px;list-style-type:circle;margin-left: 20px">

@@ -59,7 +59,8 @@ class WpMenuCart {
 		add_action( 'init', array( $this, 'load_classes' ) );
 
 		// enqueue scripts & styles
-		add_action( 'wp_enqueue_scripts', array( &$this, 'load_scripts_styles' ) );         // load frontend scripts
+		add_action( 'admin_enqueue_scripts', array( &$this, 'load_admin_assets' ) );
+		add_action( 'wp_enqueue_scripts', array( &$this, 'load_frontend_assets' ) );
 		add_action( 'init', array( &$this, 'register_cart_navigation_block' ) );            // register cart navigation block
 		add_action( 'wp_default_styles', array( &$this, 'load_block_editor_styles' ), 99 ); // load block editor styles
 
@@ -426,9 +427,26 @@ class WpMenuCart {
 	}
 
 	/**
-	 * Load CSS
+	 * Load admin assets
 	 */
-	public function load_scripts_styles() {
+	public function load_admin_assets() {
+		if ( is_admin() && get_current_screen()->id == 'woocommerce_page_wpmenucart_options_page' ) {
+			wp_enqueue_style( 'wpmenucart-settings-styles', plugins_url( '/assets/css/wpmenucart-settings'.$this->asset_suffix.'.css', __FILE__ ), array(), WPMENUCART_VERSION );
+			
+			wp_enqueue_script(
+				'wpmenucart-settings-scripts',
+				plugins_url( '/assets/js/wpmenucart-settings'.$this->asset_suffix.'.js', __FILE__ ),
+				array( 'jquery' ),
+				WPMENUCART_VERSION,
+				true
+			);
+		}
+	}
+
+	/**
+	 * Load frontend assets
+	 */
+	public function load_frontend_assets() {
 		if ( isset( $this->options['icon_display'] ) ) {
 			wp_enqueue_style( 'wpmenucart-icons', plugins_url( '/assets/css/wpmenucart-icons'.$this->asset_suffix.'.css', __FILE__ ), array(), WPMENUCART_VERSION, 'all' );
 			wp_add_inline_style( 'wpmenucart-icons', $this->get_parsed_font_css() );
