@@ -388,13 +388,15 @@ class WpMenuCart_Settings {
 
 	public function display_settings() {
 		?>
-		<form method="post" action="options.php">
-			<?php				
-				settings_fields( 'wpmenucart' );
-				do_settings_sections( 'wpmenucart' );
-				submit_button();
-			?>
-		</form>
+		<div class="wpo_wpmenucart_settings_tab">
+			<form method="post" action="options.php">
+				<?php				
+					settings_fields( 'wpmenucart' );
+					do_settings_sections( 'wpmenucart' );
+					submit_button();
+				?>
+			</form>
+		</div>
 		<?php
 	}
 
