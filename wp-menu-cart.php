@@ -262,11 +262,11 @@ class WpMenuCart {
 	/**
 	 * Fallback admin notices
 	 *
-	 * @return string Fallack notice.
+	 * @return void
 	 */
 	public function need_shop() {
-		$error = __( 'WP Menu Cart could not detect an active shop plugin. Make sure you have activated at least one of the supported plugins.' , 'wp-menu-cart' );
-		$message = sprintf('<div class="error"><p>%1$s <a href="%2$s">%3$s</a></p></div>', $error, add_query_arg( 'hide_wpmenucart_shop_check', 'true' ), __( 'Hide this notice', 'wp-menu-cart' ) );
+		$error   = __( 'WP Menu Cart could not detect an active shop plugin. Make sure you have activated at least one of the supported plugins.' , 'wp-menu-cart' );
+		$message = sprintf( '<div class="error"><p>%1$s <a href="%2$s">%3$s</a></p></div>', $error, esc_url( add_query_arg( 'hide_wpmenucart_shop_check', 'true' ) ), __( 'Hide this notice', 'wp-menu-cart' ) );
 		echo $message;
 	}
 
