@@ -10,7 +10,7 @@
  * License URI: https://opensource.org/licenses/gpl-license.php
  * Text Domain: wp-menu-cart
  * WC requires at least: 2.0.0
- * WC tested up to: 6.4
+ * WC tested up to: 6.6
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
