@@ -71,8 +71,6 @@ class WpMenuCart {
 		// add filters to selected menus to add cart item <li>
 		add_action( 'init', array( $this, 'filter_nav_menus' ) );
 		// $this->filter_nav_menus();
-
-		$this->get_current_theme_name();
 	}
 
 	/**
