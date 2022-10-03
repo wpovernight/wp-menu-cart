@@ -572,8 +572,8 @@ class WpMenuCart {
 
 	public function get_current_theme_name() {
 		$theme = wp_get_theme();
-		if ( ! empty( $theme ) && is_callable( array( $theme, 'name' ) ) ) {
-			return $theme->name;
+		if ( ! empty( $theme ) && is_callable( array( $theme, 'display' ) ) ) {
+			return $theme->display( 'Name' );
 		}
 		return false;
 	}
