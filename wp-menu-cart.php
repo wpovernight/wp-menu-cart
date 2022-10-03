@@ -3,14 +3,14 @@
  * Plugin Name: WP Menu Cart
  * Plugin URI: https://wpovernight.com/downloads/menu-cart-pro/
  * Description: Extension for your e-commerce plugin (WooCommerce, WP-Ecommerce, Easy Digital Downloads, Eshop or Jigoshop) that places a cart icon with number of items and total cost in the menu bar. Activate the plugin, set your options and you're ready to go! Will automatically conform to your theme styles.
- * Version: 2.11.0
+ * Version: 2.12.0
  * Author: WP Overnight
  * Author URI: https://wpovernight.com/
  * License: GPLv2 or later
  * License URI: https://opensource.org/licenses/gpl-license.php
  * Text Domain: wp-menu-cart
  * WC requires at least: 2.0.0
- * WC tested up to: 6.4
+ * WC tested up to: 6.6
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -21,7 +21,7 @@ if ( ! class_exists( 'WpMenuCart' ) && ! class_exists( 'WPO_Menu_Cart_Pro' ) ) :
 
 class WpMenuCart {	 
 
-	protected $plugin_version   = '2.11.0';
+	protected $plugin_version   = '2.12.0';
 	public    $plugin_slug;
 	public    $plugin_basename;
 	public    $options;
@@ -59,7 +59,8 @@ class WpMenuCart {
 		add_action( 'init', array( $this, 'load_classes' ) );
 
 		// enqueue scripts & styles
-		add_action( 'wp_enqueue_scripts', array( &$this, 'load_scripts_styles' ) );         // load frontend scripts
+		add_action( 'admin_enqueue_scripts', array( &$this, 'load_admin_assets' ) );
+		add_action( 'wp_enqueue_scripts', array( &$this, 'load_frontend_assets' ) );
 		add_action( 'init', array( &$this, 'register_cart_navigation_block' ) );            // register cart navigation block
 		add_action( 'wp_default_styles', array( &$this, 'load_block_editor_styles' ), 99 ); // load block editor styles
 
@@ -263,11 +264,11 @@ class WpMenuCart {
 	/**
 	 * Fallback admin notices
 	 *
-	 * @return string Fallack notice.
+	 * @return void
 	 */
 	public function need_shop() {
-		$error = __( 'WP Menu Cart could not detect an active shop plugin. Make sure you have activated at least one of the supported plugins.' , 'wp-menu-cart' );
-		$message = sprintf('<div class="error"><p>%1$s <a href="%2$s">%3$s</a></p></div>', $error, add_query_arg( 'hide_wpmenucart_shop_check', 'true' ), __( 'Hide this notice', 'wp-menu-cart' ) );
+		$error   = __( 'WP Menu Cart could not detect an active shop plugin. Make sure you have activated at least one of the supported plugins.' , 'wp-menu-cart' );
+		$message = sprintf( '<div class="error"><p>%1$s <a href="%2$s">%3$s</a></p></div>', $error, esc_url( add_query_arg( 'hide_wpmenucart_shop_check', 'true' ) ), __( 'Hide this notice', 'wp-menu-cart' ) );
 		echo $message;
 	}
 
@@ -428,9 +429,26 @@ class WpMenuCart {
 	}
 
 	/**
-	 * Load CSS
+	 * Load admin assets
 	 */
-	public function load_scripts_styles() {
+	public function load_admin_assets() {
+		if ( is_admin() && get_current_screen()->id == 'woocommerce_page_wpmenucart_options_page' ) {
+			wp_enqueue_style( 'wpmenucart-settings-styles', plugins_url( '/assets/css/wpmenucart-settings'.$this->asset_suffix.'.css', __FILE__ ), array(), WPMENUCART_VERSION );
+			
+			wp_enqueue_script(
+				'wpmenucart-settings-scripts',
+				plugins_url( '/assets/js/wpmenucart-settings'.$this->asset_suffix.'.js', __FILE__ ),
+				array( 'jquery' ),
+				WPMENUCART_VERSION,
+				true
+			);
+		}
+	}
+
+	/**
+	 * Load frontend assets
+	 */
+	public function load_frontend_assets() {
 		if ( isset( $this->options['icon_display'] ) ) {
 			wp_enqueue_style( 'wpmenucart-icons', plugins_url( '/assets/css/wpmenucart-icons'.$this->asset_suffix.'.css', __FILE__ ), array(), WPMENUCART_VERSION, 'all' );
 			wp_add_inline_style( 'wpmenucart-icons', $this->get_parsed_font_css() );

@@ -1,0 +1,1 @@
+jQuery(function(a){a(".hidden-input").on("click",function(){a(this).closest(".hidden-input").prev(".pro-feature").show("slow"),a(this).closest(".hidden-input").hide()}),a(".hidden-input-icon").on("click",function(){a(".pro-icon").show("slow")})});
