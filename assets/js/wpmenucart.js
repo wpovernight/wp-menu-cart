@@ -1,5 +1,5 @@
 /* 
- * JS for WPEC, EDD and eShop
+ * JS for WooCommerce and EDD
  * 
  * AJAX not working for you?
  * You can use our custom 'wpmenucart_update_cart_ajax' handle to trigger a refresh
@@ -17,8 +17,6 @@ jQuery( function( $ ) {
 	let wpmenucart_ajax_timer;
 	let buttons = [
 		".edd-add-to-cart",
-		".wpsc_buy_button",
-		".eshopbutton",
 		"div.cartopt p label.update input#update",
 		".add_to_cart_button",
 		".woocommerce-cart input.minus",
