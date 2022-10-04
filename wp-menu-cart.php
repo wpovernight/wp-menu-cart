@@ -570,6 +570,14 @@ class WpMenuCart {
 		return false;
 	}
 
+	public function get_current_theme_name() {
+		$theme = wp_get_theme();
+		if ( ! empty( $theme ) && is_callable( array( $theme, 'display' ) ) ) {
+			return $theme->display( 'Name' );
+		}
+		return false;
+	}
+
 	/**
 	 * Add filters to selected menus to add cart item <li>
 	 */

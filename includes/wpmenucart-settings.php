@@ -46,6 +46,29 @@ class WpMenuCart_Settings {
 			)
 		);			
 
+		if ( WPO_Menu_Cart()->is_block_theme() ) {
+			add_settings_field(
+				'block_theme_enabled',
+				__( 'Current theme is block type', 'wp-menu-cart' ),
+				array( &$this, 'checkbox_element_callback' ),
+				$option,
+				'plugin_settings',
+				array(
+					'menu'        => $option,
+					'id'          => 'block_theme_enabled',
+					'disabled'    => true,
+					'pro'         => false,
+					'default'     => 1,
+					'description' => sprintf(
+						/* translators: 1. theme name, 2. here docs link */
+						__( 'Your current theme, %1$s, is a block theme, therefore, you need to configure the cart menu using the navigation block. Please follow the instructions to do it %2$s.' ),
+						'<strong>'.WPO_Menu_Cart()->get_current_theme_name().'</strong>',
+						'<a href="https://docs.wpovernight.com/wp-menu-cart/cart-block/" target="_blank">'.__( 'here', 'wp-menu-cart' ).'</a>'
+					),
+				)
+			);
+		}
+
 		if( $parent_theme = wp_get_theme(get_template()) ) {
 			if (in_array($parent_theme->get('Name'), array('Storefront','Divi'))) {
 				add_settings_field(
@@ -126,6 +149,7 @@ class WpMenuCart_Settings {
 				'menu'			=> $option,
 				'id'			=> 'flyout_display',
 				'disabled'		=> true,
+				'pro'           => true,
 			)
 		);
 		
@@ -152,6 +176,7 @@ class WpMenuCart_Settings {
 						'10'		=> '10',
 				),
 				'disabled'		=> true,
+				'pro'           => true,
 			)
 		);			
 
@@ -248,6 +273,7 @@ class WpMenuCart_Settings {
 				'menu'			=> $option,
 				'id'			=> 'custom_class',
 				'disabled'		=> true,
+				'pro'           => true,
 			)
 		);
 		
@@ -489,8 +515,9 @@ class WpMenuCart_Settings {
 	 */
 	public function text_element_callback( $args ) {
 		$menu = $args['menu'];
-		$id = $args['id'];
+		$id   = $args['id'];
 		$size = isset( $args['size'] ) ? $args['size'] : '25';
+		$pro  = isset( $args['pro'] ) ? $args['pro'] : false;
 	
 		$options = get_option( $menu );
 	
@@ -508,7 +535,7 @@ class WpMenuCart_Settings {
 			$html .= sprintf( '<p class="description">%s</p>', $args['description'] );
 		}
 	
-		if (isset( $args['disabled'] )) {
+		if ( isset( $args['disabled'] ) && $pro ) {
 			$html .= ' <span style="display:none;" class="pro-feature"><i>'. __('This feature only available in', 'wp-menu-cart' ) .' <a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartcustomclass">Menu Cart Pro</a></i></span>';
 			$html .= '<div style="position:absolute; left:0; right:0; top:0; bottom:0; background-color:white; -moz-opacity: 0; opacity:0;filter: alpha(opacity=0);" class="hidden-input"></div>';
 			$html = '<div style="display:inline-block; position:relative;">'.$html.'</div>';
@@ -524,7 +551,8 @@ class WpMenuCart_Settings {
 	 */
 	public function select_element_callback( $args ) {
 		$menu = $args['menu'];
-		$id = $args['id'];
+		$id   = $args['id'];
+		$pro  = isset( $args['pro'] ) ? $args['pro'] : false;
 		
 		$options = get_option( $menu );
 		
@@ -548,7 +576,7 @@ class WpMenuCart_Settings {
 			$html .= sprintf( '<p class="description">%s</p>', $args['description'] );
 		}
 		
-		if (isset( $args['disabled'] )) {
+		if ( isset( $args['disabled'] ) && $pro ) {
 			$html .= ' <span style="display:none;" class="pro-feature"><i>'. __('This feature only available in', 'wp-menu-cart' ) .' <a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartflyout">Menu Cart Pro</a></i></span>';
 			$html .= '<div style="position:absolute; left:0; right:0; top:0; bottom:0; background-color:white; -moz-opacity: 0; opacity:0;filter: alpha(opacity=0);" class="hidden-input"></div>';
 			$html = '<div style="display:inline-block; position:relative;">'.$html.'</div>';
@@ -611,7 +639,8 @@ class WpMenuCart_Settings {
 	 */
 	public function checkbox_element_callback( $args ) {
 		$menu = $args['menu'];
-		$id = $args['id'];
+		$id   = $args['id'];
+		$pro  = isset( $args['pro'] ) ? $args['pro'] : false;
 	
 		$options = get_option( $menu );
 	
@@ -629,7 +658,7 @@ class WpMenuCart_Settings {
 			$html .= sprintf( '<p class="description">%s</p>', $args['description'] );
 		}
 	
-		if (isset( $args['disabled'] )) {
+		if ( isset( $args['disabled'] ) && $pro ) {
 			$html .= ' <span style="display:none;" class="pro-feature"><i>'. __('This feature only available in', 'wp-menu-cart' ) .' <a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartflyout">Menu Cart Pro</a></i></span>';
 			$html .= '<div style="position:absolute; left:0; right:0; top:0; bottom:0; background-color:white; -moz-opacity: 0; opacity:0;filter: alpha(opacity=0);" class="hidden-input"></div>';
 			$html = '<div style="display:inline-block; position:relative;">'.$html.'</div>';
@@ -645,7 +674,8 @@ class WpMenuCart_Settings {
 	 */
 	public function radio_element_callback( $args ) {
 		$menu = $args['menu'];
-		$id = $args['id'];
+		$id   = $args['id'];
+		$pro  = isset( $args['pro'] ) ? $args['pro'] : false;
 	
 		$options = get_option( $menu );
 	
@@ -666,7 +696,7 @@ class WpMenuCart_Settings {
 			$html .= sprintf( '<p class="description">%s</p>', $args['description'] );
 		}
 
-		if (isset( $args['disabled'] )) {
+		if ( isset( $args['disabled'] ) && $pro ) {
 			$html .= ' <span style="display:none;" class="pro-feature"><i>'. __('This feature only available in', 'wp-menu-cart' ) .' <a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartflyout">Menu Cart Pro</a></i></span>';
 			$html .= '<div style="position:absolute; left:0; right:0; top:0; bottom:0; background-color:white; -moz-opacity: 0; opacity:0;filter: alpha(opacity=0);" class="hidden-input"></div>';
 			$html = '<div style="display:inline-block; position:relative;">'.$html.'</div>';
