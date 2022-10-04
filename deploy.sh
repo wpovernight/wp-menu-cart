@@ -39,8 +39,8 @@ svn ci  --message "Release $TAG" \
 #### REPEAT FOR woocommerce-menu-bar-cart ####
 
 # Overwrite plugin name
-sed -i -e "s/=== WP Menu Cart ===/=== WooCommerce Menu Cart ===/g" "$GITHUB_WORKSPACE/readme.txt"
-sed -i -e "s/Plugin Name: WP Menu Cart/Plugin Name: WooCommerce Menu Cart/g" "$GITHUB_WORKSPACE/wp-menu-cart.php"
+sed -i -e "s/=== WP Menu Cart ===/=== Menu Cart for WooCommerce ===/g" "$GITHUB_WORKSPACE/readme.txt"
+sed -i -e "s/Plugin Name: WP Menu Cart/Plugin Name: Menu Cart for WooCommerce/g" "$GITHUB_WORKSPACE/wp-menu-cart.php"
 
 # Get the SVN data from wp.org in a folder named `svn`
 SVN_URL="https://plugins.svn.wordpress.org/woocommerce-menu-bar-cart/"
