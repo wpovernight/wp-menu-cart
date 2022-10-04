@@ -4,6 +4,10 @@ class WpMenuCart_Settings {
 	public function __construct() {
 		add_action( 'admin_init', array( &$this, 'init_settings' ) ); // Registers settings
 		add_action( 'admin_menu', array( &$this, 'wpmenucart_add_page' ) );
+		add_action( 'wpo_wpmenucart_before_settings_content', array( &$this, 'nav_error_notice' ) );
+		add_action( 'wpo_wpmenucart_settings_content', array( &$this, 'display_settings' ) );
+		add_action( 'wpo_wpmenucart_after_settings_content', array( &$this, 'display_pro_ad' ) );
+
 		add_filter( 'plugin_action_links_'.WPO_Menu_Cart()->plugin_basename, array( &$this, 'wpmenucart_add_settings_link' ) );
 
 		//Menu admin, not using for now (very complex ajax structure...)
@@ -41,6 +45,29 @@ class WpMenuCart_Settings {
 				'options'	=> (array) $this->get_shop_plugins(),
 			)
 		);			
+
+		if ( WPO_Menu_Cart()->is_block_theme() ) {
+			add_settings_field(
+				'block_theme_enabled',
+				__( 'Current theme is block type', 'wp-menu-cart' ),
+				array( &$this, 'checkbox_element_callback' ),
+				$option,
+				'plugin_settings',
+				array(
+					'menu'        => $option,
+					'id'          => 'block_theme_enabled',
+					'disabled'    => true,
+					'pro'         => false,
+					'default'     => 1,
+					'description' => sprintf(
+						/* translators: 1. theme name, 2. here docs link */
+						__( 'Your current theme, %1$s, is a block theme, therefore, you need to configure the cart menu using the navigation block. Please follow the instructions to do it %2$s.' ),
+						'<strong>'.WPO_Menu_Cart()->get_current_theme_name().'</strong>',
+						'<a href="https://docs.wpovernight.com/wp-menu-cart/cart-block/" target="_blank">'.__( 'here', 'wp-menu-cart' ).'</a>'
+					),
+				)
+			);
+		}
 
 		if( $parent_theme = wp_get_theme(get_template()) ) {
 			if (in_array($parent_theme->get('Name'), array('Storefront','Divi'))) {
@@ -122,6 +149,7 @@ class WpMenuCart_Settings {
 				'menu'			=> $option,
 				'id'			=> 'flyout_display',
 				'disabled'		=> true,
+				'pro'           => true,
 			)
 		);
 		
@@ -148,6 +176,7 @@ class WpMenuCart_Settings {
 						'10'		=> '10',
 				),
 				'disabled'		=> true,
+				'pro'           => true,
 			)
 		);			
 
@@ -244,6 +273,7 @@ class WpMenuCart_Settings {
 				'menu'			=> $option,
 				'id'			=> 'custom_class',
 				'disabled'		=> true,
+				'pro'           => true,
 			)
 		);
 		
@@ -366,100 +396,78 @@ class WpMenuCart_Settings {
 	/**
 	 * Build the options page.
 	 */
-	public function wpmenucart_options_do_page() {		
+	public function wpmenucart_options_do_page() {
+		settings_errors();	
 		?>
-	
 		<div class="wrap">
-			<div class="icon32" id="icon-options-general"><br /></div>
-			<h2><?php _e('WP Menu Cart', 'wp-menu-cart' ) ?></h2>
-				<?php 
-				// print_r(get_option('wpmenucart')); //for debugging
-				//print_r($this->get_shop_plugins());
-				//print_r(apply_filters( 'active_plugins', get_option( 'active_plugins' )));
-				if (!$this->get_menu_array()) {
-				?>
-				<div class="error" style="width:400px; padding:10px;">
-					<?php _e( 'You need to create a menu before you can use Menu Cart. Go to <strong>Appearence > Menus</strong> and create menu to add the cart to.', 'wp-menu-cart' ); ?>
+			<div class="wpo_wpmenucart_settings">
+				<h2><?php _e( 'WP Menu Cart', 'wp-menu-cart' ); ?></h2>
+				<div class="wpo_wpmenucart_settings_container">
+					<?php do_action( 'wpo_wpmenucart_before_settings_content' ); ?>
+					<?php do_action( 'wpo_wpmenucart_settings_content' ); ?>
+					<?php do_action( 'wpo_wpmenucart_after_settings_content' ); ?>
 				</div>
-				<?php } ?>
-				<form method="post" action="options.php">
-				<?php
-									
+			</div>
+		</div>
+		<?php
+	}
+
+	public function display_settings() {
+		?>
+		<div class="wpo_wpmenucart_settings_tab">
+			<form method="post" action="options.php">
+				<?php				
 					settings_fields( 'wpmenucart' );
 					do_settings_sections( 'wpmenucart' );
-
 					submit_button();
 				?>
-
 			</form>
-			<script type="text/javascript">
-			jQuery( function ( $ ) {
-				$('.hidden-input').on('click', function() {
-					$(this).closest('.hidden-input').prev('.pro-feature').show('slow');
-					$(this).closest('.hidden-input').hide();
-				});
+		</div>
+		<?php
+	}
 
-				$('.hidden-input-icon').on('click', function() {
-					$('.pro-icon').show('slow');
-				});
-			});
-			</script>
-			<style type="text/css">
-			.menucart-pro-ad {
-				border: 1px solid #3D5C99;
-				background-color: #EBF5FF;	
-				border-radius: 5px;
-				padding: 15px;
-			}
-			.menucart-pro-ad-big {
-				margin-top: 15px;
-				min-height: 90px;
-				position: relative;
-				padding-left: 120px;
-				clear: both;
-			}
-			.menucart-pro-ad-small {
-				position: absolute;
-				right: 20px;
-				top: 20px;
-			}
-			img.wpo-helper {
-				position: absolute;
-				bottom: 64px;
-				left: -10px;
-			}
-			</style>
-			<div class="menucart-pro-ad menucart-pro-ad-small"> 
-				<?php _e( 'Want To Stand Out?', 'wp-menu-cart' ); ?> <a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartgopro"><?php _e( 'Go Pro.', 'wp-menu-cart' ); ?></a>
-				<ul style="font-size: 12px;list-style-type:circle;margin-left: 20px">
-					<li><?php _e('Unlimited Menus', 'wp-menu-cart' ) ?></li>
-					<li><?php _e('Choice of 14 icons', 'wp-menu-cart' ) ?></li>
-					<li><?php _e('Packed with customization options', 'wp-menu-cart' ) ?></li>
-					<li><?php _e('Access to Shortcode', 'wp-menu-cart' ) ?></li>
-					<li><?php _e('Top Notch Support', 'wp-menu-cart' ) ?></li>
-				</ul>
+	public function nav_error_notice() {
+		if ( ! $this->get_menu_array() && ! WPO_Menu_Cart()->is_block_theme() ) {
+			?>
+			<div class="notice notice-error">
+				<?php _e( 'You need to create a menu before you can use Menu Cart. Go to <strong>Appearence > Menus</strong> and create menu to add the cart to.', 'wp-menu-cart' ); ?>
 			</div>
-			<div class="menucart-pro-ad menucart-pro-ad-big"> 
-				<img src="<?php echo WPO_Menu_Cart()->plugin_url() . '/assets/images/' . 'wpo-helper.png'; ?>" class="wpo-helper">
-				<h2><?php _e('Sell In Style With Menu Cart Pro!', 'wp-menu-cart' ) ?></h2>
-				<br>
-				<?php _e('Go Pro with Menu Cart Pro. Includes all the great standard features found in this free version plus:', 'wp-menu-cart' ) ?>
-				<br>
-				<ul style="list-style-type:circle;margin-left: 40px">
-					<li><?php _e('A choice of over 10 cart icons', 'wp-menu-cart' ) ?></li>
-					<li><?php _e('A fully featured cart details flyout', 'wp-menu-cart' ) ?></li>
-					<li><?php _e('Ability to add cart + flyout to an <strong>unlimited</strong> amount of menus', 'wp-menu-cart' ) ?></li>
-					<li><?php _e('Adjust the content & URLs via the settings', 'wp-menu-cart' ) ?></li>
-					<li><?php _e('Enter custom styles and apply custom classes via the settings', 'wp-menu-cart' ) ?></li>
-					<li><?php _e('WPML compatible', 'wp-menu-cart' ) ?></li>
-					<li><?php _e('Automatic updates on any great new features', 'wp-menu-cart' ) ?></li>
-					<li><?php _e('Put the cart anywhere with the [wpmenucart] shortcode', 'wp-menu-cart' ) ?></li>
-				</ul>
-				<?php
-				/* translators: 1,2: <a> tags */
-				printf (__('Need to see more? %1$sClick here%2$s to check it out. Add a product to your cart and watch what happens!', 'wp-menu-cart' ), '<a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartadmore">','</a>'); ?><br><br>
-				<a class="button button-primary" style="text-align: center;margin: 0px auto" href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartadbuy"><?php _e('Buy Now', 'wp-menu-cart' ) ?></a>
-			</div>
+			<?php
+		}
+	}
+
+	public function display_pro_ad() {
+		?>
+		<div class="menucart-pro-ad menucart-pro-ad-small"> 
+			<?php _e( 'Want To Stand Out?', 'wp-menu-cart' ); ?> <a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartgopro"><?php _e( 'Go Pro.', 'wp-menu-cart' ); ?></a>
+			<ul style="font-size: 12px;list-style-type:circle;margin-left: 20px">
+				<li><?php _e('Unlimited Menus', 'wp-menu-cart' ) ?></li>
+				<li><?php _e('Choice of 14 icons', 'wp-menu-cart' ) ?></li>
+				<li><?php _e('Packed with customization options', 'wp-menu-cart' ) ?></li>
+				<li><?php _e('Access to Shortcode', 'wp-menu-cart' ) ?></li>
+				<li><?php _e('Top Notch Support', 'wp-menu-cart' ) ?></li>
+			</ul>
+		</div>
+		<div class="menucart-pro-ad menucart-pro-ad-big"> 
+			<img src="<?php echo plugins_url( 'assets/images/', dirname(__FILE__) ) . 'wpo-helper.png'; ?>" class="wpo-helper">
+			<h2><?php _e('Sell In Style With Menu Cart Pro!', 'wp-menu-cart' ) ?></h2>
+			<br>
+			<?php _e('Go Pro with Menu Cart Pro. Includes all the great standard features found in this free version plus:', 'wp-menu-cart' ) ?>
+			<br>
+			<ul style="list-style-type:circle;margin-left: 40px">
+				<li><?php _e('A choice of over 10 cart icons', 'wp-menu-cart' ) ?></li>
+				<li><?php _e('A fully featured cart details flyout', 'wp-menu-cart' ) ?></li>
+				<li><?php _e('Ability to add cart + flyout to an <strong>unlimited</strong> amount of menus', 'wp-menu-cart' ) ?></li>
+				<li><?php _e('Adjust the content & URLs via the settings', 'wp-menu-cart' ) ?></li>
+				<li><?php _e('Enter custom styles and apply custom classes via the settings', 'wp-menu-cart' ) ?></li>
+				<li><?php _e('WPML compatible', 'wp-menu-cart' ) ?></li>
+				<li><?php _e('Automatic updates on any great new features', 'wp-menu-cart' ) ?></li>
+				<li><?php _e('Put the cart anywhere with the [wpmenucart] shortcode', 'wp-menu-cart' ) ?></li>
+			</ul>
+			<?php
+			/* translators: 1,2: <a> tags */
+			printf (__('Need to see more? %1$sClick here%2$s to check it out. Add a product to your cart and watch what happens!', 'wp-menu-cart' ), '<a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartadmore">','</a>'); ?><br><br>
+			<a class="button button-primary" style="text-align: center;margin: 0px auto" href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartadbuy"><?php _e('Buy Now', 'wp-menu-cart' ) ?></a>
 		</div>
 		<?php
 	}
@@ -507,8 +515,9 @@ class WpMenuCart_Settings {
 	 */
 	public function text_element_callback( $args ) {
 		$menu = $args['menu'];
-		$id = $args['id'];
+		$id   = $args['id'];
 		$size = isset( $args['size'] ) ? $args['size'] : '25';
+		$pro  = isset( $args['pro'] ) ? $args['pro'] : false;
 	
 		$options = get_option( $menu );
 	
@@ -526,7 +535,7 @@ class WpMenuCart_Settings {
 			$html .= sprintf( '<p class="description">%s</p>', $args['description'] );
 		}
 	
-		if (isset( $args['disabled'] )) {
+		if ( isset( $args['disabled'] ) && $pro ) {
 			$html .= ' <span style="display:none;" class="pro-feature"><i>'. __('This feature only available in', 'wp-menu-cart' ) .' <a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartcustomclass">Menu Cart Pro</a></i></span>';
 			$html .= '<div style="position:absolute; left:0; right:0; top:0; bottom:0; background-color:white; -moz-opacity: 0; opacity:0;filter: alpha(opacity=0);" class="hidden-input"></div>';
 			$html = '<div style="display:inline-block; position:relative;">'.$html.'</div>';
@@ -542,7 +551,8 @@ class WpMenuCart_Settings {
 	 */
 	public function select_element_callback( $args ) {
 		$menu = $args['menu'];
-		$id = $args['id'];
+		$id   = $args['id'];
+		$pro  = isset( $args['pro'] ) ? $args['pro'] : false;
 		
 		$options = get_option( $menu );
 		
@@ -566,7 +576,7 @@ class WpMenuCart_Settings {
 			$html .= sprintf( '<p class="description">%s</p>', $args['description'] );
 		}
 		
-		if (isset( $args['disabled'] )) {
+		if ( isset( $args['disabled'] ) && $pro ) {
 			$html .= ' <span style="display:none;" class="pro-feature"><i>'. __('This feature only available in', 'wp-menu-cart' ) .' <a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartflyout">Menu Cart Pro</a></i></span>';
 			$html .= '<div style="position:absolute; left:0; right:0; top:0; bottom:0; background-color:white; -moz-opacity: 0; opacity:0;filter: alpha(opacity=0);" class="hidden-input"></div>';
 			$html = '<div style="display:inline-block; position:relative;">'.$html.'</div>';
@@ -629,7 +639,8 @@ class WpMenuCart_Settings {
 	 */
 	public function checkbox_element_callback( $args ) {
 		$menu = $args['menu'];
-		$id = $args['id'];
+		$id   = $args['id'];
+		$pro  = isset( $args['pro'] ) ? $args['pro'] : false;
 	
 		$options = get_option( $menu );
 	
@@ -647,7 +658,7 @@ class WpMenuCart_Settings {
 			$html .= sprintf( '<p class="description">%s</p>', $args['description'] );
 		}
 	
-		if (isset( $args['disabled'] )) {
+		if ( isset( $args['disabled'] ) && $pro ) {
 			$html .= ' <span style="display:none;" class="pro-feature"><i>'. __('This feature only available in', 'wp-menu-cart' ) .' <a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartflyout">Menu Cart Pro</a></i></span>';
 			$html .= '<div style="position:absolute; left:0; right:0; top:0; bottom:0; background-color:white; -moz-opacity: 0; opacity:0;filter: alpha(opacity=0);" class="hidden-input"></div>';
 			$html = '<div style="display:inline-block; position:relative;">'.$html.'</div>';
@@ -663,7 +674,8 @@ class WpMenuCart_Settings {
 	 */
 	public function radio_element_callback( $args ) {
 		$menu = $args['menu'];
-		$id = $args['id'];
+		$id   = $args['id'];
+		$pro  = isset( $args['pro'] ) ? $args['pro'] : false;
 	
 		$options = get_option( $menu );
 	
@@ -684,7 +696,7 @@ class WpMenuCart_Settings {
 			$html .= sprintf( '<p class="description">%s</p>', $args['description'] );
 		}
 
-		if (isset( $args['disabled'] )) {
+		if ( isset( $args['disabled'] ) && $pro ) {
 			$html .= ' <span style="display:none;" class="pro-feature"><i>'. __('This feature only available in', 'wp-menu-cart' ) .' <a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartflyout">Menu Cart Pro</a></i></span>';
 			$html .= '<div style="position:absolute; left:0; right:0; top:0; bottom:0; background-color:white; -moz-opacity: 0; opacity:0;filter: alpha(opacity=0);" class="hidden-input"></div>';
 			$html = '<div style="display:inline-block; position:relative;">'.$html.'</div>';
