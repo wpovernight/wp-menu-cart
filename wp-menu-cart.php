@@ -475,20 +475,22 @@ class WpMenuCart {
 		}		
 
 		// extra script that improves AJAX behavior when 'Always display cart' is disabled
-		wp_enqueue_script(
-			'wpmenucart-ajax-assist',
-			$this->plugin_url() . '/assets/js/wpmenucart-ajax-assist' . $this->asset_suffix . '.js',
-			array( 'jquery' ),
-			WPMENUCART_VERSION
-		);
-		wp_localize_script(
-			'wpmenucart-ajax-assist',
-			'wpmenucart_ajax_assist',
-			array(  
-				'shop_plugin'    => isset( $this->options['shop_plugin'] ) ? $this->options['shop_plugin'] : '',
-				'always_display' => isset( $this->options['always_display'] ) ? $this->options['always_display'] : '',
-			)
-		);
+		if ( ! isset( $this->options['always_display'] ) ) {
+			wp_enqueue_script(
+				'wpmenucart-ajax-assist',
+				$this->plugin_url() . '/assets/js/wpmenucart-ajax-assist' . $this->asset_suffix . '.js',
+				array( 'jquery' ),
+				WPMENUCART_VERSION
+			);
+			wp_localize_script(
+				'wpmenucart-ajax-assist',
+				'wpmenucart_ajax_assist',
+				array(  
+					'shop_plugin'    => isset( $this->options['shop_plugin'] ) ? $this->options['shop_plugin'] : '',
+					'always_display' => isset( $this->options['always_display'] ) ? $this->options['always_display'] : '',
+				)
+			);
+		}
 	}
 
 	/**
