@@ -1,5 +1,5 @@
 # WP Menu Cart
-** Works with WooCommerce, WP-Ecommerce, EDD, Eshop and Jigoshop **
+** Works with WooCommerce and Easy Digital Downloads **
 
 If you are not a developer, please use the [WP Menu Cart support forum](http://wordpress.org/support/plugin/wp-menu-cart) on WordPress.org.
 
@@ -28,9 +28,6 @@ Compatibility:
 
 * WooCommerce
 * Easy Digital Downloads
-* Eshop
-* WP-Ecommerce
-* Jigoshop
 
 Translations:
 

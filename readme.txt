@@ -1,17 +1,17 @@
 === WP Menu Cart ===
 Contributors: pomegranate, jprummer, alexmigf, yordansoares, kluver, dpeyou
 Donate link: https://wpovernight.com/downloads/menu-cart-pro/
-Tags: woocommerce, menu, bar, cart, basket, header, shopping cart, navigation, edd, ecommerce, eshop, wp-ecommerce, jigoshop, wpec
+Tags: woocommerce, menu, bar, cart, basket, header, shopping cart, navigation, edd, ecommerce
 Requires at least: 3.4
 Tested up to: 6.0
 Requires PHP: 5.3
 Stable tag: 2.12.0
 
-Automatically displays a shopping cart in your menu bar. Works with WooCommerce, WP-Ecommerce, EDD, Eshop and Jigoshop
+Automatically displays a shopping cart in your menu bar. Works with WooCommerce and Easy Digital Downloads (EDD)
 
 == Description ==
 
-**Works with WooCommerce, WP-Ecommerce, EDD, Eshop and Jigoshop**
+** Works with WooCommerce and Easy Digital Downloads (EDD) **
 
 This plugin installs a shopping cart button in the navigation bar. The plugin takes less than a minute to setup, 
 and includes the following options:
@@ -40,9 +40,6 @@ Compatibility:
 
 * WooCommerce
 * Easy Digital Downloads
-* Eshop
-* WP-Ecommerce
-* Jigoshop
 
 Translations:
 

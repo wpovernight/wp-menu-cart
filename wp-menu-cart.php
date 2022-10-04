@@ -2,7 +2,7 @@
 /**
  * Plugin Name: WP Menu Cart
  * Plugin URI: https://wpovernight.com/downloads/menu-cart-pro/
- * Description: Extension for your e-commerce plugin (WooCommerce, WP-Ecommerce, Easy Digital Downloads, Eshop or Jigoshop) that places a cart icon with number of items and total cost in the menu bar. Activate the plugin, set your options and you're ready to go! Will automatically conform to your theme styles.
+ * Description: Extension for your e-commerce plugin (WooCommerce or Easy Digital Downloads) that places a cart icon with number of items and total cost in the menu bar. Activate the plugin, set your options and you're ready to go! Will automatically conform to your theme styles.
  * Version: 2.12.0
  * Author: WP Overnight
  * Author URI: https://wpovernight.com/
@@ -109,21 +109,6 @@ class WpMenuCart {
 							}
 						}
 						break;
-					case 'jigoshop':
-						include_once( 'includes/wpmenucart-jigoshop.php' );
-						$this->shop = new WPMenuCart_Jigoshop();
-						if ( !isset($this->options['builtin_ajax']) ) {
-							add_filter( 'add_to_cart_fragments', array( &$this, 'woocommerce_ajax_fragments' ) );
-						}
-						break;
-					case 'wp-e-commerce':
-						include_once( 'includes/wpmenucart-wpec.php' );
-						$this->shop = new WPMenuCart_WPEC();
-						break;
-					case 'eshop':
-						include_once( 'includes/wpmenucart-eshop.php' );
-						$this->shop = new WPMenuCart_eShop();
-						break;
 					case 'easy-digital-downloads':
 						include_once( 'includes/wpmenucart-edd.php' );
 						$this->shop = new WPMenuCart_EDD();
@@ -132,7 +117,7 @@ class WpMenuCart {
 						}
 						break;
 				}
-				if ( isset( $this->options['builtin_ajax'] ) || in_array( $this->options['shop_plugin'], array( 'WP e-Commerce', 'wp-e-commerce', 'eShop', 'eshop' ) ) ) {
+				if ( isset( $this->options['builtin_ajax'] ) ) {
 					add_action( 'wp_enqueue_scripts', array( &$this, 'load_custom_ajax' ), 0 );
 				}
 
@@ -183,15 +168,6 @@ class WpMenuCart {
 				case 'easy-digital-downloads':
 					return function_exists('EDD');
 					break;
-				case 'jigoshop':
-					return class_exists('jigoshop_cart');
-					break;
-				case 'wp-e-commerce':
-					return function_exists('wpsc_cart_item_count');
-					break;
-				case 'eshop':
-					return !empty($GLOBALS['eshopoptions']);
-					break;
 				default:
 					return false;
 					break;
@@ -226,11 +202,8 @@ class WpMenuCart {
 		$active_plugins = self::get_active_plugins();
 
 		$shop_plugins = array (
-			'WooCommerce'				=> 'woocommerce/woocommerce.php',
-			'Jigoshop'					=> 'jigoshop/jigoshop.php',
-			'WP e-Commerce'				=> 'wp-e-commerce/wp-shopping-cart.php',
-			'eShop'						=> 'eshop/eshop.php',
-			'Easy Digital Downloads'	=> 'easy-digital-downloads/easy-digital-downloads.php',
+			'WooCommerce'            => 'woocommerce/woocommerce.php',
+			'Easy Digital Downloads' => 'easy-digital-downloads/easy-digital-downloads.php',
 		);
 		
 		// filter shop plugins & add shop names as keys
