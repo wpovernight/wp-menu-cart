@@ -268,6 +268,13 @@ class WpMenuCart {
 		$error   = __( 'WP Menu Cart could not detect an active shop plugin. Make sure you have activated at least one of the supported plugins.' , 'wp-menu-cart' );
 		$message = sprintf( '<div class="error"><p>%1$s <a href="%2$s">%3$s</a></p></div>', $error, esc_url( add_query_arg( 'hide_wpmenucart_shop_check', 'true' ) ), __( 'Hide this notice', 'wp-menu-cart' ) );
 		echo $message;
+
+		/**
+		 * Hide notifications
+		 */
+		if ( isset( $_GET['hide_wpmenucart_shop_check'] ) ) {
+			update_option( 'wpmenucart_shop_check', 'hide' );
+		}
 	}
 
 	public function woocommerce_version_active() {
@@ -810,14 +817,6 @@ class WpMenuCart {
 	}
 
 } // end class
-
-/**
- * Hide notifications
- */
-
-if ( ! empty( $_GET['hide_wpmenucart_shop_check'] ) ) {
-	update_option( 'wpmenucart_shop_check', 'hide' );
-}
 
 endif; // class_exists
 
