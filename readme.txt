@@ -90,7 +90,7 @@ Once the plugin is activated navigate to Settings > Menu Cart Setup. Select your
 * Fix: loads ajax-assist script when 'Always display cart' is disabled
 * Fix: escapes HTML properly before echoing
 * Fix: deprecate usage of globals
-* Fix: issing menu notice style
+* Fix: missing menu notice style
 * Tested up to WooCommerce 6.9
 
 = 2.12.0 =
