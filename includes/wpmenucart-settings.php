@@ -355,9 +355,8 @@ class WpMenuCart_Settings {
 	 * Styles for settings page
 	 */
 	public function wpmenucart_admin_styles() {
-		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		wp_enqueue_style( 'wpmenucart-admin', WPO_Menu_Cart()->plugin_url() . '/assets/css/wpmenucart-icons'.$suffix.'.css', array(), WPMENUCART_VERSION, 'all' );
-		wp_enqueue_style( 'wpmenucart-font', WPO_Menu_Cart()->plugin_url() . '/assets/css/wpmenucart-font'.$suffix.'.css', array(), WPMENUCART_VERSION, 'all' );
+		wp_enqueue_style( 'wpmenucart-admin', WPO_Menu_Cart()->plugin_url() . '/assets/css/wpmenucart-icons' . WPO_Menu_Cart()->asset_suffix . '.css', array(), WPMENUCART_VERSION, 'all' );
+		wp_enqueue_style( 'wpmenucart-font', WPO_Menu_Cart()->plugin_url() . '/assets/css/wpmenucart-font' . WPO_Menu_Cart()->asset_suffix . '.css', array(), WPMENUCART_VERSION, 'all' );
 	}
 	 
 	/**
