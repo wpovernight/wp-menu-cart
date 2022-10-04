@@ -449,7 +449,7 @@ class WpMenuCart_Settings {
 			</ul>
 		</div>
 		<div class="menucart-pro-ad menucart-pro-ad-big"> 
-			<img src="<?php echo plugins_url( 'assets/images/', dirname(__FILE__) ) . 'wpo-helper.png'; ?>" class="wpo-helper">
+			<img src="<?php echo WPO_Menu_Cart()->plugin_url() . '/assets/images/wpo-helper.png'; ?>" class="wpo-helper">
 			<h2><?php _e('Sell In Style With Menu Cart Pro!', 'wp-menu-cart' ) ?></h2>
 			<br>
 			<?php _e('Go Pro with Menu Cart Pro. Includes all the great standard features found in this free version plus:', 'wp-menu-cart' ) ?>
