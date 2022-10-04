@@ -360,7 +360,7 @@ class WpMenuCart {
 	public function load_custom_ajax() {
 		wp_enqueue_script(
 			'wpmenucart',
-			$this->plugin_url() . '/assets/js/wpmenucart'.$this->asset_suffix.'.js',
+			$this->plugin_url() . '/assets/js/wpmenucart' . $this->asset_suffix . '.js',
 			array( 'jquery' ),
 			WPMENUCART_VERSION,
 			true
@@ -411,8 +411,8 @@ class WpMenuCart {
 	 */
 	public function get_parsed_font_css() {
 		ob_start();
-		if ( file_exists( $this->plugin_path() . '/assets/css/wpmenucart-font' .$this->asset_suffix . '.css' ) ) {
-			include( $this->plugin_path() . '/assets/css/wpmenucart-font' .$this->asset_suffix . '.css' ) ;
+		if ( file_exists( $this->plugin_path() . '/assets/css/wpmenucart-font' . $this->asset_suffix . '.css' ) ) {
+			include( $this->plugin_path() . '/assets/css/wpmenucart-font' . $this->asset_suffix . '.css' ) ;
 		}
 		$font_css = str_replace( '../fonts', $this->plugin_url() . '/assets/fonts', ob_get_clean() );
 
@@ -431,11 +431,11 @@ class WpMenuCart {
 	 */
 	public function load_admin_assets() {
 		if ( is_admin() && get_current_screen()->id == 'woocommerce_page_wpmenucart_options_page' ) {
-			wp_enqueue_style( 'wpmenucart-settings-styles', $this->plugin_url() . '/assets/css/wpmenucart-settings'.$this->asset_suffix.'.css', array(), WPMENUCART_VERSION );
+			wp_enqueue_style( 'wpmenucart-settings-styles', $this->plugin_url() . '/assets/css/wpmenucart-settings' . $this->asset_suffix . '.css', array(), WPMENUCART_VERSION );
 			
 			wp_enqueue_script(
 				'wpmenucart-settings-scripts',
-				$this->plugin_url() . '/assets/js/wpmenucart-settings'.$this->asset_suffix.'.js',
+				$this->plugin_url() . '/assets/js/wpmenucart-settings' . $this->asset_suffix . '.js',
 				array( 'jquery' ),
 				WPMENUCART_VERSION,
 				true
@@ -448,7 +448,7 @@ class WpMenuCart {
 	 */
 	public function load_frontend_assets() {
 		if ( isset( $this->options['icon_display'] ) ) {
-			wp_enqueue_style( 'wpmenucart-icons', $this->plugin_url() . '/assets/css/wpmenucart-icons'.$this->asset_suffix.'.css', array(), WPMENUCART_VERSION, 'all' );
+			wp_enqueue_style( 'wpmenucart-icons', $this->plugin_url() . '/assets/css/wpmenucart-icons' . $this->asset_suffix . '.css', array(), WPMENUCART_VERSION, 'all' );
 			wp_add_inline_style( 'wpmenucart-icons', $this->get_parsed_font_css() );
 		}
 		
@@ -461,12 +461,12 @@ class WpMenuCart {
 
 		//Load Stylesheet if twentytwelve is active
 		if ( wp_get_theme() == 'Twenty Twelve' ) {
-			wp_enqueue_style( 'wpmenucart-twentytwelve', $this->plugin_url() . '/assets/css/wpmenucart-twentytwelve'.$this->asset_suffix . '.css', array(), WPMENUCART_VERSION, 'all' );
+			wp_enqueue_style( 'wpmenucart-twentytwelve', $this->plugin_url() . '/assets/css/wpmenucart-twentytwelve' . $this->asset_suffix . '.css', array(), WPMENUCART_VERSION, 'all' );
 		}
 
 		//Load Stylesheet if twentyfourteen is active
 		if ( wp_get_theme() == 'Twenty Fourteen' ) {
-			wp_enqueue_style( 'wpmenucart-twentyfourteen', $this->plugin_url() . '/assets/css/wpmenucart-twentyfourteen'.$this->asset_suffix . '.css', array(), WPMENUCART_VERSION, 'all' );
+			wp_enqueue_style( 'wpmenucart-twentyfourteen', $this->plugin_url() . '/assets/css/wpmenucart-twentyfourteen' . $this->asset_suffix . '.css', array(), WPMENUCART_VERSION, 'all' );
 		}
 
 		//Load Stylesheet if twentyfourteen is active
@@ -528,7 +528,7 @@ class WpMenuCart {
 		
 		wp_register_script(
 			'wpmenucart-navigation-block',
-			$this->plugin_url() . '/assets/js/wpmenucart-navigation-block' .$this->asset_suffix.'.js',
+			$this->plugin_url() . '/assets/js/wpmenucart-navigation-block' . $this->asset_suffix . '.js',
 			array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-server-side-render' ),
 			WPMENUCART_VERSION
 		);
