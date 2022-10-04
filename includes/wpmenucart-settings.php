@@ -291,7 +291,7 @@ class WpMenuCart_Settings {
 			);
 		}
 
-		if ( apply_filters( 'wpo_wpmenucart_enable_builtin_ajax_setting', ( class_exists( 'WooCommerce' ) && isset( $option_values['builtin_ajax'] ) ) || defined('JIGOSHOP_VERSION') || class_exists( 'Easy_Digital_Downloads' ) ) ) {
+		if ( apply_filters( 'wpo_wpmenucart_enable_builtin_ajax_setting', ( class_exists( 'WooCommerce' ) && isset( $option_values['builtin_ajax'] ) ) || class_exists( 'Easy_Digital_Downloads' ) ) ) {
 
 			add_settings_field(
 				'builtin_ajax',
