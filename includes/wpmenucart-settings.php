@@ -430,7 +430,7 @@ class WpMenuCart_Settings {
 		if ( ! $this->get_menu_array() && ! WPO_Menu_Cart()->is_block_theme() ) {
 			?>
 			<div class="notice notice-error">
-				<?php _e( 'You need to create a menu before you can use Menu Cart. Go to <strong>Appearence > Menus</strong> and create menu to add the cart to.', 'wp-menu-cart' ); ?>
+				<p><?php _e( 'You need to create a menu before you can use Menu Cart. Go to <strong>Appearence > Menus</strong> and create menu to add the cart to.', 'wp-menu-cart' ); ?></p>
 			</div>
 			<?php
 		}
