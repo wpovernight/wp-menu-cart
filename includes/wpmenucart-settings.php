@@ -61,7 +61,7 @@ class WpMenuCart_Settings {
 					'default'     => 1,
 					'description' => sprintf(
 						/* translators: 1. theme name, 2. here docs link */
-						__( 'Your current theme, %1$s, is a block theme, therefore, you need to configure the cart menu using the navigation block. Please follow the instructions to do it %2$s.' ),
+						__( 'Your current theme, %1$s, is a block theme, therefore, you need to configure the cart menu using the navigation block. Please follow the instructions to do it %2$s.', 'wp-menu-cart' ),
 						'<strong>'.WPO_Menu_Cart()->get_current_theme_name().'</strong>',
 						'<a href="https://docs.wpovernight.com/wp-menu-cart/cart-block/" target="_blank">'.__( 'here', 'wp-menu-cart' ).'</a>'
 					),
