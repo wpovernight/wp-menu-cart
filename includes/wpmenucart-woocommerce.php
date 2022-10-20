@@ -39,24 +39,11 @@ if ( ! class_exists( 'WPMenuCart_WooCommerce' ) ) {
 		}
 
 		public function cart_url() {
-			if ( defined('WOOCOMMERCE_VERSION') && version_compare( WOOCOMMERCE_VERSION, '2.5.2', '>=' ) ) {
-				return wc_get_cart_url();
-			} else {
-				$cart_page_id = woocommerce_get_page_id('cart');
-				if ( $cart_page_id ) {
-					return apply_filters( 'woocommerce_get_cart_url', get_permalink( $cart_page_id ) );
-				} else {
-					return '';
-				}
-			}
+			return wc_get_cart_url();
 		}
 
 		public function shop_url() {
-			if ( defined('WOOCOMMERCE_VERSION') && version_compare( WOOCOMMERCE_VERSION, '2.5.2', '>=' ) ) {
-				return wc_get_page_permalink( 'shop' );
-			} else {
-				return get_permalink( woocommerce_get_page_id( 'shop' ) );
-			}
+			return wc_get_page_permalink( 'shop' );
 		}
 
 		public function get_cart_contents_count() {
