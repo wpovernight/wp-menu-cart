@@ -11,8 +11,8 @@ if ( ! class_exists( 'WPMenuCart_WooCommerce' ) ) {
 			$this->maybe_load_cart(); // make sure cart is loaded! https://wordpress.org/support/topic/activation-breaks-customise?replies=10#post-7908988
 
 			$menu_item = array(
-				'cart_url'            => $this->cart_url(),
-				'shop_page_url'       => $this->shop_url(),
+				'cart_url'            => wc_get_cart_url(),
+				'shop_page_url'       => wc_get_page_permalink( 'shop' ),
 				'cart_total'          => strip_tags( $this->get_cart_total() ),
 				'cart_contents_count' => $this->get_cart_contents_count(),
 			);
@@ -35,27 +35,6 @@ if ( ! class_exists( 'WPMenuCart_WooCommerce' ) ) {
 				if ( empty( $woocommerce->cart ) ) {
 					$woocommerce->cart = new WC_Cart();
 				}
-			}
-		}
-
-		public function cart_url() {
-			if ( defined('WOOCOMMERCE_VERSION') && version_compare( WOOCOMMERCE_VERSION, '2.5.2', '>=' ) ) {
-				return wc_get_cart_url();
-			} else {
-				$cart_page_id = woocommerce_get_page_id('cart');
-				if ( $cart_page_id ) {
-					return apply_filters( 'woocommerce_get_cart_url', get_permalink( $cart_page_id ) );
-				} else {
-					return '';
-				}
-			}
-		}
-
-		public function shop_url() {
-			if ( defined('WOOCOMMERCE_VERSION') && version_compare( WOOCOMMERCE_VERSION, '2.5.2', '>=' ) ) {
-				return wc_get_page_permalink( 'shop' );
-			} else {
-				return get_permalink( woocommerce_get_page_id( 'shop' ) );
 			}
 		}
 

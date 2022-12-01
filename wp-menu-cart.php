@@ -9,7 +9,7 @@
  * License:              GPLv2 or later
  * License URI:          https://opensource.org/licenses/gpl-license.php
  * Text Domain:          wp-menu-cart
- * WC requires at least: 2.0.0
+ * WC requires at least: 3.0
  * WC tested up to:      6.9
  */
 
@@ -102,11 +102,7 @@ class WpMenuCart {
 						include_once( 'includes/wpmenucart-woocommerce.php' );
 						$this->shop = new WPMenuCart_WooCommerce();
 						if ( !isset($this->options['builtin_ajax']) ) {
-							if ( defined('WOOCOMMERCE_VERSION') && version_compare( WOOCOMMERCE_VERSION, '2.7', '>=' ) ) {
-								add_filter( 'woocommerce_add_to_cart_fragments', array( $this, 'woocommerce_ajax_fragments' ) );
-							} else {
-								add_filter( 'add_to_cart_fragments', array( $this, 'woocommerce_ajax_fragments' ) );
-							}
+							add_filter( 'woocommerce_add_to_cart_fragments', array( $this, 'woocommerce_ajax_fragments' ) );
 						}
 						break;
 					case 'easy-digital-downloads':
