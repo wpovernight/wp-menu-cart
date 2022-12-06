@@ -5,7 +5,7 @@ Tags: woocommerce, menu, bar, cart, basket, header, shopping cart, navigation, e
 Requires at least: 3.4
 Tested up to: 6.1
 Requires PHP: 5.3
-Stable tag: 2.12.1
+Stable tag: 2.13.0
 
 Automatically displays a shopping cart in your menu bar. Works with WooCommerce and Easy Digital Downloads (EDD)
 
@@ -81,6 +81,10 @@ Once the plugin is activated navigate to Settings > Menu Cart Setup. Select your
 == Frequently Asked Questions ==
 
 == Changelog ==
+
+= 2.13.0 (2022-12-06) =
+* Tweak: bumps WooCommerce minimum version to 3.0
+* Tested up to WooCommerce 7.1 & WP 6.1
 
 = 2.12.1 (2022-10-04) =
 * Renames plugin to comply with trademark rules 
