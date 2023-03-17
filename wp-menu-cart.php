@@ -201,8 +201,9 @@ class WpMenuCart {
 		$active_plugins = self::get_active_plugins();
 
 		$shop_plugins = array (
-			'WooCommerce'            => 'woocommerce/woocommerce.php',
-			'Easy Digital Downloads' => 'easy-digital-downloads/easy-digital-downloads.php',
+			'WooCommerce'            	 => 'woocommerce/woocommerce.php',
+			'Easy Digital Downloads' 	 => 'easy-digital-downloads/easy-digital-downloads.php',
+			'Easy Digital Downloads Pro' => 'easy-digital-downloads-pro/easy-digital-downloads.php',
 		);
 		
 		// filter shop plugins & add shop names as keys
