@@ -96,30 +96,32 @@ class WpMenuCart {
 		$this->settings = new WpMenuCart_Settings();
 
 		if ( $this->good_to_go() ) {
-			if (isset($this->options['shop_plugin'])) {
+			if ( isset( $this->options['shop_plugin'] ) ) {
 				if ( false === $this->is_shop_active( $this->options['shop_plugin'] ) ) {
 					return;
 				}
-				switch ($this->options['shop_plugin']) {
+				
+				switch ( $this->options['shop_plugin'] ) {
 					case 'woocommerce':
 						include_once( 'includes/wpmenucart-woocommerce.php' );
 						$this->shop = new WPMenuCart_WooCommerce();
-						if ( !isset($this->options['builtin_ajax']) ) {
+						if ( ! isset($this->options['builtin_ajax']) ) {
 							add_filter( 'woocommerce_add_to_cart_fragments', array( $this, 'woocommerce_ajax_fragments' ) );
 						}
 						break;
 					case 'easy-digital-downloads':
+					case 'easy-digital-downloads-pro':
 						include_once( 'includes/wpmenucart-edd.php' );
 						$this->shop = new WPMenuCart_EDD();
-						if ( !isset($this->options['builtin_ajax']) ) {
+						if ( ! isset($this->options['builtin_ajax']) ) {
 							add_action("wp_enqueue_scripts", array( &$this, 'load_edd_ajax' ), 0 );
 						}
 						break;
 				}
+				
 				if ( isset( $this->options['builtin_ajax'] ) ) {
 					add_action( 'wp_enqueue_scripts', array( &$this, 'load_custom_ajax' ), 0 );
 				}
-
 			}
 		}
 	}
@@ -165,6 +167,7 @@ class WpMenuCart {
 					return function_exists('WC');
 					break;
 				case 'easy-digital-downloads':
+				case 'easy-digital-downloads-pro':
 					return function_exists('EDD');
 					break;
 				default:
@@ -201,8 +204,9 @@ class WpMenuCart {
 		$active_plugins = self::get_active_plugins();
 
 		$shop_plugins = array (
-			'WooCommerce'            => 'woocommerce/woocommerce.php',
-			'Easy Digital Downloads' => 'easy-digital-downloads/easy-digital-downloads.php',
+			'WooCommerce'                => 'woocommerce/woocommerce.php',
+			'Easy Digital Downloads'     => 'easy-digital-downloads/easy-digital-downloads.php',
+			'Easy Digital Downloads Pro' => 'easy-digital-downloads-pro/easy-digital-downloads.php',
 		);
 		
 		// filter shop plugins & add shop names as keys
@@ -357,7 +361,7 @@ class WpMenuCart {
 		);
 
 		// get URL to WordPress ajax handling page  
-		if ( $this->options['shop_plugin'] == 'easy-digital-downloads' && function_exists( 'edd_get_ajax_url' ) ) {
+		if ( in_array( $this->options['shop_plugin'], [ 'easy-digital-downloads', 'easy-digital-downloads-pro' ] ) && function_exists( 'edd_get_ajax_url' ) ) {
 			// use EDD function to prevent SSL issues http://git.io/V7w76A
 			$ajax_url = edd_get_ajax_url();
 		} else {
@@ -420,7 +424,7 @@ class WpMenuCart {
 	 * Load admin assets
 	 */
 	public function load_admin_assets() {
-		if ( is_admin() && get_current_screen()->id == 'woocommerce_page_wpmenucart_options_page' ) {
+		if ( is_admin() && in_array( get_current_screen()->id, [ 'woocommerce_page_wpmenucart_options_page', 'settings_page_wpmenucart_options_page' ] ) ) {
 			wp_enqueue_style( 'wpmenucart-settings-styles', $this->plugin_url() . '/assets/css/wpmenucart-settings' . $this->asset_suffix . '.css', array(), WPMENUCART_VERSION );
 			
 			wp_enqueue_script(
