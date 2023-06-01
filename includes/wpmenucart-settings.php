@@ -341,7 +341,7 @@ class WpMenuCart_Settings {
 				'id'			=> 'floating_display_style',
 				'options'		=> array(
 					'floating-circle'	=> __( 'Floating circle' , 'wp-menu-cart' ),
-					'side-square'		=> __( 'Side square' , 'wp-menu-cart' ),	
+					'side-square'		=> __( 'Side square' , 'wp-menu-cart' ),
 				),
 				'disabled'		=> true,
 				'pro'           => true,
