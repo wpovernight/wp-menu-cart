@@ -208,6 +208,34 @@ class WpMenuCart_Settings {
 			)
 		);
 
+		add_settings_field(
+			'icon_color',
+			__( 'Override icon color', 'wp-menu-cart' ),
+			array( &$this, 'checkbox_element_callback' ),
+			$option,
+			'plugin_settings',
+			array(
+				'menu'			=> $option,
+				'id'			=> 'icon_color',
+				'disabled'		=> true,
+				'pro'           => true,
+			)
+		);
+
+		add_settings_field(
+			'custom_icon',
+			__( 'Custom Icon', 'wp-menu-cart' ),
+			array( &$this, 'media_upload_callback' ),
+			$option,
+			'plugin_settings',
+			array(
+				'menu'					=> $option,
+				'id'					=> 'custom_icon',
+				'uploader_button_text'	=> __( 'Set image', 'wp-menu-cart' ),
+				'disabled'				=> true,
+				'pro'           		=> true,
+			)
+		);
 
 		add_settings_field(
 			'items_display',
@@ -276,7 +304,70 @@ class WpMenuCart_Settings {
 				'pro'           => true,
 			)
 		);
-		
+		add_settings_section(
+			'floating_cart_settings',
+			__( 'Floating cart', 'wp-menu-cart' ),
+			array( &$this, 'section_options_callback' ),
+			$option
+		);
+
+		add_settings_field(
+			'floating_cart_enable',
+			__( 'Enable', 'wp-menu-cart' ),
+			array( &$this, 'select_element_callback' ),
+			$option,
+			'floating_cart_settings',
+			array(
+				'menu'			=> $option,
+				'id'			=> 'floating_cart_enable',
+				'options'		=> array(
+					'no'			=> __( 'No' , 'wp-menu-cart' ),
+					'always'		=> __( 'Always' , 'wp-menu-cart' ),
+					'small-devices' => __( 'Only on small devices' , 'wp-menu-cart' ),
+				),
+				'disabled'		=> true,
+				'pro'           => true,
+			)
+		);
+
+		add_settings_field(
+			'floating_display_style',
+			__( 'Display style', 'wp-menu-cart' ),
+			array( &$this, 'select_element_callback' ),
+			$option,
+			'floating_cart_settings',
+			array(
+				'menu'			=> $option,
+				'id'			=> 'floating_display_style',
+				'options'		=> array(
+					'floating-circle'	=> __( 'Floating circle' , 'wp-menu-cart' ),
+					'side-square'		=> __( 'Side square' , 'wp-menu-cart' ),
+				),
+				'disabled'		=> true,
+				'pro'           => true,
+			)
+		);
+
+		add_settings_field(
+			'floating_cart_position',
+			__( 'Position', 'wp-menu-cart' ),
+			array( &$this, 'select_element_callback' ),
+			$option,
+			'floating_cart_settings',
+			array(
+				'menu'			=> $option,
+				'id'			=> 'floating_cart_position',
+				'options'		=> array(
+					'bottom-right'	=> __( 'Bottom right' , 'wp-menu-cart' ),
+					'bottom-left'	=> __( 'Bottom left' , 'wp-menu-cart' ),
+					'top-right'		=> __( 'Top right' , 'wp-menu-cart' ),
+					'top-left'		=> __( 'Top left' , 'wp-menu-cart' ),
+				),
+				'disabled'		=> true,
+				'pro'           => true,
+			)
+		);
+
 		if ( function_exists( 'icl_register_string' ) ) {
 			add_settings_field(
 				'wpml_string_translation',
@@ -742,6 +833,29 @@ class WpMenuCart_Settings {
 
 		$html = '<table><tr>'.$icons.'</tr><tr>'.$radios.'</tr></table>'.$profeature;
 		
+		echo $html;
+	}
+
+	public function media_upload_callback( $args ) {
+		$menu = $args['menu'];
+		$id   = $args['id'];
+		$pro  = isset( $args['pro'] ) ? $args['pro'] : false;
+		$btn_text = $args['uploader_button_text'];
+
+		$disabled = (isset( $args['disabled'] )) ? ' disabled' : '';
+		$html = sprintf( '<input type="button" id="%1$s" name="%2$s[%1$s]" class="btn button-primary" value="%3$s" %4$s/>', esc_attr( $id ), esc_attr( $menu ), $btn_text, esc_attr( $disabled ) );
+	
+		// Displays option description.
+		if ( isset( $args['description'] ) ) {
+			$html .= sprintf( '<p class="description">%s</p>', wp_kses_post( $args['description'] ) );
+		}
+	
+		if ( isset( $args['disabled'] ) && $pro ) {
+			$html .= ' <span style="display:none;" class="pro-feature"><i>'. __( 'This feature only available in', 'wp-menu-cart' ) .' <a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartflyout">Menu Cart Pro</a></i></span>';
+			$html .= '<div style="position:absolute; left:0; right:0; top:0; bottom:0; background-color:white; -moz-opacity: 0; opacity:0;filter: alpha(opacity=0);" class="hidden-input"></div>';
+			$html = '<div style="display:inline-block; position:relative;">'.$html.'</div>';
+		}
+			
 		echo $html;
 	}
 
