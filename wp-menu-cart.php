@@ -815,7 +815,7 @@ class WpMenuCart {
 	public function wc_block_support_script() {
 		wp_enqueue_script(
 			'wpmenucart-cart-checkout-js',
-			$this->plugin_url() . '/assets/js/wpmenucart-wc-block-support.js',
+			$this->plugin_url() . '/assets/js/wpmenucart-wc-block-support'. $this->asset_suffix . '.js',
 			array( 'jquery' ),
 			WPMENUCART_VERSION
 		);
