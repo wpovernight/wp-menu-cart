@@ -3,7 +3,7 @@ Contributors: pomegranate, jprummer, alexmigf, yordansoares, kluver, dpeyou
 Donate link: https://wpovernight.com/downloads/menu-cart-pro/
 Tags: woocommerce, menu, bar, cart, basket, header, shopping cart, navigation, edd, ecommerce
 Requires at least: 3.4
-Tested up to: 6.2
+Tested up to: 6.3
 Requires PHP: 5.3
 Stable tag: 2.14.0
 
