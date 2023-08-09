@@ -828,8 +828,8 @@ class WpMenuCart {
 			'wpmenucart-cart-checkout-js',
 			'wpmenucart_cart_ajax',
 			array(  
-				'ajaxurl'        => admin_url( 'admin-ajax.php' ),
-				'nonce'          => wp_create_nonce('wpmenucart'),
+				'ajaxurl' => admin_url( 'admin-ajax.php' ),
+				'nonce'   => wp_create_nonce( 'wpmenucart' ),
 			)
 		);
 	}
