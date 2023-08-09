@@ -74,6 +74,9 @@ class WpMenuCart {
 		
 		// HPOS compatibility
 		add_action( 'before_woocommerce_init', array( $this, 'woocommerce_hpos_compatible' ) );
+
+		add_action( 'woocommerce_blocks_enqueue_cart_block_scripts_after', array( $this, 'wc_block_support_script' ) );
+		add_action( 'woocommerce_blocks_enqueue_checkout_block_scripts_after', array( $this, 'wc_block_support_script' ) );
 	}
 
 	/**
@@ -441,6 +444,8 @@ class WpMenuCart {
 	 * Load frontend assets
 	 */
 	public function load_frontend_assets() {
+
+		
 		if ( isset( $this->options['icon_display'] ) ) {
 			wp_enqueue_style( 'wpmenucart-icons', $this->plugin_url() . '/assets/css/wpmenucart-icons' . $this->asset_suffix . '.css', array(), WPMENUCART_VERSION, 'all' );
 			wp_add_inline_style( 'wpmenucart-icons', $this->get_parsed_font_css() );
@@ -484,6 +489,9 @@ class WpMenuCart {
 					'always_display' => isset( $this->options['always_display'] ) ? $this->options['always_display'] : '',
 				)
 			);
+		}
+		if ( isset( $this->options['show_on_cart_checkout_page'] ) && function_exists( 'is_checkout' ) && function_exists( 'is_cart' ) && ( is_checkout() || is_cart() ) && version_compare( WC_VERSION, '7.7', '>' ) ) {
+			wp_enqueue_script( 'wc-cart-fragments' );
 		}
 	}
 
@@ -803,6 +811,27 @@ class WpMenuCart {
 	 */
 	public function plugin_path() {
 		return untrailingslashit( plugin_dir_path( __FILE__ ) );
+	}
+
+	/**
+	 * Enqueue script after WooCommerce Cart and Checkout block
+	 * @return null
+	 */
+	public function wc_block_support_script() {
+		wp_enqueue_script(
+			'wpmenucart-cart-checkout-js',
+			$this->plugin_url() . '/assets/js/wpmenucart-wc-block-support'. $this->asset_suffix . '.js',
+			array( 'jquery' ),
+			WPMENUCART_VERSION
+		);
+		wp_localize_script(
+			'wpmenucart-cart-checkout-js',
+			'wpmenucart_cart_ajax',
+			array(  
+				'ajaxurl' => admin_url( 'admin-ajax.php' ),
+				'nonce'   => wp_create_nonce( 'wpmenucart' ),
+			)
+		);
 	}
 
 } // end class
