@@ -444,6 +444,8 @@ class WpMenuCart {
 	 * Load frontend assets
 	 */
 	public function load_frontend_assets() {
+
+		
 		if ( isset( $this->options['icon_display'] ) ) {
 			wp_enqueue_style( 'wpmenucart-icons', $this->plugin_url() . '/assets/css/wpmenucart-icons' . $this->asset_suffix . '.css', array(), WPMENUCART_VERSION, 'all' );
 			wp_add_inline_style( 'wpmenucart-icons', $this->get_parsed_font_css() );
@@ -487,6 +489,9 @@ class WpMenuCart {
 					'always_display' => isset( $this->options['always_display'] ) ? $this->options['always_display'] : '',
 				)
 			);
+		}
+		if ( isset( $this->options['show_on_cart_checkout_page'] ) && function_exists( 'is_checkout' ) && function_exists( 'is_cart' ) && ( is_checkout() || is_cart() ) && version_compare( WC_VERSION, '7.7', '>' ) ) {
+			wp_enqueue_script( 'wc-cart-fragments' );
 		}
 	}
 
