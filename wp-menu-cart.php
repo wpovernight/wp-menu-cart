@@ -617,7 +617,11 @@ class WpMenuCart {
 		} elseif ( $context == 'block' ) {
 			$classes .= ' wp-block-navigation-item wp-block-navigation-link';
 		}
-
+		// Fix jumping of a menu on the load 
+		$item_data = $this->shop->menu_item();
+		if ( $item_data['cart_contents_count'] == 0 && ! isset( $this->options['always_display'] ) && ! $this->is_block_editor() ) {
+			$classes .= ' empty-wpmenucart';
+		}
 		// Filter for <li> item classes
 		/* Usage (in the themes functions.php):
 		add_filter('wpmenucart_menu_item_classes', 'add_wpmenucart_item_class', 1, 1);
