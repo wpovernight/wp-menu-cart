@@ -655,7 +655,7 @@ class WpMenuCart_Settings {
 		$disabled = (isset( $args['disabled'] )) ? ' disabled' : '';
 		
 		$html  = sprintf( '<select name="%1$s[%2$s]" id="%1$s[%2$s]"%3$s>', esc_attr( $menu ), esc_attr( $id ), esc_attr( $disabled ) );
-		if ( $args['id'] == 'shop_plugin' ) {
+		if ( 'shop_plugin' === $args['id'] ) {
 			$html .= sprintf( '<option value="%s"%s>%s</option>', '0', selected( $current, '0', false ), __( 'None', 'wp-menu-cart' ) );
 		}
 		
