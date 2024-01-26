@@ -608,36 +608,29 @@ class WpMenuCart {
 	 * @return string
 	 */
 	public function generate_menu_item_li( $classes, $context = 'classic' ) {
-		$classes .= ' wpmenucartli wpmenucart-display-'.$this->options['items_alignment'];
+		$classes .= ' wpmenucartli wpmenucart-display-' . $this->options['items_alignment'];
 		if ( function_exists( 'is_checkout' ) && function_exists( 'is_cart' ) && ( is_checkout() || is_cart() ) && empty( $this->options['show_on_cart_checkout_page'] ) ) {
 			$classes .= ' hidden-wpmenucart';
 		}
-		if ( $context == 'classic' ) {
+
+		if ( 'classic' === $context ) {
 			$classes .= ' menu-item';
-		} elseif ( $context == 'block' ) {
+		} elseif ( 'block' === $context ) {
 			$classes .= ' wp-block-navigation-item wp-block-navigation-link';
 		}
-		// Fix jumping of a menu on the load 
+
 		$item_data = $this->shop->menu_item();
-		if ( $item_data['cart_contents_count'] == 0 && ! isset( $this->options['always_display'] ) && ! $this->is_block_editor() ) {
+		if ( 0 === $item_data['cart_contents_count'] && ! isset( $this->options['always_display'] ) && ! $this->is_block_editor() ) {
 			$classes .= ' empty-wpmenucart';
 		}
-		// Filter for <li> item classes
-		/* Usage (in the themes functions.php):
-		add_filter('wpmenucart_menu_item_classes', 'add_wpmenucart_item_class', 1, 1);
-		function add_wpmenucart_item_class ($classes) {
-			$classes .= ' yourclass';
-			return $classes;
-		}
-		*/
 
-		$classes = apply_filters( 'wpmenucart_menu_item_classes', $classes );
+		$classes                                          = apply_filters( 'wpmenucart_menu_item_classes', $classes );
 		$this->menu_items['menu']['menu_item_li_classes'] = $classes;
 
 		// DEPRECATED: These filters are now deprecated in favour of the more precise filters in the functions!
 		$menu_item_li = apply_filters_deprecated( 'wpmenucart_menu_item_filter', array( $this->wpmenucart_menu_item() ), '2.5.3', '' );
 
-		return '<li class="'.$classes.'" id="wpmenucartli">' . $menu_item_li . '</li>';
+		return '<li class="' . $classes . '" id="wpmenucartli">' . $menu_item_li . '</li>';
 	}
 	
 	/**
