@@ -17,13 +17,8 @@ class WpMenuCart_Settings {
 	 * User settings.
 	 */
 	public function init_settings() {
-		$option = 'wpmenucart';
-	
-		// Create option in wp_options.
-		if ( false == get_option( $option ) ) {
-			add_option( $option );
-		}
-		$option_values = get_option($option);
+		$option        = 'wpmenucart';
+		$option_values = get_option( $option, array() );
 	
 		// Section.
 		add_settings_section(
@@ -40,9 +35,9 @@ class WpMenuCart_Settings {
 			$option,
 			'plugin_settings',
 			array(
-				'menu'		=> $option,
-				'id'		=> 'shop_plugin',
-				'options'	=> (array) $this->get_shop_plugins(),
+				'menu'    => $option,
+				'id'      => 'shop_plugin',
+				'options' => (array) $this->get_shop_plugins(),
 			)
 		);			
 
@@ -69,8 +64,8 @@ class WpMenuCart_Settings {
 			);
 		}
 
-		if( $parent_theme = wp_get_theme(get_template()) ) {
-			if (in_array($parent_theme->get('Name'), array('Storefront','Divi'))) {
+		if ( $parent_theme = wp_get_theme( get_template() ) ) {
+			if ( in_array( $parent_theme->get( 'Name' ), array( 'Storefront', 'Divi' ) ) ) {
 				add_settings_field(
 					'hide_theme_cart',
 					__( 'Hide theme shopping cart icon', 'wp-menu-cart' ),
@@ -78,8 +73,8 @@ class WpMenuCart_Settings {
 					$option,
 					'plugin_settings',
 					array(
-						'menu'	=> $option,
-						'id'			=> 'hide_theme_cart',
+						'menu' => $option,
+						'id'   => 'hide_theme_cart',
 					)
 				);
 			}
@@ -93,9 +88,9 @@ class WpMenuCart_Settings {
 				$option,
 				'plugin_settings',
 				array(
-					'menu'		=> $option,
-					'id'		=> 'menu_slugs',
-					'options'	=> (array) $this->get_menu_array(),
+					'menu'    => $option,
+					'id'      => 'menu_slugs',
+					'options' => (array) $this->get_menu_array(),
 				)
 			);
 		}
@@ -107,12 +102,12 @@ class WpMenuCart_Settings {
 			$option,
 			'plugin_settings',
 			array(
-				'menu'			=> $option,
-				'id'			=> 'always_display',
+				'menu' => $option,
+				'id'   => 'always_display',
 			)
 		);
 
-		if (function_exists('WC')) {
+		if ( function_exists( 'WC' ) ) {
 			add_settings_field(
 				'show_on_cart_checkout_page',
 				__( 'Show on cart & checkout page', 'wp-menu-cart' ),
@@ -120,9 +115,9 @@ class WpMenuCart_Settings {
 				$option,
 				'plugin_settings',
 				array(
-					'menu'			=> $option,
-					'id'			=> 'show_on_cart_checkout_page',
-					'description'	=> __( 'To avoid distracting your customers with duplicate information we do not display the menu cart item on the cart & checkout pages by default', 'wp-menu-cart' ),
+					'menu'        => $option,
+					'id'          => 'show_on_cart_checkout_page',
+					'description' => __( 'To avoid distracting your customers with duplicate information we do not display the menu cart item on the cart & checkout pages by default', 'wp-menu-cart' ),
 				)
 			);
 		}
@@ -134,8 +129,8 @@ class WpMenuCart_Settings {
 			$option,
 			'plugin_settings',
 			array(
-				'menu'			=> $option,
-				'id'			=> 'icon_display',
+				'menu' => $option,
+				'id'   => 'icon_display',
 			)
 		);
 
@@ -146,10 +141,10 @@ class WpMenuCart_Settings {
 			$option,
 			'plugin_settings',
 			array(
-				'menu'			=> $option,
-				'id'			=> 'flyout_display',
-				'disabled'		=> true,
-				'pro'           => true,
+				'menu'     => $option,
+				'id'       => 'flyout_display',
+				'disabled' => true,
+				'pro'      => true,
 			)
 		);
 		
@@ -160,23 +155,23 @@ class WpMenuCart_Settings {
 			$option,
 			'plugin_settings',
 			array(
-				'menu'			=> $option,
-				'id'			=> 'flyout_itemnumber',
-				'options'		=> array(
-						'0'			=> '0',
-						'1'			=> '1',
-						'2'			=> '2',
-						'3'			=> '3',
-						'4'			=> '4',
-						'5'			=> '5',
-						'6'			=> '6',
-						'7'			=> '7',
-						'8'			=> '8',
-						'9'			=> '9',
-						'10'		=> '10',
+				'menu'     => $option,
+				'id'       => 'flyout_itemnumber',
+				'options'  => array(
+					'0'  => '0',
+					'1'  => '1',
+					'2'  => '2',
+					'3'  => '3',
+					'4'  => '4',
+					'5'  => '5',
+					'6'  => '6',
+					'7'  => '7',
+					'8'  => '8',
+					'9'  => '9',
+					'10' => '10',
 				),
-				'disabled'		=> true,
-				'pro'           => true,
+				'disabled' => true,
+				'pro'      => true,
 			)
 		);			
 
@@ -187,23 +182,23 @@ class WpMenuCart_Settings {
 			$option,
 			'plugin_settings',
 			array(
-				'menu'			=> $option,
-				'id'			=> 'cart_icon',
-				'options' 		=> array(
-					'0'			=> '0',
-					'1'			=> '1',
-					'2'			=> '2',
-					'3'			=> '3',
-					'4'			=> '4',
-					'5'			=> '5',
-					'6'			=> '6',
-					'7'			=> '7',
-					'8'			=> '8',
-					'9'			=> '9',
-					'10'		=> '10',
-					'11'		=> '11',
-					'12'		=> '12',
-					'13'		=> '13',
+				'menu'    => $option,
+				'id'      => 'cart_icon',
+				'options' => array(
+					'0'  => '0',
+					'1'  => '1',
+					'2'  => '2',
+					'3'  => '3',
+					'4'  => '4',
+					'5'  => '5',
+					'6'  => '6',
+					'7'  => '7',
+					'8'  => '8',
+					'9'  => '9',
+					'10' => '10',
+					'11' => '11',
+					'12' => '12',
+					'13' => '13',
 				),
 			)
 		);
@@ -215,10 +210,10 @@ class WpMenuCart_Settings {
 			$option,
 			'plugin_settings',
 			array(
-				'menu'			=> $option,
-				'id'			=> 'icon_color',
-				'disabled'		=> true,
-				'pro'           => true,
+				'menu'     => $option,
+				'id'       => 'icon_color',
+				'disabled' => true,
+				'pro'      => true,
 			)
 		);
 
@@ -229,11 +224,11 @@ class WpMenuCart_Settings {
 			$option,
 			'plugin_settings',
 			array(
-				'menu'					=> $option,
-				'id'					=> 'custom_icon',
-				'uploader_button_text'	=> __( 'Set image', 'wp-menu-cart' ),
-				'disabled'				=> true,
-				'pro'           		=> true,
+				'menu'                 => $option,
+				'id'                   => 'custom_icon',
+				'uploader_button_text' => __( 'Set image', 'wp-menu-cart' ),
+				'disabled'             => true,
+				'pro'                  => true,
 			)
 		);
 
@@ -244,12 +239,12 @@ class WpMenuCart_Settings {
 			$option,
 			'plugin_settings',
 			array(
-				'menu'			=> $option,
-				'id'			=> 'items_display',
-				'options' 		=> array(
-					'1'			=> __( 'Items Only.' , 'wp-menu-cart' ),
-					'2'			=> __( 'Price Only.' , 'wp-menu-cart' ),
-					'3'			=> __( 'Both price and items.' , 'wp-menu-cart' ),
+				'menu'    => $option,
+				'id'      => 'items_display',
+				'options' => array(
+					'1' => __( 'Items Only.' , 'wp-menu-cart' ),
+					'2' => __( 'Price Only.' , 'wp-menu-cart' ),
+					'3' => __( 'Both price and items.' , 'wp-menu-cart' ),
 				),
 			)
 		);
@@ -261,12 +256,12 @@ class WpMenuCart_Settings {
 			$option,
 			'plugin_settings',
 			array(
-				'menu'			=> $option,
-				'id'			=> 'items_alignment',
-				'options' 		=> array(
-					'left'			=> __( 'Align Left.' , 'wp-menu-cart' ),
-					'right'			=> __( 'Align Right.' , 'wp-menu-cart' ),
-					'standard'		=> __( 'Default Menu Alignment.' , 'wp-menu-cart' ),
+				'menu'    => $option,
+				'id'      => 'items_alignment',
+				'options' => array(
+					'left'     => __( 'Align Left.' , 'wp-menu-cart' ),
+					'right'    => __( 'Align Right.' , 'wp-menu-cart' ),
+					'standard' => __( 'Default Menu Alignment.' , 'wp-menu-cart' ),
 				),
 			)
 		);
@@ -279,14 +274,14 @@ class WpMenuCart_Settings {
 				$option,
 				'plugin_settings',
 				array(
-					'menu'			=> $option,
-					'id'			=> 'total_price_type',
-					'options' 		=> array(
-						'total'			 => __( 'Cart total (including discounts)' , 'wp-menu-cart' ),
-						'subtotal'		 => __( 'Subtotal (total of products)' , 'wp-menu-cart' ),
+					'menu'    => $option,
+					'id'      => 'total_price_type',
+					'options' => array(
+						'total'          => __( 'Cart total (including discounts)' , 'wp-menu-cart' ),
+						'subtotal'       => __( 'Subtotal (total of products)' , 'wp-menu-cart' ),
 						'checkout_total' => __( 'Checkout total (including discounts, fees & shipping)' , 'wp-menu-cart' ),
 					),
-					'default'		=> 'total',
+					'default' => 'total',
 				)
 			);
 		}
@@ -298,10 +293,10 @@ class WpMenuCart_Settings {
 			$option,
 			'plugin_settings',
 			array(
-				'menu'			=> $option,
-				'id'			=> 'custom_class',
-				'disabled'		=> true,
-				'pro'           => true,
+				'menu'     => $option,
+				'id'       => 'custom_class',
+				'disabled' => true,
+				'pro'      => true,
 			)
 		);
 		add_settings_section(
@@ -318,15 +313,15 @@ class WpMenuCart_Settings {
 			$option,
 			'floating_cart_settings',
 			array(
-				'menu'			=> $option,
-				'id'			=> 'floating_cart_enable',
-				'options'		=> array(
-					'no'			=> __( 'No' , 'wp-menu-cart' ),
-					'always'		=> __( 'Always' , 'wp-menu-cart' ),
+				'menu'     => $option,
+				'id'       => 'floating_cart_enable',
+				'options'  => array(
+					'no'            => __( 'No' , 'wp-menu-cart' ),
+					'always'        => __( 'Always' , 'wp-menu-cart' ),
 					'small-devices' => __( 'Only on small devices' , 'wp-menu-cart' ),
 				),
-				'disabled'		=> true,
-				'pro'           => true,
+				'disabled' => true,
+				'pro'      => true,
 			)
 		);
 
@@ -337,14 +332,14 @@ class WpMenuCart_Settings {
 			$option,
 			'floating_cart_settings',
 			array(
-				'menu'			=> $option,
-				'id'			=> 'floating_display_style',
-				'options'		=> array(
-					'floating-circle'	=> __( 'Floating circle' , 'wp-menu-cart' ),
-					'side-square'		=> __( 'Side square' , 'wp-menu-cart' ),
+				'menu'     => $option,
+				'id'       => 'floating_display_style',
+				'options'  => array(
+					'floating-circle' => __( 'Floating circle' , 'wp-menu-cart' ),
+					'side-square'     => __( 'Side square' , 'wp-menu-cart' ),
 				),
-				'disabled'		=> true,
-				'pro'           => true,
+				'disabled' => true,
+				'pro'      => true,
 			)
 		);
 
@@ -355,16 +350,16 @@ class WpMenuCart_Settings {
 			$option,
 			'floating_cart_settings',
 			array(
-				'menu'			=> $option,
-				'id'			=> 'floating_cart_position',
-				'options'		=> array(
-					'bottom-right'	=> __( 'Bottom right' , 'wp-menu-cart' ),
-					'bottom-left'	=> __( 'Bottom left' , 'wp-menu-cart' ),
-					'top-right'		=> __( 'Top right' , 'wp-menu-cart' ),
-					'top-left'		=> __( 'Top left' , 'wp-menu-cart' ),
+				'menu'     => $option,
+				'id'       => 'floating_cart_position',
+				'options'  => array(
+					'bottom-right' => __( 'Bottom right' , 'wp-menu-cart' ),
+					'bottom-left'  => __( 'Bottom left' , 'wp-menu-cart' ),
+					'top-right'    => __( 'Top right' , 'wp-menu-cart' ),
+					'top-left'     => __( 'Top left' , 'wp-menu-cart' ),
 				),
-				'disabled'		=> true,
-				'pro'           => true,
+				'disabled' => true,
+				'pro'      => true,
 			)
 		);
 
@@ -376,8 +371,8 @@ class WpMenuCart_Settings {
 				$option,
 				'plugin_settings',
 				array(
-					'menu'			=> $option,
-					'id'			=> 'wpml_string_translation',
+					'menu' => $option,
+					'id'   => 'wpml_string_translation',
 				)
 			);
 		}
@@ -391,9 +386,9 @@ class WpMenuCart_Settings {
 				$option,
 				'plugin_settings',
 				array(
-					'menu'			=> $option,
-					'id'			=> 'builtin_ajax',
-					'description'	=> __( 'Enable this option to use the custom AJAX / live update functions instead of the default ones from your shop plugin. Only use when you have issues with AJAX!', 'wp-menu-cart' ),
+					'menu'        => $option,
+					'id'          => 'builtin_ajax',
+					'description' => __( 'Enable this option to use the custom AJAX / live update functions instead of the default ones from your shop plugin. Only use when you have issues with AJAX!', 'wp-menu-cart' ),
 				)
 			);
 		}
@@ -402,13 +397,16 @@ class WpMenuCart_Settings {
 		register_setting( $option, $option, array( &$this, 'wpmenucart_options_validate' ) );
 
 		// Register defaults if settings empty (might not work in case there's only checkboxes and they're all disabled)
-		if ( empty( $option_values ) )
+		if ( empty( $option_values ) ) {
 			$this->default_settings();
+		}
 
 		// Convert old wpmenucart menu settings to array
-		if ( isset($option_values['menu_name_1']) ) {
-			$option_values['menu_slugs'] = array( '1' =>  $option_values['menu_name_1'] );
-			update_option( 'wpmenucart', $option_values );
+		if ( isset( $option_values['menu_name_1'] ) ) {
+			$option_values['menu_slugs'] = array(
+				'1' => $option_values['menu_name_1']
+			);
+			update_option( $option, $option_values );
 		}
 	}
 
@@ -416,7 +414,7 @@ class WpMenuCart_Settings {
 	 * Add menu page
 	 */
 	public function wpmenucart_add_page() {
-		if (class_exists('WooCommerce')) {
+		if ( class_exists( 'WooCommerce' ) ) {
 			$parent_slug = 'woocommerce';
 		} else {
 			$parent_slug = 'options-general.php';
@@ -454,33 +452,36 @@ class WpMenuCart_Settings {
 	 * Default settings.
 	 */
 	public function default_settings() {
-		$wcmenucart_options = get_option('wcmenucart');
-		$menu_slugs = array( '1' =>  isset($wcmenucart_options['menu_name_1']) ? $wcmenucart_options['menu_name_1']:'0' );
+		$option              = 'wcmenucart';
+		$wcmenucart_options  = get_option( $option, array() );
+		$menu_slugs          = array(
+			'1' => isset( $wcmenucart_options['menu_name_1'] ) ? $wcmenucart_options['menu_name_1'] : '0'
+		);
 
 		$active_shop_plugins = WpMenuCart::get_active_shops();
 		
 		//switch keys & values, then strip plugin path to folder
-		foreach ($active_shop_plugins as $key => $value) {
+		foreach ( $active_shop_plugins as $key => $value ) {
 			$filtered_active_shop_plugins[] = dirname($value);
 		}
 
-		$first_active_shop_plugin = isset($filtered_active_shop_plugins[0])?$filtered_active_shop_plugins[0]:'';
+		$first_active_shop_plugin = isset( $filtered_active_shop_plugins[0] ) ? $filtered_active_shop_plugins[0] : '';
 		$default = array(
-			'menu_slugs'		=> $menu_slugs,
-			'always_display'	=> isset($wcmenucart_options['always_display']) ? $wcmenucart_options['always_display']:'',
-			'icon_display'		=> isset($wcmenucart_options['icon_display']) ? $wcmenucart_options['icon_display']:'1',
-			'items_display'		=> isset($wcmenucart_options['items_display']) ? $wcmenucart_options['items_display']:'3',
-			'items_alignment'	=> isset($wcmenucart_options['items_alignment']) ? $wcmenucart_options['items_alignment']:'standard',
-			'custom_class'		=> '',
-			'flyout_display'	=> '',
-			'flyout_itemnumber'	=> '5',
-			'cart_icon'			=> '0',
-			'shop_plugin'		=> $first_active_shop_plugin,
-			'builtin_ajax'		=> '',
-			'hide_theme_cart'	=> 1,
+			'menu_slugs'        => $menu_slugs,
+			'always_display'    => isset( $wcmenucart_options['always_display'] )  ? $wcmenucart_options['always_display']  : '',
+			'icon_display'      => isset( $wcmenucart_options['icon_display'] )    ? $wcmenucart_options['icon_display']    : '1',
+			'items_display'     => isset( $wcmenucart_options['items_display'] )   ? $wcmenucart_options['items_display']   : '3',
+			'items_alignment'   => isset( $wcmenucart_options['items_alignment'] ) ? $wcmenucart_options['items_alignment'] : 'standard',
+			'custom_class'      => '',
+			'flyout_display'    => '',
+			'flyout_itemnumber' => '5',
+			'cart_icon'         => '0',
+			'shop_plugin'       => $first_active_shop_plugin,
+			'builtin_ajax'      => '',
+			'hide_theme_cart'   => 1,
 		);
 
-		update_option( 'wpmenucart', $default );
+		update_option( $option, $default );
 	}
 
 	/**
@@ -507,9 +508,9 @@ class WpMenuCart_Settings {
 		<div class="wpo_wpmenucart_settings_tab">
 			<form method="post" action="options.php">
 				<?php				
-					settings_fields( 'wpmenucart' );
-					do_settings_sections( 'wpmenucart' );
-					submit_button();
+				settings_fields( 'wpmenucart' );
+				do_settings_sections( 'wpmenucart' );
+				submit_button();
 				?>
 			</form>
 		</div>
@@ -531,32 +532,32 @@ class WpMenuCart_Settings {
 		<div class="menucart-pro-ad menucart-pro-ad-small"> 
 			<?php _e( 'Want To Stand Out?', 'wp-menu-cart' ); ?> <a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartgopro"><?php _e( 'Go Pro.', 'wp-menu-cart' ); ?></a>
 			<ul style="font-size: 12px;list-style-type:circle;margin-left: 20px">
-				<li><?php _e('Unlimited Menus', 'wp-menu-cart' ) ?></li>
-				<li><?php _e('Choice of 14 icons', 'wp-menu-cart' ) ?></li>
-				<li><?php _e('Packed with customization options', 'wp-menu-cart' ) ?></li>
-				<li><?php _e('Access to Shortcode', 'wp-menu-cart' ) ?></li>
-				<li><?php _e('Top Notch Support', 'wp-menu-cart' ) ?></li>
+				<li><?php _e( 'Unlimited Menus', 'wp-menu-cart' ) ?></li>
+				<li><?php _e( 'Choice of 14 icons', 'wp-menu-cart' ) ?></li>
+				<li><?php _e( 'Packed with customization options', 'wp-menu-cart' ) ?></li>
+				<li><?php _e( 'Access to Shortcode', 'wp-menu-cart' ) ?></li>
+				<li><?php _e( 'Top Notch Support', 'wp-menu-cart' ) ?></li>
 			</ul>
 		</div>
 		<div class="menucart-pro-ad menucart-pro-ad-big"> 
 			<img src="<?php echo WPO_Menu_Cart()->plugin_url() . '/assets/images/wpo-helper.png'; ?>" class="wpo-helper">
-			<h2><?php _e('Sell In Style With Menu Cart Pro!', 'wp-menu-cart' ) ?></h2>
+			<h2><?php _e( 'Sell In Style With Menu Cart Pro!', 'wp-menu-cart' ) ?></h2>
 			<br>
-			<?php _e('Go Pro with Menu Cart Pro. Includes all the great standard features found in this free version plus:', 'wp-menu-cart' ) ?>
+			<?php _e( 'Go Pro with Menu Cart Pro. Includes all the great standard features found in this free version plus:', 'wp-menu-cart' ) ?>
 			<br>
 			<ul style="list-style-type:circle;margin-left: 40px">
-				<li><?php _e('A choice of over 10 cart icons', 'wp-menu-cart' ) ?></li>
-				<li><?php _e('A fully featured cart details flyout', 'wp-menu-cart' ) ?></li>
-				<li><?php _e('Ability to add cart + flyout to an <strong>unlimited</strong> amount of menus', 'wp-menu-cart' ) ?></li>
-				<li><?php _e('Adjust the content & URLs via the settings', 'wp-menu-cart' ) ?></li>
-				<li><?php _e('Enter custom styles and apply custom classes via the settings', 'wp-menu-cart' ) ?></li>
-				<li><?php _e('WPML compatible', 'wp-menu-cart' ) ?></li>
-				<li><?php _e('Automatic updates on any great new features', 'wp-menu-cart' ) ?></li>
-				<li><?php _e('Put the cart anywhere with the [wpmenucart] shortcode', 'wp-menu-cart' ) ?></li>
+				<li><?php _e( 'A choice of over 10 cart icons', 'wp-menu-cart' ) ?></li>
+				<li><?php _e( 'A fully featured cart details flyout', 'wp-menu-cart' ) ?></li>
+				<li><?php _e( 'Ability to add cart + flyout to an <strong>unlimited</strong> amount of menus', 'wp-menu-cart' ) ?></li>
+				<li><?php _e( 'Adjust the content & URLs via the settings', 'wp-menu-cart' ) ?></li>
+				<li><?php _e( 'Enter custom styles and apply custom classes via the settings', 'wp-menu-cart' ) ?></li>
+				<li><?php _e( 'WPML compatible', 'wp-menu-cart' ) ?></li>
+				<li><?php _e( 'Automatic updates on any great new features', 'wp-menu-cart' ) ?></li>
+				<li><?php _e( 'Put the cart anywhere with the [wpmenucart] shortcode', 'wp-menu-cart' ) ?></li>
 			</ul>
 			<?php
 			/* translators: 1,2: <a> tags */
-			printf (__('Need to see more? %1$sClick here%2$s to check it out. Add a product to your cart and watch what happens!', 'wp-menu-cart' ), '<a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartadmore">','</a>'); ?><br><br>
+			printf ( __('Need to see more? %1$sClick here%2$s to check it out. Add a product to your cart and watch what happens!', 'wp-menu-cart' ), '<a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartadmore">','</a>'); ?><br><br>
 			<a class="button button-primary" style="text-align: center;margin: 0px auto" href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartadbuy"><?php _e('Buy Now', 'wp-menu-cart' ) ?></a>
 		</div>
 		<?php
@@ -568,14 +569,16 @@ class WpMenuCart_Settings {
 	 * @return array menu slug => menu name
 	 */
 	public function get_menu_array() {
-		$menus = get_terms( 'nav_menu', array( 'hide_empty' => false ) );
+		$menus     = get_terms( 'nav_menu', array( 'hide_empty' => false ) );
 		$menu_list = array();
 
 		foreach ( $menus as $menu ) {
 			$menu_list[$menu->slug] = $menu->name;
 		}
 		
-		if (!empty($menu_list)) return $menu_list;
+		if ( ! empty( $menu_list ) ) {
+			return $menu_list;
+		}
 	}
 	
 	/**
@@ -587,11 +590,11 @@ class WpMenuCart_Settings {
 		$active_shop_plugins = WpMenuCart::get_active_shops();
 		
 		//switch keys & values, then strip plugin path to folder
-		foreach ($active_shop_plugins as $key => $value) {
-			$filtered_active_shop_plugins[dirname($value)] = $key;
+		foreach ( $active_shop_plugins as $key => $value ) {
+			$filtered_active_shop_plugins[ dirname($value) ] = $key;
 		}
 
-		$active_shop_plugins = isset($filtered_active_shop_plugins) ? $filtered_active_shop_plugins:'';
+		$active_shop_plugins = isset( $filtered_active_shop_plugins ) ? $filtered_active_shop_plugins : '';
 				
 		return $active_shop_plugins;
 	}
@@ -740,7 +743,7 @@ class WpMenuCart_Settings {
 			$current = isset( $args['default'] ) ? $args['default'] : '';
 		}
 	
-		$disabled = (isset( $args['disabled'] )) ? ' disabled' : '';
+		$disabled = isset( $args['disabled'] ) ? ' disabled' : '';
 		$html = sprintf( '<input type="checkbox" id="%1$s" name="%2$s[%1$s]" value="1"%3$s %4$s/>', esc_attr( $id ), esc_attr( $menu ), checked( 1, esc_attr( $current ), false ), esc_attr( $disabled ) );
 	
 		// Displays option description.
@@ -802,7 +805,7 @@ class WpMenuCart_Settings {
 	 */
 	public function icons_radio_element_callback( $args ) {
 		$menu = $args['menu'];
-		$id = $args['id'];
+		$id   = $args['id'];
 	
 		$options = get_option( $menu );
 	
@@ -816,7 +819,7 @@ class WpMenuCart_Settings {
 		$radios = '';
 		
 		foreach ( $args['options'] as $key => $iconnumber ) {
-			if ($key == 0) {
+			if ( 0 === $key ) {
 				$icons .= sprintf( '<td style="padding-bottom:0;font-size:16pt;" align="center"><label for="%1$s[%2$s][%3$s]"><i class="wpmenucart-icon-shopping-cart-%4$s"></i></label></td>', esc_attr( $menu ), esc_attr( $id ), esc_attr( $key ), esc_attr( $iconnumber ) );
 				$radios .= sprintf( '<td style="padding-top:0" align="center"><input type="radio" class="radio" id="%1$s[%2$s][%3$s]" name="%1$s[%2$s]" value="%3$s"%4$s /></td>', esc_attr( $menu ), esc_attr( $id ), esc_attr( $key ), checked( esc_attr( $current ), esc_attr( $key ), false ) );
 			} else {
@@ -837,13 +840,13 @@ class WpMenuCart_Settings {
 	}
 
 	public function media_upload_callback( $args ) {
-		$menu = $args['menu'];
-		$id   = $args['id'];
-		$pro  = isset( $args['pro'] ) ? $args['pro'] : false;
+		$menu     = $args['menu'];
+		$id       = $args['id'];
+		$pro      = isset( $args['pro'] ) ? $args['pro'] : false;
 		$btn_text = $args['uploader_button_text'];
 
-		$disabled = (isset( $args['disabled'] )) ? ' disabled' : '';
-		$html = sprintf( '<input type="button" id="%1$s" name="%2$s[%1$s]" class="btn button-primary" value="%3$s" %4$s/>', esc_attr( $id ), esc_attr( $menu ), $btn_text, esc_attr( $disabled ) );
+		$disabled = isset( $args['disabled'] ) ? ' disabled' : '';
+		$html     = sprintf( '<input type="button" id="%1$s" name="%2$s[%1$s]" class="btn button-primary" value="%3$s" %4$s/>', esc_attr( $id ), esc_attr( $menu ), $btn_text, esc_attr( $disabled ) );
 	
 		// Displays option description.
 		if ( isset( $args['description'] ) ) {
@@ -926,6 +929,4 @@ class WpMenuCart_Settings {
 		</p>
 		<?php
 	}
-
-
 }
