@@ -717,7 +717,7 @@ class WpMenuCart {
 		libxml_clear_errors();
 		libxml_use_internal_errors( $libxml_previous_state );
 		
-		if ( !empty( $li_classes ) ) {
+		if ( ! empty( $li_classes ) ) {
 			$common_li_classes = array_shift( $li_classes );
 			foreach ( $li_classes as $li_class ) {
 				$common_li_classes = array_intersect( $li_class, $common_li_classes );
@@ -815,7 +815,7 @@ class WpMenuCart {
 		
 		$menu_item = apply_filters ('wpmenucart_menu_item_a', $menu_item,  $item_data, $this->options, $menu_item_a_content, $viewing_cart, $start_shopping, $cart_contents);
 
-		if ( !empty( $menu_item ) ) {
+		if ( ! empty( $menu_item ) ) {
 			return $menu_item;
 		}
 	}
