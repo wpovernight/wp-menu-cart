@@ -403,9 +403,8 @@ class WpMenuCart_Settings {
 
 		// Convert old wpmenucart menu settings to array
 		if ( isset( $option_values['menu_name_1'] ) ) {
-			$option_values['menu_slugs'] = array(
-				'1' => $option_values['menu_name_1']
-			);
+			$option_values['menu_slugs'] = array( '1' => $option_values['menu_name_1'] );
+
 			update_option( $option, $option_values );
 		}
 	}
@@ -455,7 +454,7 @@ class WpMenuCart_Settings {
 		$option              = 'wcmenucart';
 		$wcmenucart_options  = get_option( $option, array() );
 		$menu_slugs          = array(
-			'1' => isset( $wcmenucart_options['menu_name_1'] ) ? $wcmenucart_options['menu_name_1'] : '0'
+			'1' => isset( $wcmenucart_options['menu_name_1'] ) ? $wcmenucart_options['menu_name_1'] : '0',
 		);
 
 		$active_shop_plugins = WpMenuCart::get_active_shops();
@@ -882,15 +881,15 @@ class WpMenuCart_Settings {
 		foreach ( $input as $key => $value ) {
 
 			// Check to see if the current option has a value. If so, process it.
-			if ( isset( $input[$key] ) ) {
+			if ( isset( $input[ $key ] ) ) {
 				// Strip all HTML and PHP tags and properly handle quoted strings.
-				if ( is_array( $input[$key] ) ) {
-					foreach ( $input[$key] as $sub_key => $sub_value ) {
-						$output[$key][$sub_key] = strip_tags( stripslashes( $input[$key][$sub_key] ) );
+				if ( is_array( $input[ $key ] ) ) {
+					foreach ( $input[ $key ] as $sub_key => $sub_value ) {
+						$output[ $key ][ $sub_key ] = strip_tags( stripslashes( $input[$key][$sub_key] ) );
 					}
 
 				} else {
-					$output[$key] = strip_tags( stripslashes( $input[$key] ) );
+					$output[ $key ] = strip_tags( stripslashes( $input[ $key ] ) );
 				}
 			}
 		}
@@ -907,7 +906,7 @@ class WpMenuCart_Settings {
 			'nav-menus',
 			'side',
 			'default'
-			);
+		);
 	}
 	
 	public function wpmenucart_menu_item_meta_box() {

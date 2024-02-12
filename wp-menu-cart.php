@@ -172,7 +172,6 @@ class WpMenuCart {
 	 */
 	public function good_to_go() {
 		$wpmenucart_shop_check = get_option( 'wpmenucart_shop_check' );
-		$active_plugins        = $this->get_active_plugins();
 
 		// check for shop plugins
 		if ( ! $this->is_shop_active() && 'hide' !== $wpmenucart_shop_check ) {
@@ -223,7 +222,7 @@ class WpMenuCart {
 	 */
 	public static function get_active_plugins() {
 		$active_plugins = (array) apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
-		if (is_multisite()) {
+		if ( is_multisite() ) {
 			// get_site_option( 'active_sitewide_plugins', array() ) returns a 'reversed list'
 			// like [hello-dolly/hello.php] => 1369572703 so we do array_keys to make the array
 			// compatible with $active_plugins
@@ -264,10 +263,10 @@ class WpMenuCart {
 		$active_plugins = $this->get_active_plugins();
 		
 		$old_versions = array(
-			'woocommerce-menu-bar-cart/wc_cart_nav.php',				//first version
-			'woocommerce-menu-bar-cart/woocommerce-menu-cart.php',		//last free version
-			'woocommerce-menu-cart/woocommerce-menu-cart.php',			//never actually released? just in case...
-			'woocommerce-menu-cart-pro/woocommerce-menu-cart-pro.php',	//old pro version
+			'woocommerce-menu-bar-cart/wc_cart_nav.php',               //first version
+			'woocommerce-menu-bar-cart/woocommerce-menu-cart.php',     //last free version
+			'woocommerce-menu-cart/woocommerce-menu-cart.php',         //never actually released? just in case...
+			'woocommerce-menu-cart-pro/woocommerce-menu-cart-pro.php', //old pro version
 		);
 			
 		$active_old_plugins = array_intersect( $old_versions, $active_plugins );
@@ -324,9 +323,9 @@ class WpMenuCart {
 		/**
 		 * Frontend/global Locale. Looks in:
 		 *
-		 * 		- WP_LANG_DIR/wp-menu-cart/wp-menu-cart-LOCALE.mo
-		 * 	 	- wp-menu-cart/languages/wp-menu-cart-LOCALE.mo (which if not found falls back to:)
-		 * 	 	- WP_LANG_DIR/plugins/wp-menu-cart-LOCALE.mo
+		 * - WP_LANG_DIR/wp-menu-cart/wp-menu-cart-LOCALE.mo
+		 * - wp-menu-cart/languages/wp-menu-cart-LOCALE.mo (which if not found falls back to:)
+		 * - WP_LANG_DIR/plugins/wp-menu-cart-LOCALE.mo
 		 */
 		unload_textdomain( 'wp-menu-cart');
 		load_textdomain( 'wp-menu-cart', WP_LANG_DIR . '/wp-menu-cart/wp-menu-cart-' . $locale . '.mo' );

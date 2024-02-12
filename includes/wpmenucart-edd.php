@@ -1,13 +1,6 @@
 <?php
 if ( ! class_exists( 'WPMenuCart_EDD' ) ) {
-	class WPMenuCart_EDD {     
-	
-		/**
-		 * Construct.
-		 */
-		public function __construct() {
-		}
-	
+	class WPMenuCart_EDD {	
 		public function menu_item() {
 			global $post;
 	
