@@ -47,16 +47,17 @@ if ( ! class_exists( 'WPMenuCart_WooCommerce' ) ) {
 		}
 
 		public function get_cart_total() {
-			$settings = get_option('wpmenucart');
+			$settings = get_option( 'wpmenucart', array() );
+
 			if ( defined('WC_VERSION') && version_compare( WC_VERSION, '3.3', '>=' ) ) {
-				if (isset($settings['total_price_type']) && $settings['total_price_type'] == 'subtotal') {
+				if ( isset( $settings['total_price_type'] ) && 'subtotal' === $settings['total_price_type'] ) {
 					if ( WC()->cart->display_prices_including_tax() ) {
 						$cart_contents_total = wc_price( WC()->cart->get_subtotal() + WC()->cart->get_subtotal_tax() );
 					} else {
 						$cart_contents_total = wc_price( WC()->cart->get_subtotal() );
 					}
-				} elseif (isset($settings['total_price_type']) && $settings['total_price_type'] == 'checkout_total') {
-					$cart_contents_total = wc_price( WC()->cart->get_total('edit') );
+				} elseif ( isset( $settings['total_price_type'] ) && 'checkout_total' === $settings['total_price_type'] ) {
+					$cart_contents_total = wc_price( WC()->cart->get_total( 'edit' ) );
 				} else {
 					if ( WC()->cart->display_prices_including_tax() ) {
 						$cart_contents_total = wc_price( WC()->cart->get_cart_contents_total() + WC()->cart->get_cart_contents_tax() );
@@ -71,7 +72,7 @@ if ( ! class_exists( 'WPMenuCart_WooCommerce' ) ) {
 				// $woocommerce->cart->get_cart_total() is not a display function,
 				// so we add tax if cart prices are set to display incl. tax
 				// see https://github.com/woothemes/woocommerce/issues/6701
-				if (isset($settings['total_price_type']) && $settings['total_price_type'] == 'subtotal') {
+				if ( isset( $settings['total_price_type'] ) && 'subtotal' === $settings['total_price_type'] ) {
 					// Display varies depending on settings
 					if ( $woocommerce->cart->display_cart_ex_tax ) {
 						$cart_contents_total = wc_price( $woocommerce->cart->subtotal_ex_tax );
