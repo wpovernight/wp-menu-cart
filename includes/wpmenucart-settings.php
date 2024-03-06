@@ -657,7 +657,9 @@ class WpMenuCart_Settings {
 		$disabled = (isset( $args['disabled'] )) ? ' disabled' : '';
 		
 		$html  = sprintf( '<select name="%1$s[%2$s]" id="%1$s[%2$s]"%3$s>', esc_attr( $menu ), esc_attr( $id ), esc_attr( $disabled ) );
-		$html .= sprintf( '<option value="%s"%s>%s</option>', '0', selected( $current, '0', false ), '' );
+		if ( 'shop_plugin' === $args['id'] ) {
+			$html .= sprintf( '<option value="">%s</option>', __( 'Select a choice…', 'wp-menu-cart' ) );
+		}
 		
 		foreach ( $args['options'] as $key => $label ) {
 			$html .= sprintf( '<option value="%s"%s>%s</option>', esc_attr( $key ), selected( $current , $key, false ), esc_attr( $label ) );
@@ -700,7 +702,7 @@ class WpMenuCart_Settings {
 			$disabled = ($x == 1) ? '' : ' disabled';
 			
 			$html .= sprintf( '<select name="%1$s[%2$s][%3$s]" id="%1$s[%2$s][%3$s]"%4$s>', esc_attr( $menu ), esc_attr( $id ), esc_attr( $x ), esc_attr( $disabled ) );
-			$html .= sprintf( '<option value="%s"%s>%s</option>', '0', selected( $current, '0', false ), '' );
+			$html .= sprintf( '<option value="">%s</option>', __( 'Select a choice…', 'wp-menu-cart' ) );
 			
 			foreach ( (array) $args['options'] as $key => $label ) {
 				$html .= sprintf( '<option value="%s"%s>%s</option>', $key, selected( $current, $key, false ), esc_attr( $label ) );
