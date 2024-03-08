@@ -1,21 +1,21 @@
-# Copyright (C) 2022 WP Overnight
+# Copyright (C) 2024 WP Overnight
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Menu Cart 2.12.0\n"
+"Project-Id-Version: WP Menu Cart 2.14.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-menu-cart\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-10-04T11:48:09+02:00\n"
+"POT-Creation-Date: 2024-03-08T12:24:15+01:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.5.0\n"
+"X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: wp-menu-cart\n"
 
 #. Plugin Name of the plugin
-#: includes/wpmenucart-settings.php:404
+#: includes/wpmenucart-settings.php:494
 msgid "WP Menu Cart"
 msgstr ""
 
@@ -35,253 +35,328 @@ msgstr ""
 msgid "https://wpovernight.com/"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:31
+#: includes/wpmenucart-settings.php:26
 msgid "Plugin settings"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:38
+#: includes/wpmenucart-settings.php:33
 msgid "Select which e-commerce plugin you would like Menu Cart to work with"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:52
+#: includes/wpmenucart-settings.php:47
 msgid "Current theme is block type"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:66
+#. translators: 1. theme name, 2. here docs link
+#: includes/wpmenucart-settings.php:59
+msgid "Your current theme, %1$s, is a block theme, therefore, you need to configure the cart menu using the navigation block. Please follow the instructions to do it %2$s."
+msgstr ""
+
+#: includes/wpmenucart-settings.php:61
 msgid "here"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:76
+#: includes/wpmenucart-settings.php:71
 msgid "Hide theme shopping cart icon"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:91
+#: includes/wpmenucart-settings.php:86
 msgid "Select the menu(s) in which you want to display the Menu Cart"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:105
+#: includes/wpmenucart-settings.php:100
 msgid "Always display cart, even if it's empty"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:118
+#: includes/wpmenucart-settings.php:113
 msgid "Show on cart & checkout page"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:125
+#: includes/wpmenucart-settings.php:120
 msgid "To avoid distracting your customers with duplicate information we do not display the menu cart item on the cart & checkout pages by default"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:132
+#: includes/wpmenucart-settings.php:127
 msgid "Display shopping cart icon."
 msgstr ""
 
-#: includes/wpmenucart-settings.php:144
+#: includes/wpmenucart-settings.php:139
 msgid "Display cart contents in menu fly-out."
 msgstr ""
 
-#: includes/wpmenucart-settings.php:158
+#: includes/wpmenucart-settings.php:153
 msgid "Set maximum number of products to display in fly-out"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:185
+#: includes/wpmenucart-settings.php:180
 msgid "Choose a cart icon."
 msgstr ""
 
-#: includes/wpmenucart-settings.php:214
-msgid "What would you like to display in the menu?"
+#: includes/wpmenucart-settings.php:208
+msgid "Override icon color"
 msgstr ""
 
 #: includes/wpmenucart-settings.php:222
+msgid "Custom Icon"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:229
+msgid "Set image"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:237
+msgid "What would you like to display in the menu?"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:245
 msgid "Items Only."
 msgstr ""
 
-#: includes/wpmenucart-settings.php:223
+#: includes/wpmenucart-settings.php:246
 msgid "Price Only."
 msgstr ""
 
-#: includes/wpmenucart-settings.php:224
+#: includes/wpmenucart-settings.php:247
 msgid "Both price and items."
 msgstr ""
 
-#: includes/wpmenucart-settings.php:231
+#: includes/wpmenucart-settings.php:254
 msgid "Select the alignment that looks best with your menu."
 msgstr ""
 
-#: includes/wpmenucart-settings.php:239
+#: includes/wpmenucart-settings.php:262
 msgid "Align Left."
 msgstr ""
 
-#: includes/wpmenucart-settings.php:240
+#: includes/wpmenucart-settings.php:263
 msgid "Align Right."
 msgstr ""
 
-#: includes/wpmenucart-settings.php:241
+#: includes/wpmenucart-settings.php:264
 msgid "Default Menu Alignment."
 msgstr ""
 
-#: includes/wpmenucart-settings.php:249
+#: includes/wpmenucart-settings.php:272
 msgid "Price to display"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:257
+#: includes/wpmenucart-settings.php:280
 msgid "Cart total (including discounts)"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:258
+#: includes/wpmenucart-settings.php:281
 msgid "Subtotal (total of products)"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:259
+#: includes/wpmenucart-settings.php:282
 msgid "Checkout total (including discounts, fees & shipping)"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:268
+#: includes/wpmenucart-settings.php:291
 msgid "Enter a custom CSS class (optional)"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:283
+#: includes/wpmenucart-settings.php:304
+msgid "Floating cart"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:311
+msgid "Enable"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:319
+msgid "No"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:320
+msgid "Always"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:321
+msgid "Only on small devices"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:330
+msgid "Display style"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:338
+msgid "Floating circle"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:339
+msgid "Side square"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:348
+msgid "Position"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:356
+msgid "Bottom right"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:357
+msgid "Bottom left"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:358
+msgid "Top right"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:359
+msgid "Top left"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:369
 msgid "Use WPML String Translation"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:298
+#: includes/wpmenucart-settings.php:384
 msgid "Use custom AJAX"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:305
+#: includes/wpmenucart-settings.php:391
 msgid "Enable this option to use the custom AJAX / live update functions instead of the default ones from your shop plugin. Only use when you have issues with AJAX!"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:336
+#: includes/wpmenucart-settings.php:424
 msgid "Menu Cart"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:337
+#: includes/wpmenucart-settings.php:425
 msgid "Menu Cart Setup"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:433
+#: includes/wpmenucart-settings.php:523
 msgid "You need to create a menu before you can use Menu Cart. Go to <strong>Appearence > Menus</strong> and create menu to add the cart to."
 msgstr ""
 
-#: includes/wpmenucart-settings.php:442
+#: includes/wpmenucart-settings.php:532
 msgid "Want To Stand Out?"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:442
+#: includes/wpmenucart-settings.php:532
 msgid "Go Pro."
 msgstr ""
 
-#: includes/wpmenucart-settings.php:444
+#: includes/wpmenucart-settings.php:534
 msgid "Unlimited Menus"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:445
+#: includes/wpmenucart-settings.php:535
 msgid "Choice of 14 icons"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:446
+#: includes/wpmenucart-settings.php:536
 msgid "Packed with customization options"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:447
+#: includes/wpmenucart-settings.php:537
 msgid "Access to Shortcode"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:448
+#: includes/wpmenucart-settings.php:538
 msgid "Top Notch Support"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:453
+#: includes/wpmenucart-settings.php:543
 msgid "Sell In Style With Menu Cart Pro!"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:455
+#: includes/wpmenucart-settings.php:545
 msgid "Go Pro with Menu Cart Pro. Includes all the great standard features found in this free version plus:"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:458
+#: includes/wpmenucart-settings.php:548
 msgid "A choice of over 10 cart icons"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:459
+#: includes/wpmenucart-settings.php:549
 msgid "A fully featured cart details flyout"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:460
+#: includes/wpmenucart-settings.php:550
 msgid "Ability to add cart + flyout to an <strong>unlimited</strong> amount of menus"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:461
+#: includes/wpmenucart-settings.php:551
 msgid "Adjust the content & URLs via the settings"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:462
+#: includes/wpmenucart-settings.php:552
 msgid "Enter custom styles and apply custom classes via the settings"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:463
+#: includes/wpmenucart-settings.php:553
 msgid "WPML compatible"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:464
+#: includes/wpmenucart-settings.php:554
 msgid "Automatic updates on any great new features"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:465
+#: includes/wpmenucart-settings.php:555
 msgid "Put the cart anywhere with the [wpmenucart] shortcode"
 msgstr ""
 
 #. translators: 1,2: <a> tags
-#: includes/wpmenucart-settings.php:469
+#: includes/wpmenucart-settings.php:559
 msgid "Need to see more? %1$sClick here%2$s to check it out. Add a product to your cart and watch what happens!"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:470
+#: includes/wpmenucart-settings.php:560
 msgid "Buy Now"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:539
-#: includes/wpmenucart-settings.php:580
-#: includes/wpmenucart-settings.php:622
-#: includes/wpmenucart-settings.php:662
-#: includes/wpmenucart-settings.php:700
+#: includes/wpmenucart-settings.php:631
+#: includes/wpmenucart-settings.php:674
+#: includes/wpmenucart-settings.php:716
+#: includes/wpmenucart-settings.php:756
+#: includes/wpmenucart-settings.php:794
+#: includes/wpmenucart-settings.php:858
 msgid "This feature only available in"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:742
+#: includes/wpmenucart-settings.php:661
+#: includes/wpmenucart-settings.php:705
+msgid "Select a choice…"
+msgstr ""
+
+#: includes/wpmenucart-settings.php:836
 msgid "Additional icons are only available in"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:805
+#: includes/wpmenucart-settings.php:922
 msgid "Menu Item"
 msgstr ""
 
-#: includes/wpmenucart-settings.php:810
+#: includes/wpmenucart-settings.php:927
 msgid "Add to Menu"
 msgstr ""
 
-#: wp-menu-cart.php:241
+#: wp-menu-cart.php:283
 msgid "WP Menu Cart could not detect an active shop plugin. Make sure you have activated at least one of the supported plugins."
 msgstr ""
 
-#: wp-menu-cart.php:242
+#: wp-menu-cart.php:284
 msgid "Hide this notice"
 msgstr ""
 
-#: wp-menu-cart.php:247
+#: wp-menu-cart.php:296
 msgid "An old version of Menu Cart for WooCommerce is currently activated, you need to disable or uninstall it for WP Menu Cart to function properly"
 msgstr ""
 
-#: wp-menu-cart.php:703
+#: wp-menu-cart.php:762
 msgid "View your shopping cart"
 msgstr ""
 
-#: wp-menu-cart.php:704
+#: wp-menu-cart.php:763
 msgid "Start shopping"
 msgstr ""
 
 #. translators: item count
-#: wp-menu-cart.php:706
+#: wp-menu-cart.php:765
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] ""
