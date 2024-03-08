@@ -3,9 +3,9 @@ Contributors: pomegranate, jprummer, alexmigf, yordansoares, kluver, dpeyou
 Donate link: https://wpovernight.com/downloads/menu-cart-pro/
 Tags: woocommerce, menu, bar, cart, basket, header, shopping cart, navigation, edd, ecommerce
 Requires at least: 3.4
-Tested up to: 6.4
+Tested up to: 6.5
 Requires PHP: 5.3
-Stable tag: 2.14.2
+Stable tag: 2.14.3
 
 Automatically displays a shopping cart in your menu bar. Works with WooCommerce and Easy Digital Downloads (EDD)
 
@@ -82,6 +82,13 @@ Once the plugin is activated navigate to Settings > Menu Cart Setup. Select your
 == Frequently Asked Questions ==
 
 == Changelog ==
+
+= 2.14.3 (2024-03-08) =
+* Tweak: add explicit labels for the disabling options for the e-commerce plugin and menus
+* Fix: deprecated warning with PHP 8.2 and WPCS
+* Fix: jumping of a menu on the page load
+* Translations: Updated translation template (POT)
+* Tested up to WooCommerce 8.7 & WP 6.5
 
 = 2.14.2 (2023-11-08) =
 * Tested up to WooCommerce 8.3 & WP 6.4
