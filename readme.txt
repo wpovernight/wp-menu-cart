@@ -7,7 +7,7 @@ Tested up to: 6.3
 Requires PHP: 5.3
 Stable tag: 2.14.1
 
-Automatically displays a shopping cart in your menu bar. Works with WooCommerce and Easy Digital Downloads (EDD)
+Automatically displays a shopping cart in your menu bar. Works with WooCommerce and Easy Digital Downloads (EDD).
 
 == Description ==
 
