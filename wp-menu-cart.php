@@ -638,7 +638,9 @@ class WpMenuCart {
 	 * @return string
 	 */
 	public function generate_menu_item_li( $classes, $context = 'classic' ) {
-		$classes .= ' wpmenucartli wpmenucart-display-' . $this->options['items_alignment'];
+		$alignment = $this->options['items_alignment'] ?? 'standard';
+		$classes  .= ' wpmenucartli wpmenucart-display-' . $alignment;
+		
 		if ( function_exists( 'is_checkout' ) && function_exists( 'is_cart' ) && ( is_checkout() || is_cart() ) && empty( $this->options['show_on_cart_checkout_page'] ) ) {
 			$classes .= ' hidden-wpmenucart';
 		}
@@ -795,17 +797,20 @@ class WpMenuCart {
 			$menu_item_icon = '';
 		}
 		
-		switch ( $this->options['items_display'] ) {
+		$items_display = $this->options['items_display'] ?? 3;
+		
+		switch ( $items_display ) {
 			case 1: //items only
-				$menu_item_a_content .= '<span class="cartcontents">'.$cart_contents.'</span>';
+				$menu_item_a_content .= '<span class="cartcontents">' . $cart_contents . '</span>';
 				break;
 			case 2: //price only
-				$menu_item_a_content .= '<span class="amount">'.$item_data['cart_total'].'</span>';
+				$menu_item_a_content .= '<span class="amount">' . $item_data['cart_total'] . '</span>';
 				break;
 			case 3: //items & price
-				$menu_item_a_content .= '<span class="cartcontents">'.$cart_contents.'</span><span class="amount">'.$item_data['cart_total'].'</span>';
+				$menu_item_a_content .= '<span class="cartcontents">' . $cart_contents . '</span><span class="amount">' . $item_data['cart_total'] . '</span>';
 				break;
 		}
+		
 		$menu_item_a_content = apply_filters( 'wpmenucart_menu_item_a_content', $menu_item_a_content, $menu_item_icon, $cart_contents, $item_data );
 
 		$this->menu_items['menu']['menu_item_a_content'] = $menu_item_a_content;
