@@ -92,7 +92,19 @@ if ( ! class_exists( 'WPMenuCart_WooCommerce' ) ) {
 			return $cart_contents_total;
 		}
 
-		public function get_cart_url() {
+		/**
+		 * Get the cart URL.
+		 *
+		 * Taking into account the changes made to `wc_get_cart_url()` in WooCommerce version 9.3.0,
+		 * the `wc_get_cart_url()` may return the current URL during AJAX requests,
+		 * which could result in incorrect URLs like `/?wc-ajax=add_to_cart`.
+		 *
+		 * To ensure the correct cart page URL is returned, the `wc_get_page_permalink( 'cart' )`
+		 * has been used instead, with a filter to allow further customizations.
+		 *
+		 * @return string The filtered cart URL.
+		 */
+		public function get_cart_url(): string {
 			$wc_cart_url = apply_filters( 'woocommerce_get_cart_url', wc_get_page_permalink( 'cart' ) );
 			return apply_filters( 'wpmenucart_cart_url', $wc_cart_url, $this );
 		}
