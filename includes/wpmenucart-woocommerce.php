@@ -94,7 +94,7 @@ if ( ! class_exists( 'WPMenuCart_WooCommerce' ) ) {
 
 		public function get_cart_url() {
 			$wc_cart_url = apply_filters( 'woocommerce_get_cart_url', wc_get_page_permalink( 'cart' ) );
-			return apply_filters( 'wpmenucart_cart_url', $wc_cart_url );
+			return apply_filters( 'wpmenucart_cart_url', $wc_cart_url, $this );
 		}
 	}
 }
