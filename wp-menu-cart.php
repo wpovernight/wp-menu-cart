@@ -90,10 +90,11 @@ class WpMenuCart {
 		$this->define( 'WPMENUCART_VERSION', $this->plugin_version );
 		
 		// load the localisation & classes
-		add_action( 'plugins_loaded', array( &$this, 'languages' ), 0 ); // or use init?
-		add_filter( 'load_textdomain_mofile', array( $this, 'textdomain_fallback' ), 10, 2 );
 		add_action( 'init', array( &$this, 'wpml' ), 0 );
-		add_action( 'init', array( $this, 'load_classes' ) );
+		add_action( 'init', array( &$this, 'languages' ), 8 );
+		add_action( 'init', array( $this, 'load_classes' ), 9 );
+		
+		add_filter( 'load_textdomain_mofile', array( $this, 'textdomain_fallback' ), 10, 2 );
 
 		// enqueue scripts & styles
 		add_action( 'admin_enqueue_scripts', array( &$this, 'load_admin_assets' ) );
