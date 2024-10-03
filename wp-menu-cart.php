@@ -91,8 +91,8 @@ class WpMenuCart {
 		
 		// load the localisation & classes
 		add_action( 'init', array( &$this, 'wpml' ), 0 );
-		add_action( 'init', array( &$this, 'languages' ), 9 );
-		add_action( 'init', array( $this, 'load_classes' ) );
+		add_action( 'init', array( &$this, 'languages' ), 8 );
+		add_action( 'init', array( $this, 'load_classes' ), 9 );
 		
 		add_filter( 'load_textdomain_mofile', array( $this, 'textdomain_fallback' ), 10, 2 );
 
