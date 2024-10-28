@@ -281,14 +281,24 @@ class WpMenuCart {
 	 * @return void
 	 */
 	public function need_shop() {
-		$error = __( 'WP Menu Cart could not detect an active shop plugin. Make sure you have activated at least one of the supported plugins.' , 'wp-menu-cart' );
-		printf( '<div class="notice notice-error"><p>%1$s <a href="%2$s">%3$s</a></p></div>', $error, esc_url( add_query_arg( 'hide_wpmenucart_shop_check', 'true' ) ), __( 'Hide this notice', 'wp-menu-cart' ) );
+		$error = __( 'WP Menu Cart could not detect an active shop plugin. Make sure you have activated at least one of the supported plugins.', 'wp-menu-cart' );
+		printf(
+			'<div class="notice notice-error"><p>%1$s <a href="%2$s">%3$s</a></p></div>',
+			esc_html( $error ),
+			esc_url( wp_nonce_url( add_query_arg( 'hide_wpmenucart_shop_check', 'true' ), 'need_shop_notice_nonce' ) ),
+			esc_html__( 'Hide this notice', 'wp-menu-cart' )
+		);
 
-		/**
-		 * Hide notifications
-		 */
-		if ( isset( $_GET['hide_wpmenucart_shop_check'] ) ) {
-			update_option( 'wpmenucart_shop_check', 'hide' );
+		// Hide notice.
+		if ( isset( $_GET['hide_wpmenucart_shop_check'] ) && isset( $_REQUEST['_wpnonce'] ) ) {
+			if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'need_shop_notice_nonce' ) ) {
+				wcpdf_log_error( 'You do not have sufficient permissions to perform this action: need_shop_notice_nonce' );
+			} else {
+				update_option( 'wpmenucart_shop_check', 'hide' );
+			}
+
+			wp_redirect( remove_query_arg( array( 'hide_wpmenucart_shop_check', '_wpnonce' ) ) );
+			exit;
 		}
 	}
 
