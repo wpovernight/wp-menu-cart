@@ -568,7 +568,10 @@ class WpMenuCart_Settings {
 	 * @return array menu slug => menu name
 	 */
 	public function get_menu_array() {
-		$menus     = get_terms( 'nav_menu', array( 'hide_empty' => false ) );
+		$menus     = get_terms( array(
+			'taxonomy'   => 'nav_menu',
+			'hide_empty' => false,
+		) );
 		$menu_list = array();
 
 		foreach ( $menus as $menu ) {
