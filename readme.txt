@@ -419,7 +419,6 @@ Initial Release
 * Added: WPML String Translation setting
 * Added: Persian translations
 * Updated: Font Awesome
-* Updated: Spanish, Portugese, Brazilian, French & Polish Translations
 * Fix: PHP strict warnings
 * Fix: CSS for Twenty Twelve & Twenty Fourteen
 
