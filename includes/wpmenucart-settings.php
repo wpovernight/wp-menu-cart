@@ -890,11 +890,11 @@ class WpMenuCart_Settings {
 				// Strip all HTML and PHP tags and properly handle quoted strings.
 				if ( is_array( $input[ $key ] ) ) {
 					foreach ( $input[ $key ] as $sub_key => $sub_value ) {
-						$output[ $key ][ $sub_key ] = strip_tags( stripslashes( $input[$key][$sub_key] ) );
+						$output[ $key ][ $sub_key ] = wp_strip_all_tags( stripslashes( $input[$key][$sub_key] ) );
 					}
 
 				} else {
-					$output[ $key ] = strip_tags( stripslashes( $input[ $key ] ) );
+					$output[ $key ] = wp_strip_all_tags( stripslashes( $input[ $key ] ) );
 				}
 			}
 		}
