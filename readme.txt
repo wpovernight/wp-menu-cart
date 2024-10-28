@@ -1,11 +1,13 @@
 === WP Menu Cart ===
 Contributors: pomegranate, jprummer, alexmigf, yordansoares, kluver, dpeyou
 Donate link: https://wpovernight.com/downloads/menu-cart-pro/
-Tags: woocommerce, menu, bar, cart, basket, header, shopping cart, navigation, edd, ecommerce
+Tags: woocommerce, edd, menu, cart, shopping cart
 Requires at least: 3.4
 Tested up to: 6.6
 Requires PHP: 5.3
 Stable tag: 2.14.7
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Automatically displays a shopping cart in your menu bar. Works with WooCommerce and Easy Digital Downloads (EDD)
 
