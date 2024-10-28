@@ -434,7 +434,7 @@ class WpMenuCart_Settings {
 	 * Add settings link to plugins page
 	 */
 	public function wpmenucart_add_settings_link( $links ) {
-		$settings_link = '<a href="admin.php?page=wpmenucart_options_page">'. __( 'Settings', 'woocommerce' ) . '</a>';
+		$settings_link = '<a href="admin.php?page=wpmenucart_options_page">' . __( 'Settings', 'wp-menu-cart' ) . '</a>';
 		array_push( $links, $settings_link );
 		return $links;
 	}
@@ -903,7 +903,7 @@ class WpMenuCart_Settings {
 	public function wpmenucart_add_meta_box() {
 		add_meta_box(
 			'wpmenucart-meta-box',
-			__('Menu Cart'),
+			__( 'Menu Cart', 'wp-menu-cart' ),
 			array( &$this, 'wpmenucart_menu_item_meta_box' ),
 			'nav-menus',
 			'side',

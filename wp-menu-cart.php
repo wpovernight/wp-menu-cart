@@ -790,7 +790,7 @@ class WpMenuCart {
 		$menu_item_a_content = '';
 		if ( isset( $this->options['icon_display'] ) ) {
 			$icon                 = isset( $this->options['cart_icon'] ) ? $this->options['cart_icon'] : '0';
-			$menu_item_icon       = '<i class="wpmenucart-icon-shopping-cart-' . $icon . '" role="img" aria-label="' . __( 'Cart','woocommerce' ) . '"></i>';
+			$menu_item_icon       = '<i class="wpmenucart-icon-shopping-cart-' . $icon . '" role="img" aria-label="' . __( 'Cart','wp-menu-cart' ) . '"></i>';
 			$menu_item_a_content .= $menu_item_icon;
 		} else {
 			$menu_item_icon = '';
