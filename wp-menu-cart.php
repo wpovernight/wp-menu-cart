@@ -436,7 +436,8 @@ class WpMenuCart {
 			'wpmenucart-edd-ajax',
 			$this->plugin_url() . '/assets/js/wpmenucart-edd-ajax' . $this->asset_suffix . '.js',
 			array( 'jquery' ),
-			WPMENUCART_VERSION
+			WPMENUCART_VERSION,
+			true
 		);
 
 		wp_localize_script(
@@ -520,7 +521,8 @@ class WpMenuCart {
 				'wpmenucart-ajax-assist',
 				$this->plugin_url() . '/assets/js/wpmenucart-ajax-assist' . $this->asset_suffix . '.js',
 				array( 'jquery' ),
-				WPMENUCART_VERSION
+				WPMENUCART_VERSION,
+				true
 			);
 			wp_localize_script(
 				'wpmenucart-ajax-assist',
@@ -575,7 +577,8 @@ class WpMenuCart {
 			'wpmenucart-navigation-block',
 			$this->plugin_url() . '/assets/js/wpmenucart-navigation-block' . $this->asset_suffix . '.js',
 			array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-server-side-render' ),
-			WPMENUCART_VERSION
+			WPMENUCART_VERSION,
+			true
 		);
 
 		register_block_type( 'wpo/wpmenucart-navigation', array(
@@ -868,7 +871,8 @@ class WpMenuCart {
 			'wpmenucart-cart-checkout-js',
 			$this->plugin_url() . '/assets/js/wpmenucart-wc-block-support'. $this->asset_suffix . '.js',
 			array( 'jquery' ),
-			WPMENUCART_VERSION
+			WPMENUCART_VERSION,
+			true
 		);
 		wp_localize_script(
 			'wpmenucart-cart-checkout-js',
