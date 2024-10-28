@@ -491,7 +491,7 @@ class WpMenuCart_Settings {
 		?>
 		<div class="wrap">
 			<div class="wpo_wpmenucart_settings">
-				<h2><?php _e( 'WP Menu Cart', 'wp-menu-cart' ); ?></h2>
+				<h2><?php esc_html_e( 'WP Menu Cart', 'wp-menu-cart' ); ?></h2>
 				<div class="wpo_wpmenucart_settings_container">
 					<?php do_action( 'wpo_wpmenucart_before_settings_content' ); ?>
 					<?php do_action( 'wpo_wpmenucart_settings_content' ); ?>
@@ -520,7 +520,7 @@ class WpMenuCart_Settings {
 		if ( ! $this->get_menu_array() && ! WPO_Menu_Cart()->is_block_theme() ) {
 			?>
 			<div class="notice notice-error">
-				<p><?php _e( 'You need to create a menu before you can use Menu Cart. Go to <strong>Appearence > Menus</strong> and create menu to add the cart to.', 'wp-menu-cart' ); ?></p>
+				<p><?php esc_html_e( 'You need to create a menu before you can use Menu Cart. Go to <strong>Appearence > Menus</strong> and create menu to add the cart to.', 'wp-menu-cart' ); ?></p>
 			</div>
 			<?php
 		}
@@ -529,35 +529,40 @@ class WpMenuCart_Settings {
 	public function display_pro_ad() {
 		?>
 		<div class="menucart-pro-ad menucart-pro-ad-small"> 
-			<?php _e( 'Want To Stand Out?', 'wp-menu-cart' ); ?> <a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartgopro"><?php _e( 'Go Pro.', 'wp-menu-cart' ); ?></a>
+			<?php esc_html_e( 'Want To Stand Out?', 'wp-menu-cart' ); ?> <a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartgopro"><?php esc_html_e( 'Go Pro.', 'wp-menu-cart' ); ?></a>
 			<ul style="font-size: 12px;list-style-type:circle;margin-left: 20px">
-				<li><?php _e( 'Unlimited Menus', 'wp-menu-cart' ) ?></li>
-				<li><?php _e( 'Choice of 14 icons', 'wp-menu-cart' ) ?></li>
-				<li><?php _e( 'Packed with customization options', 'wp-menu-cart' ) ?></li>
-				<li><?php _e( 'Access to Shortcode', 'wp-menu-cart' ) ?></li>
-				<li><?php _e( 'Top Notch Support', 'wp-menu-cart' ) ?></li>
+				<li><?php esc_html_e( 'Unlimited Menus', 'wp-menu-cart' ) ?></li>
+				<li><?php esc_html_e( 'Choice of 14 icons', 'wp-menu-cart' ) ?></li>
+				<li><?php esc_html_e( 'Packed with customization options', 'wp-menu-cart' ) ?></li>
+				<li><?php esc_html_e( 'Access to Shortcode', 'wp-menu-cart' ) ?></li>
+				<li><?php esc_html_e( 'Top Notch Support', 'wp-menu-cart' ) ?></li>
 			</ul>
 		</div>
 		<div class="menucart-pro-ad menucart-pro-ad-big"> 
-			<img src="<?php echo WPO_Menu_Cart()->plugin_url() . '/assets/images/wpo-helper.png'; ?>" class="wpo-helper">
-			<h2><?php _e( 'Sell In Style With Menu Cart Pro!', 'wp-menu-cart' ) ?></h2>
+			<img src="<?php echo esc_url( WPO_Menu_Cart()->plugin_url() . '/assets/images/wpo-helper.png'); ?>" class="wpo-helper">
+			<h2><?php esc_html_e( 'Sell In Style With Menu Cart Pro!', 'wp-menu-cart' ) ?></h2>
 			<br>
-			<?php _e( 'Go Pro with Menu Cart Pro. Includes all the great standard features found in this free version plus:', 'wp-menu-cart' ) ?>
+			<?php esc_html_e( 'Go Pro with Menu Cart Pro. Includes all the great standard features found in this free version plus:', 'wp-menu-cart' ) ?>
 			<br>
 			<ul style="list-style-type:circle;margin-left: 40px">
-				<li><?php _e( 'A choice of over 10 cart icons', 'wp-menu-cart' ) ?></li>
-				<li><?php _e( 'A fully featured cart details flyout', 'wp-menu-cart' ) ?></li>
-				<li><?php _e( 'Ability to add cart + flyout to an <strong>unlimited</strong> amount of menus', 'wp-menu-cart' ) ?></li>
-				<li><?php _e( 'Adjust the content & URLs via the settings', 'wp-menu-cart' ) ?></li>
-				<li><?php _e( 'Enter custom styles and apply custom classes via the settings', 'wp-menu-cart' ) ?></li>
-				<li><?php _e( 'WPML compatible', 'wp-menu-cart' ) ?></li>
-				<li><?php _e( 'Automatic updates on any great new features', 'wp-menu-cart' ) ?></li>
-				<li><?php _e( 'Put the cart anywhere with the [wpmenucart] shortcode', 'wp-menu-cart' ) ?></li>
+				<li><?php esc_html_e( 'A choice of over 10 cart icons', 'wp-menu-cart' ) ?></li>
+				<li><?php esc_html_e( 'A fully featured cart details flyout', 'wp-menu-cart' ) ?></li>
+				<li><?php esc_html_e( 'Ability to add cart + flyout to an <strong>unlimited</strong> amount of menus', 'wp-menu-cart' ) ?></li>
+				<li><?php esc_html_e( 'Adjust the content & URLs via the settings', 'wp-menu-cart' ) ?></li>
+				<li><?php esc_html_e( 'Enter custom styles and apply custom classes via the settings', 'wp-menu-cart' ) ?></li>
+				<li><?php esc_html_e( 'WPML compatible', 'wp-menu-cart' ) ?></li>
+				<li><?php esc_html_e( 'Automatic updates on any great new features', 'wp-menu-cart' ) ?></li>
+				<li><?php esc_html_e( 'Put the cart anywhere with the [wpmenucart] shortcode', 'wp-menu-cart' ) ?></li>
 			</ul>
 			<?php
-			/* translators: 1,2: <a> tags */
-			printf ( __('Need to see more? %1$sClick here%2$s to check it out. Add a product to your cart and watch what happens!', 'wp-menu-cart' ), '<a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartadmore">','</a>'); ?><br><br>
-			<a class="button button-primary" style="text-align: center;margin: 0px auto" href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartadbuy"><?php _e('Buy Now', 'wp-menu-cart' ) ?></a>
+			printf (
+				/* translators: 1,2: <a> tags */
+				esc_html__('Need to see more? %1$sClick here%2$s to check it out. Add a product to your cart and watch what happens!', 'wp-menu-cart' ),
+				'<a href=' . esc_url( "https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartadmore" ) . '>',
+				'</a>'
+			);
+			?><br><br>
+			<a class="button button-primary" style="text-align: center;margin: 0px auto" href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartadbuy"><?php esc_html_e('Buy Now', 'wp-menu-cart' ) ?></a>
 		</div>
 		<?php
 	}

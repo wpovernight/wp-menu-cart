@@ -306,7 +306,7 @@ class WpMenuCart {
 
 	public function woocommerce_version_active() {
 		$error = __( 'An old version of Menu Cart for WooCommerce is currently activated, you need to disable or uninstall it for WP Menu Cart to function properly' , 'wp-menu-cart' );
-		printf( '<div class="notice notice-error"><p>%s</p></div>', $error );
+		printf( '<div class="notice notice-error"><p>%s</p></div>', esc_html( $error ) );
 	}
 	
 	/**
