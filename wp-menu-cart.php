@@ -291,7 +291,9 @@ class WpMenuCart {
 
 		// Hide notice.
 		if ( isset( $_GET['hide_wpmenucart_shop_check'] ) && isset( $_REQUEST['_wpnonce'] ) ) {
-			if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'need_shop_notice_nonce' ) ) {
+			$nonce = sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) );
+
+			if ( ! wp_verify_nonce( $nonce, 'need_shop_notice_nonce' ) ) {
 				wcpdf_log_error( 'You do not have sufficient permissions to perform this action: need_shop_notice_nonce' );
 			} else {
 				update_option( 'wpmenucart_shop_check', 'hide' );
