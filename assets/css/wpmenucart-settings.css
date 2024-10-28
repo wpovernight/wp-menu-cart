@@ -60,3 +60,26 @@ body.woocommerce_page_wpmenucart_options_page {
 	bottom: 64px;
 	left: -10px;
 }
+
+.wpo_wpmenucart_settings .pro-setting-wrapper {
+	display: inline-block;
+	position: relative;
+}
+
+.wpo_wpmenucart_settings .hidden-input,
+.wpo_wpmenucart_settings .hidden-input-icon {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	background-color: white;
+	-moz-opacity: 0;
+	opacity: 0;
+	filter: alpha(opacity=0);
+}
+
+.wpo_wpmenucart_settings .pro-feature,
+.wpo_wpmenucart_settings .pro-icon {
+	display: none;
+}
