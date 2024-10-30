@@ -9,9 +9,6 @@ class WpMenuCart_Settings {
 		add_action( 'wpo_wpmenucart_after_settings_content', array( &$this, 'display_pro_ad' ) );
 
 		add_filter( 'plugin_action_links_'.WPO_Menu_Cart()->plugin_basename, array( &$this, 'wpmenucart_add_settings_link' ) );
-
-		//Menu admin, not using for now (very complex ajax structure...)
-		//add_action( 'admin_init', array( &$this, 'wpmenucart_add_meta_box' ) );
 	}
 	/**
 	 * User settings.
@@ -520,7 +517,7 @@ class WpMenuCart_Settings {
 		if ( ! $this->get_menu_array() && ! WPO_Menu_Cart()->is_block_theme() ) {
 			?>
 			<div class="notice notice-error">
-				<p><?php esc_html_e( 'You need to create a menu before you can use Menu Cart. Go to <strong>Appearence > Menus</strong> and create menu to add the cart to.', 'wp-menu-cart' ); ?></p>
+				<p><?php echo wp_kses_post( 'You need to create a menu before you can use Menu Cart. Go to <strong>Appearence > Menus</strong> and create menu to add the cart to.', 'wp-menu-cart' ); ?></p>
 			</div>
 			<?php
 		}
@@ -547,7 +544,7 @@ class WpMenuCart_Settings {
 			<ul style="list-style-type:circle;margin-left: 40px">
 				<li><?php esc_html_e( 'A choice of over 10 cart icons', 'wp-menu-cart' ) ?></li>
 				<li><?php esc_html_e( 'A fully featured cart details flyout', 'wp-menu-cart' ) ?></li>
-				<li><?php esc_html_e( 'Ability to add cart + flyout to an <strong>unlimited</strong> amount of menus', 'wp-menu-cart' ) ?></li>
+				<li><?php echo wp_kses_post( 'Ability to add cart + flyout to an <strong>unlimited</strong> amount of menus', 'wp-menu-cart' ) ?></li>
 				<li><?php esc_html_e( 'Adjust the content & URLs via the settings', 'wp-menu-cart' ) ?></li>
 				<li><?php esc_html_e( 'Enter custom styles and apply custom classes via the settings', 'wp-menu-cart' ) ?></li>
 				<li><?php esc_html_e( 'WPML compatible', 'wp-menu-cart' ) ?></li>
@@ -620,9 +617,9 @@ class WpMenuCart_Settings {
 		$pro      = $args['pro'] ?? false;
 		$options  = get_option( $menu );
 		$current  = $options[ $id ] ?? $args['default'] ?? '';
-		$disabled = ( isset( $args['disabled'] ) ) ? ' disabled=""' : '';
+		$disabled = ( isset( $args['disabled'] ) ) ? ' disabled' : '';
 
-		$html = sprintf( '<input type="text" id="%1$s" name="%2$s[%1$s]" value="%3$s" size="%4$s"%5$s/>', esc_attr( $id ), esc_attr( $menu ), esc_attr( $current ), esc_attr( $size ), $disabled );
+		$html = sprintf( '<input type="text" id="%1$s" name="%2$s[%1$s]" value="%3$s" size="%4$s"%5$s />', esc_attr( $id ), esc_attr( $menu ), esc_attr( $current ), esc_attr( $size ), esc_attr( $disabled ) );
 
 		// Displays option description.
 		if ( isset( $args['description'] ) ) {
@@ -651,9 +648,9 @@ class WpMenuCart_Settings {
 		$pro      = $args['pro'] ?? false;
 		$options  = get_option( $menu );
 		$current  = $options[ $id ] ?? $args['default'] ?? '';
-		$disabled = ( isset( $args['disabled'] ) ) ? ' disabled=""' : '';
+		$disabled = ( isset( $args['disabled'] ) ) ? ' disabled' : '';
 
-		$html = sprintf( '<select name="%1$s[%2$s]" id="%1$s[%2$s]"%3$s>', esc_attr( $menu ), esc_attr( $id ), $disabled );
+		$html = sprintf( '<select name="%1$s[%2$s]" id="%1$s[%2$s]"%3$s>', esc_attr( $menu ), esc_attr( $id ), esc_attr( $disabled ) );
 		if ( 'shop_plugin' === $args['id'] ) {
 			$html .= sprintf( '<option value="">%s</option>', __( 'Select a choice…', 'wp-menu-cart' ) );
 		}
@@ -691,9 +688,9 @@ class WpMenuCart_Settings {
 		for ( $x = 1; $x <= 3; $x ++ ) {
 			$html     = '';
 			$current  = $options[ $id ][ $x ] ?? $args['default'] ?? '';
-			$disabled = ( $x == 1 ) ? '' : ' disabled=""';
+			$disabled = ( $x == 1 ) ? '' : ' disabled';
 
-			$html .= sprintf( '<select name="%1$s[%2$s][%3$s]" id="%1$s[%2$s][%3$s]"%4$s>', esc_attr( $menu ), esc_attr( $id ), esc_attr( $x ), $disabled );
+			$html .= sprintf( '<select name="%1$s[%2$s][%3$s]" id="%1$s[%2$s][%3$s]"%4$s>', esc_attr( $menu ), esc_attr( $id ), esc_attr( $x ), esc_attr( $disabled ) );
 			$html .= sprintf( '<option value="">%s</option>', __( 'Select a choice…', 'wp-menu-cart' ) );
 
 			foreach ( (array) $args['options'] as $key => $label ) {
@@ -730,9 +727,9 @@ class WpMenuCart_Settings {
 		$pro      = $args['pro'] ?? false;
 		$options  = get_option( $menu );
 		$current  = $options[ $id ] ?? $args['default'] ?? '';
-		$disabled = isset( $args['disabled'] ) ? ' disabled=""' : '';
+		$disabled = isset( $args['disabled'] ) ? ' disabled' : '';
 
-		$html = sprintf( '<input type="checkbox" id="%1$s" name="%2$s[%1$s]" value="1"%3$s %4$s/>', esc_attr( $id ), esc_attr( $menu ), checked( 1, esc_attr( $current ), false ), $disabled );
+		$html = sprintf( '<input type="checkbox" id="%1$s" name="%2$s[%1$s]" value="1"%3$s %4$s />', esc_attr( $id ), esc_attr( $menu ), checked( 1, esc_attr( $current ), false ), esc_attr( $disabled ) );
 
 		// Displays option description.
 		if ( isset( $args['description'] ) ) {
@@ -823,9 +820,9 @@ class WpMenuCart_Settings {
 		$id       = $args['id'];
 		$pro      = $args['pro'] ?? false;
 		$btn_text = $args['uploader_button_text'];
-		$disabled = isset( $args['disabled'] ) ? ' disabled=""' : '';
+		$disabled = isset( $args['disabled'] ) ? ' disabled' : '';
 
-		$html = sprintf( '<input type="button" id="%1$s" name="%2$s[%1$s]" class="btn button-primary" value="%3$s" %4$s/>', esc_attr( $id ), esc_attr( $menu ), $btn_text, $disabled );
+		$html = sprintf( '<input type="button" id="%1$s" name="%2$s[%1$s]" class="btn button-primary" value="%3$s"%4$s />', esc_attr( $id ), esc_attr( $menu ), esc_attr( $btn_text ), esc_attr( $disabled ) );
 
 		// Displays option description.
 		if ( isset( $args['description'] ) ) {
@@ -876,17 +873,6 @@ class WpMenuCart_Settings {
 
 		// Return the array processing any additional functions filtered by this action.
 		return apply_filters( 'wpmenucart_validate_input', $output, $input );
-	}
-
-	public function wpmenucart_add_meta_box() {
-		add_meta_box(
-			'wpmenucart-meta-box',
-			__( 'Menu Cart', 'wp-menu-cart' ),
-			array( &$this, 'wpmenucart_menu_item_meta_box' ),
-			'nav-menus',
-			'side',
-			'default'
-		);
 	}
 
 	public function wpmenucart_menu_item_meta_box() {
