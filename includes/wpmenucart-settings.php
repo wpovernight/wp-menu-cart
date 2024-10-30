@@ -909,6 +909,7 @@ class WpMenuCart_Settings {
 				'value'    => array(),
 				'size'     => array(),
 				'disabled' => array(),
+				'checked'  => array(),
 				'class'    => array(),
 			),
 			'label'  => array(
