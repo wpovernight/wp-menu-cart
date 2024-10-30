@@ -281,20 +281,32 @@ class WpMenuCart {
 	 * @return void
 	 */
 	public function need_shop() {
-		$error = __( 'WP Menu Cart could not detect an active shop plugin. Make sure you have activated at least one of the supported plugins.' , 'wp-menu-cart' );
-		printf( '<div class="notice notice-error"><p>%1$s <a href="%2$s">%3$s</a></p></div>', $error, esc_url( add_query_arg( 'hide_wpmenucart_shop_check', 'true' ) ), __( 'Hide this notice', 'wp-menu-cart' ) );
+		$error = __( 'WP Menu Cart could not detect an active shop plugin. Make sure you have activated at least one of the supported plugins.', 'wp-menu-cart' );
+		printf(
+			'<div class="notice notice-error"><p>%1$s <a href="%2$s">%3$s</a></p></div>',
+			esc_html( $error ),
+			esc_url( wp_nonce_url( add_query_arg( 'hide_wpmenucart_shop_check', 'true' ), 'need_shop_notice_nonce' ) ),
+			esc_html__( 'Hide this notice', 'wp-menu-cart' )
+		);
 
-		/**
-		 * Hide notifications
-		 */
-		if ( isset( $_GET['hide_wpmenucart_shop_check'] ) ) {
-			update_option( 'wpmenucart_shop_check', 'hide' );
+		// Hide notice.
+		if ( isset( $_GET['hide_wpmenucart_shop_check'] ) && isset( $_REQUEST['_wpnonce'] ) ) {
+			$nonce = sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) );
+
+			if ( ! wp_verify_nonce( $nonce, 'need_shop_notice_nonce' ) ) {
+				wcpdf_log_error( 'You do not have sufficient permissions to perform this action: need_shop_notice_nonce' );
+			} else {
+				update_option( 'wpmenucart_shop_check', 'hide' );
+			}
+
+			wp_redirect( remove_query_arg( array( 'hide_wpmenucart_shop_check', '_wpnonce' ) ) );
+			exit;
 		}
 	}
 
 	public function woocommerce_version_active() {
 		$error = __( 'An old version of Menu Cart for WooCommerce is currently activated, you need to disable or uninstall it for WP Menu Cart to function properly' , 'wp-menu-cart' );
-		printf( '<div class="notice notice-error"><p>%s</p></div>', $error );
+		printf( '<div class="notice notice-error"><p>%s</p></div>', esc_html( $error ) );
 	}
 	
 	/**
@@ -424,7 +436,8 @@ class WpMenuCart {
 			'wpmenucart-edd-ajax',
 			$this->plugin_url() . '/assets/js/wpmenucart-edd-ajax' . $this->asset_suffix . '.js',
 			array( 'jquery' ),
-			WPMENUCART_VERSION
+			WPMENUCART_VERSION,
+			true
 		);
 
 		wp_localize_script(
@@ -508,7 +521,8 @@ class WpMenuCart {
 				'wpmenucart-ajax-assist',
 				$this->plugin_url() . '/assets/js/wpmenucart-ajax-assist' . $this->asset_suffix . '.js',
 				array( 'jquery' ),
-				WPMENUCART_VERSION
+				WPMENUCART_VERSION,
+				true
 			);
 			wp_localize_script(
 				'wpmenucart-ajax-assist',
@@ -563,7 +577,8 @@ class WpMenuCart {
 			'wpmenucart-navigation-block',
 			$this->plugin_url() . '/assets/js/wpmenucart-navigation-block' . $this->asset_suffix . '.js',
 			array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-server-side-render' ),
-			WPMENUCART_VERSION
+			WPMENUCART_VERSION,
+			true
 		);
 
 		register_block_type( 'wpo/wpmenucart-navigation', array(
@@ -790,7 +805,7 @@ class WpMenuCart {
 		$menu_item_a_content = '';
 		if ( isset( $this->options['icon_display'] ) ) {
 			$icon                 = isset( $this->options['cart_icon'] ) ? $this->options['cart_icon'] : '0';
-			$menu_item_icon       = '<i class="wpmenucart-icon-shopping-cart-' . $icon . '" role="img" aria-label="' . __( 'Cart','woocommerce' ) . '"></i>';
+			$menu_item_icon       = '<i class="wpmenucart-icon-shopping-cart-' . $icon . '" role="img" aria-label="' . __( 'Cart','wp-menu-cart' ) . '"></i>';
 			$menu_item_a_content .= $menu_item_icon;
 		} else {
 			$menu_item_icon = '';
@@ -856,7 +871,8 @@ class WpMenuCart {
 			'wpmenucart-cart-checkout-js',
 			$this->plugin_url() . '/assets/js/wpmenucart-wc-block-support'. $this->asset_suffix . '.js',
 			array( 'jquery' ),
-			WPMENUCART_VERSION
+			WPMENUCART_VERSION,
+			true
 		);
 		wp_localize_script(
 			'wpmenucart-cart-checkout-js',

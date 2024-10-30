@@ -13,7 +13,7 @@ if ( ! class_exists( 'WPMenuCart_WooCommerce' ) ) {
 			$menu_item = array(
 				'cart_url'            => $this->get_cart_url(),
 				'shop_page_url'       => wc_get_page_permalink( 'shop' ),
-				'cart_total'          => strip_tags( $this->get_cart_total() ),
+				'cart_total'          => wp_strip_all_tags( $this->get_cart_total() ),
 				'cart_contents_count' => $this->get_cart_contents_count(),
 			);
 		
