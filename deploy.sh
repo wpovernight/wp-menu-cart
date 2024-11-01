@@ -21,8 +21,18 @@ svn update --set-depth infinity tags/$VERSION
 # Copy files from release to `svn/trunk`
 rsync -rcm --exclude-from="$GITHUB_WORKSPACE/.distignore" "$GITHUB_WORKSPACE/" trunk/ --delete --delete-excluded 
 
-# Detect and schedule deletions in SVN
-svn status | grep '^!' | awk '{print $2}' | xargs -r svn delete
+# Detect and schedule additions and deletions in SVN
+svn status | grep '^[!?]' | while IFS= read -r line; do
+    status="${line:0:1}"
+    file="${line:8}"
+    if [ "$status" = "!" ]; then
+        echo "Deleting: $file"
+        svn delete "$file"
+    elif [ "$status" = "?" ]; then
+        echo "Adding: $file"
+        svn add "$file"
+    fi
+done
 
 # Prepare the files for commit in SVN
 svn add --force trunk
