@@ -5,7 +5,7 @@ Tags: woocommerce, edd, menu, cart, shopping cart
 Requires at least: 3.4
 Tested up to: 6.6
 Requires PHP: 5.3
-Stable tag: 2.14.8
+Stable tag: 2.14.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -84,6 +84,9 @@ Once the plugin is activated navigate to Settings > Menu Cart Setup. Select your
 == Frequently Asked Questions ==
 
 == Changelog ==
+
+= 2.14.9 (2024-11-04) =
+* Fix: remove files from SVN that were mistakenly left undeleted
 
 = 2.14.8 (2024-10-30) =
 * New: comply with WP Plugin Check standards
