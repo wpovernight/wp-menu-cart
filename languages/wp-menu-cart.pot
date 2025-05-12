@@ -1,17 +1,17 @@
-# Copyright (C) 2024 WP Overnight
+# Copyright (C) 2025 WP Overnight
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Menu Cart 2.14.9\n"
+"Project-Id-Version: WP Menu Cart 2.14.11\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-menu-cart\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-11-04T08:46:01+00:00\n"
+"POT-Creation-Date: 2025-05-12T14:52:18+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.11.0\n"
+"X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: wp-menu-cart\n"
 
 #. Plugin Name of the plugin
@@ -54,6 +54,7 @@ msgstr ""
 
 #. translators: 1. theme name, 2. here docs link
 #: includes/wpmenucart-settings.php:56
+#, php-format
 msgid "Your current theme, %1$s, is a block theme, therefore, you need to configure the cart menu using the navigation block. Please follow the instructions to do it %2$s."
 msgstr ""
 
@@ -303,6 +304,7 @@ msgstr ""
 
 #. translators: 1,2: <a> tags
 #: includes/wpmenucart-settings.php:557
+#, php-format
 msgid "Need to see more? %1$sClick here%2$s to check it out. Add a product to your cart and watch what happens!"
 msgstr ""
 
@@ -358,6 +360,7 @@ msgstr ""
 
 #. translators: item count
 #: wp-menu-cart.php:781
+#, php-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] ""

@@ -3,9 +3,9 @@ Contributors: pomegranate, jprummer, alexmigf, yordansoares, kluver, dpeyou
 Donate link: https://wpovernight.com/downloads/menu-cart-pro/
 Tags: woocommerce, edd, menu, cart, shopping cart
 Requires at least: 3.4
-Tested up to: 6.6
-Requires PHP: 5.3
-Stable tag: 2.14.10
+Tested up to: 6.8
+Requires PHP: 7.4
+Stable tag: 2.14.11
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -84,6 +84,11 @@ Once the plugin is activated navigate to Settings > Menu Cart Setup. Select your
 == Frequently Asked Questions ==
 
 == Changelog ==
+
+= 2.14.11 (2025-05-12) =
+* New: PHP min supported version bumped to 7.4
+* Translations: Updated translation template (POT)
+* Tested up to WooCommerce 9.8 & WP 6.8
 
 = 2.14.10 (2024-11-04) =
 * Fix: remove files from SVN that were mistakenly left undeleted for "Menu Bar Cart"
