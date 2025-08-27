@@ -5,7 +5,7 @@ Tags: woocommerce, edd, menu, cart, shopping cart
 Requires at least: 3.4
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 2.14.11
+Stable tag: 2.14.12
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -84,6 +84,11 @@ Once the plugin is activated navigate to Settings > Menu Cart Setup. Select your
 == Frequently Asked Questions ==
 
 == Changelog ==
+
+= 2.14.12 (2025-08-27) =
+* Fix: Class `WpMenuCart` not found error when Pro is activated
+* Translations: Updated translation template (POT)
+* Tested up to WooCommerce 10.1
 
 = 2.14.11 (2025-05-12) =
 * New: PHP min supported version bumped to 7.4
