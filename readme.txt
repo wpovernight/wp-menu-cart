@@ -3,7 +3,7 @@ Contributors: pomegranate, jprummer, alexmigf, yordansoares, kluver, dpeyou
 Donate link: https://wpovernight.com/downloads/menu-cart-pro/
 Tags: woocommerce, edd, menu, cart, shopping cart
 Requires at least: 3.4
-Tested up to: 6.8
+Tested up to: 6.9
 Requires PHP: 7.4
 Stable tag: 2.14.12
 License: GPLv2 or later
