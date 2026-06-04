@@ -637,47 +637,6 @@ class WpMenuCart_Settings {
 	}
 
 	/**
-	 * Displays a multiple selectbox for a settings field
-	 *
-	 * @param array $args settings field args
-	 *
-	 * @return void
-	 */
-	public function menus_select_element_callback( array $args ): void {
-		$menu    = $args['menu'];
-		$id      = $args['id'];
-		$options = get_option( $menu );
-
-		for ( $x = 1; $x <= 3; $x ++ ) {
-			$html     = '';
-			$current  = $options[ $id ][ $x ] ?? $args['default'] ?? '';
-			$disabled = ( $x == 1 ) ? '' : ' disabled';
-
-			$html .= sprintf( '<select name="%1$s[%2$s][%3$s]" id="%1$s[%2$s][%3$s]"%4$s>', esc_attr( $menu ), esc_attr( $id ), esc_attr( $x ), esc_attr( $disabled ) );
-			$html .= sprintf( '<option value="">%s</option>', __( 'Select a choice…', 'wp-menu-cart' ) );
-
-			foreach ( (array) $args['options'] as $key => $label ) {
-				$html .= sprintf( '<option value="%s"%s>%s</option>', $key, selected( $current, $key, false ), esc_attr( $label ) );
-			}
-			$html .= '</select>';
-
-			if ( isset( $args['description'] ) ) {
-				$html .= sprintf( '<p class="description">%s</p>', wp_kses_post( $args['description'] ) );
-			}
-
-			if ( $x > 1 ) {
-				$html .= ' <span class="pro-feature"><i>' . __( 'This feature only available in', 'wp-menu-cart' ) . ' <a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartmultiplemenus">Menu Cart Pro</a></i></span>';
-				$html .= '<div class="hidden-input"></div>';
-				$html = '<div class="pro-setting-wrapper">' . $html . '</div>';
-			}
-
-			$html .= '<br />';
-
-			echo wp_kses( $html, $this->get_allowed_html() );
-		}
-	}
-
-	/**
 	 * Checkbox field callback.
 	 *
 	 * @param array $args Field arguments.
