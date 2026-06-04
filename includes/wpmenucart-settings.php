@@ -77,21 +77,6 @@ class WpMenuCart_Settings {
 			}
 		}
 
-		if ( ! WPO_Menu_Cart()->is_block_theme() ) {
-			add_settings_field(
-				'menu_slugs',
-				__( 'Select the menu(s) in which you want to display the Menu Cart', 'wp-menu-cart' ),
-				array( &$this, 'menus_select_element_callback' ),
-				$option,
-				'plugin_settings',
-				array(
-					'menu'    => $option,
-					'id'      => 'menu_slugs',
-					'options' => (array) $this->get_menu_array(),
-				)
-			);
-		}
-
 		add_settings_field(
 			'always_display',
 			__( "Always display cart, even if it's empty", 'wp-menu-cart' ),
@@ -242,23 +227,6 @@ class WpMenuCart_Settings {
 					'1' => __( 'Items Only.' , 'wp-menu-cart' ),
 					'2' => __( 'Price Only.' , 'wp-menu-cart' ),
 					'3' => __( 'Both price and items.' , 'wp-menu-cart' ),
-				),
-			)
-		);
-
-		add_settings_field(
-			'items_alignment',
-			__( 'Select the alignment that looks best with your menu.', 'wp-menu-cart' ),
-			array( &$this, 'radio_element_callback' ),
-			$option,
-			'plugin_settings',
-			array(
-				'menu'    => $option,
-				'id'      => 'items_alignment',
-				'options' => array(
-					'left'     => __( 'Align Left.' , 'wp-menu-cart' ),
-					'right'    => __( 'Align Right.' , 'wp-menu-cart' ),
-					'standard' => __( 'Default Menu Alignment.' , 'wp-menu-cart' ),
 				),
 			)
 		);
@@ -450,9 +418,6 @@ class WpMenuCart_Settings {
 	public function default_settings() {
 		$option              = 'wcmenucart';
 		$wcmenucart_options  = get_option( $option, array() );
-		$menu_slugs          = array(
-			'1' => isset( $wcmenucart_options['menu_name_1'] ) ? $wcmenucart_options['menu_name_1'] : '0',
-		);
 
 		$active_shop_plugins = WpMenuCart::get_active_shops();
 
@@ -463,11 +428,9 @@ class WpMenuCart_Settings {
 
 		$first_active_shop_plugin = isset( $filtered_active_shop_plugins[0] ) ? $filtered_active_shop_plugins[0] : '';
 		$default = array(
-			'menu_slugs'        => $menu_slugs,
-			'always_display'    => isset( $wcmenucart_options['always_display'] )  ? $wcmenucart_options['always_display']  : '',
-			'icon_display'      => isset( $wcmenucart_options['icon_display'] )    ? $wcmenucart_options['icon_display']    : '1',
-			'items_display'     => isset( $wcmenucart_options['items_display'] )   ? $wcmenucart_options['items_display']   : '3',
-			'items_alignment'   => isset( $wcmenucart_options['items_alignment'] ) ? $wcmenucart_options['items_alignment'] : 'standard',
+			'always_display'    => isset( $wcmenucart_options['always_display'] ) ? $wcmenucart_options['always_display'] : '',
+			'icon_display'      => isset( $wcmenucart_options['icon_display'] )   ? $wcmenucart_options['icon_display']   : '1',
+			'items_display'     => isset( $wcmenucart_options['items_display'] )  ? $wcmenucart_options['items_display']  : '3',
 			'custom_class'      => '',
 			'flyout_display'    => '',
 			'flyout_itemnumber' => '5',
