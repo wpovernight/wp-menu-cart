@@ -62,6 +62,11 @@ class WpMenuCart {
 	public $menu_items;
 
 	/**
+	 * @var WpMenuCart_Nav_Menu
+	 */
+	public $nav_menu;
+
+	/**
 	 * @var WpMenuCart
 	 */
 	protected static $_instance = null;
@@ -135,6 +140,10 @@ class WpMenuCart {
 	public function load_classes() {
 		include_once( 'includes/wpmenucart-settings.php' );
 		$this->settings = new WpMenuCart_Settings();
+
+		include_once( 'includes/class-wpmenucart-nav-menu.php' );
+		$this->nav_menu = new WpMenuCart_Nav_Menu();
+		$this->nav_menu->maybe_migrate_menu_slugs();
 
 		if ( $this->good_to_go() ) {
 			if ( isset( $this->options['shop_plugin'] ) ) {
@@ -627,20 +636,41 @@ class WpMenuCart {
 	}
 
 	/**
-	 * Add filters to selected menus to add cart item <li>
+	 * Add filters to selected menus to add cart item <li>.
+	 *
+	 * Legacy slug-based approach, kept as a fallback for sites that have not
+	 * yet migrated to the nav menu item approach. Skipped once migration has run
+	 * and skipped for any menu that already has a real cart item to avoid
+	 * rendering the cart twice.
 	 */
 	public function filter_nav_menus() {
-		// exit if no shop class is active
-		if ( ! isset( $this->shop ) )
+		// Exit if no shop class is active.
+		if ( ! isset( $this->shop ) ) {
 			return;
-
-		// exit if no menus set
-		if ( ! isset( $this->options['menu_slugs'] ) || empty( $this->options['menu_slugs'] ) )
-			return;
-
-		if ( '0' !== $this->options['menu_slugs'][1] ) {
-			add_filter( 'wp_nav_menu_' . $this->options['menu_slugs'][1] . '_items', array( &$this, 'add_itemcart_to_menu' ) , 10, 2 );
 		}
+
+		// Exit once migration to real nav menu items has run.
+		if ( get_option( 'wpo_wpmenucart_nav_menu_migrated' ) ) {
+			return;
+		}
+
+		// Exit if no menus set.
+		if ( ! isset( $this->options['menu_slugs'] ) || empty( $this->options['menu_slugs'] ) ) {
+			return;
+		}
+
+		$menu_slug = $this->options['menu_slugs'][1];
+
+		if ( '0' === $menu_slug ) {
+			return;
+		}
+
+		// Skip if a real Menu Cart item already exists in this menu.
+		if ( isset( $this->nav_menu ) && $this->nav_menu->menu_has_cart_item( $menu_slug ) ) {
+			return;
+		}
+
+		add_filter( 'wp_nav_menu_' . $menu_slug . '_items', array( $this, 'add_itemcart_to_menu' ), 10, 2 );
 	}
 
 	/**
@@ -652,8 +682,7 @@ class WpMenuCart {
 	 * @return string
 	 */
 	public function generate_menu_item_li( $classes, $context = 'classic' ) {
-		$alignment = $this->options['items_alignment'] ?? 'standard';
-		$classes  .= ' wpmenucartli wpmenucart-display-' . $alignment;
+		$classes  .= ' wpmenucartli';
 		
 		if ( function_exists( 'is_checkout' ) && function_exists( 'is_cart' ) && ( is_checkout() || is_cart() ) && empty( $this->options['show_on_cart_checkout_page'] ) ) {
 			$classes .= ' hidden-wpmenucart';
