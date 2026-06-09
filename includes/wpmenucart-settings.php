@@ -484,6 +484,23 @@ class WpMenuCart_Settings {
 			</div>
 			<?php
 		}
+
+		if ( get_option( 'wpo_wpmenucart_nav_menu_migrated' ) && ! WPO_Menu_Cart()->is_block_theme() ) {
+			?>
+			<div class="notice notice-info">
+				<p><?php echo wp_kses_post( sprintf(
+					/* translators: %s: link to Appearance > Menus */
+					__( 'The Menu Cart item is now added via %s, just like any other menu item.', 'wp-menu-cart' ),
+					'<a href="' . esc_url( admin_url( 'nav-menus.php' ) ) . '">' . esc_html__( 'Appearance &gt; Menus', 'wp-menu-cart' ) . '</a>'
+				) ); ?></p>
+				<p class="description"><?php echo wp_kses_post( sprintf(
+					/* translators: %s: Menu Cart Pro link */
+					__( 'Adding the cart to multiple menus is available in %s.', 'wp-menu-cart' ),
+					'<a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartmultiplemenus">Menu Cart Pro</a>'
+				) ); ?></p>
+			</div>
+			<?php
+		}
 	}
 
 	public function display_pro_ad() {

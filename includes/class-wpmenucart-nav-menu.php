@@ -21,6 +21,16 @@ if ( ! class_exists( 'WpMenuCart_Nav_Menu' ) ) :
 		protected $pending_renders = array();
 
 		/**
+		 * Menu term IDs that have already had the cart rendered this request.
+		 *
+		 * Used to enforce the one-menu limit in free and prevent double-renders
+		 * when the same menu is assigned to multiple theme locations.
+		 *
+		 * @var array
+		 */
+		protected $rendered_menus = array();
+
+		/**
 		 * Constructor.
 		 */
 		public function __construct() {
@@ -295,7 +305,23 @@ if ( ! class_exists( 'WpMenuCart_Nav_Menu' ) ) :
 				return $menu_items;
 			}
 
+			// If no shop is active, remove the cart item entirely so no bare link is left behind.
+			if ( ! isset( WPO_Menu_Cart()->shop ) ) {
+				return array_values( array_filter( $menu_items, function( $item ) use ( $cart_item_id ) {
+					return $item->ID !== $cart_item_id;
+				} ) );
+			}
+
+			// Free supports one menu only. If this menu or any other has already been
+			// rendered this request, strip the item so no bare placeholder is left behind.
+			if ( ! empty( $this->rendered_menus ) ) {
+				return array_values( array_filter( $menu_items, function( $item ) use ( $cart_item_id ) {
+					return $item->ID !== $cart_item_id;
+				} ) );
+			}
+
 			$menu_slug = isset( $args->menu->slug ) ? $args->menu->slug : '';
+			$menu_id   = isset( $args->menu->term_id ) ? $args->menu->term_id : 0;
 
 			// Stash per-render data keyed by the args object hash so multiple menus
 			// in the same request each get their own slot without overwriting each other.
@@ -303,6 +329,8 @@ if ( ! class_exists( 'WpMenuCart_Nav_Menu' ) ) :
 				'cart_item_id' => $cart_item_id,
 				'menu_slug'    => $menu_slug,
 			);
+
+			$this->rendered_menus[] = $menu_id;
 
 			add_filter( 'wp_nav_menu_items', array( $this, 'render_native_nav_menu_item' ), 10, 2 );
 
