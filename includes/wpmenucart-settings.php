@@ -496,7 +496,7 @@ class WpMenuCart_Settings {
 				<p class="description"><?php echo wp_kses_post( sprintf(
 					/* translators: %s: Menu Cart Pro link */
 					__( 'Adding the cart to multiple menus is available in %s.', 'wp-menu-cart' ),
-					'<a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartmultiplemenus">Menu Cart Pro</a>'
+					'<a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartmultiplemenus" target="_blank" rel="noopener noreferrer">Menu Cart Pro</a>'
 				) ); ?></p>
 			</div>
 			<?php
