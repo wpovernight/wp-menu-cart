@@ -77,21 +77,6 @@ class WpMenuCart_Settings {
 			}
 		}
 
-		if ( ! WPO_Menu_Cart()->is_block_theme() ) {
-			add_settings_field(
-				'menu_slugs',
-				__( 'Select the menu(s) in which you want to display the Menu Cart', 'wp-menu-cart' ),
-				array( &$this, 'menus_select_element_callback' ),
-				$option,
-				'plugin_settings',
-				array(
-					'menu'    => $option,
-					'id'      => 'menu_slugs',
-					'options' => (array) $this->get_menu_array(),
-				)
-			);
-		}
-
 		add_settings_field(
 			'always_display',
 			__( "Always display cart, even if it's empty", 'wp-menu-cart' ),
@@ -242,23 +227,6 @@ class WpMenuCart_Settings {
 					'1' => __( 'Items Only.' , 'wp-menu-cart' ),
 					'2' => __( 'Price Only.' , 'wp-menu-cart' ),
 					'3' => __( 'Both price and items.' , 'wp-menu-cart' ),
-				),
-			)
-		);
-
-		add_settings_field(
-			'items_alignment',
-			__( 'Select the alignment that looks best with your menu.', 'wp-menu-cart' ),
-			array( &$this, 'radio_element_callback' ),
-			$option,
-			'plugin_settings',
-			array(
-				'menu'    => $option,
-				'id'      => 'items_alignment',
-				'options' => array(
-					'left'     => __( 'Align Left.' , 'wp-menu-cart' ),
-					'right'    => __( 'Align Right.' , 'wp-menu-cart' ),
-					'standard' => __( 'Default Menu Alignment.' , 'wp-menu-cart' ),
 				),
 			)
 		);
@@ -450,9 +418,6 @@ class WpMenuCart_Settings {
 	public function default_settings() {
 		$option              = 'wcmenucart';
 		$wcmenucart_options  = get_option( $option, array() );
-		$menu_slugs          = array(
-			'1' => isset( $wcmenucart_options['menu_name_1'] ) ? $wcmenucart_options['menu_name_1'] : '0',
-		);
 
 		$active_shop_plugins = WpMenuCart::get_active_shops();
 
@@ -463,11 +428,9 @@ class WpMenuCart_Settings {
 
 		$first_active_shop_plugin = isset( $filtered_active_shop_plugins[0] ) ? $filtered_active_shop_plugins[0] : '';
 		$default = array(
-			'menu_slugs'        => $menu_slugs,
-			'always_display'    => isset( $wcmenucart_options['always_display'] )  ? $wcmenucart_options['always_display']  : '',
-			'icon_display'      => isset( $wcmenucart_options['icon_display'] )    ? $wcmenucart_options['icon_display']    : '1',
-			'items_display'     => isset( $wcmenucart_options['items_display'] )   ? $wcmenucart_options['items_display']   : '3',
-			'items_alignment'   => isset( $wcmenucart_options['items_alignment'] ) ? $wcmenucart_options['items_alignment'] : 'standard',
+			'always_display'    => isset( $wcmenucart_options['always_display'] ) ? $wcmenucart_options['always_display'] : '',
+			'icon_display'      => isset( $wcmenucart_options['icon_display'] )   ? $wcmenucart_options['icon_display']   : '1',
+			'items_display'     => isset( $wcmenucart_options['items_display'] )  ? $wcmenucart_options['items_display']  : '3',
 			'custom_class'      => '',
 			'flyout_display'    => '',
 			'flyout_itemnumber' => '5',
@@ -518,6 +481,23 @@ class WpMenuCart_Settings {
 			?>
 			<div class="notice notice-error">
 				<p><?php echo wp_kses_post( 'You need to create a menu before you can use Menu Cart. Go to <strong>Appearence > Menus</strong> and create menu to add the cart to.', 'wp-menu-cart' ); ?></p>
+			</div>
+			<?php
+		}
+
+		if ( get_option( 'wpo_wpmenucart_nav_menu_migrated' ) && ! WPO_Menu_Cart()->is_block_theme() ) {
+			?>
+			<div class="notice notice-info">
+				<p><?php echo wp_kses_post( sprintf(
+					/* translators: %s: link to Appearance > Menus */
+					__( 'The Menu Cart item is now added via %s, just like any other menu item.', 'wp-menu-cart' ),
+					'<a href="' . esc_url( admin_url( 'nav-menus.php' ) ) . '">' . esc_html__( 'Appearance &gt; Menus', 'wp-menu-cart' ) . '</a>'
+				) ); ?></p>
+				<p class="description"><?php echo wp_kses_post( sprintf(
+					/* translators: %s: Menu Cart Pro link */
+					__( 'Adding the cart to multiple menus is available in %s.', 'wp-menu-cart' ),
+					'<a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartmultiplemenus" target="_blank" rel="noopener noreferrer">Menu Cart Pro</a>'
+				) ); ?></p>
 			</div>
 			<?php
 		}
@@ -671,47 +651,6 @@ class WpMenuCart_Settings {
 		}
 
 		echo wp_kses( $html, $this->get_allowed_html() );
-	}
-
-	/**
-	 * Displays a multiple selectbox for a settings field
-	 *
-	 * @param array $args settings field args
-	 *
-	 * @return void
-	 */
-	public function menus_select_element_callback( array $args ): void {
-		$menu    = $args['menu'];
-		$id      = $args['id'];
-		$options = get_option( $menu );
-
-		for ( $x = 1; $x <= 3; $x ++ ) {
-			$html     = '';
-			$current  = $options[ $id ][ $x ] ?? $args['default'] ?? '';
-			$disabled = ( $x == 1 ) ? '' : ' disabled';
-
-			$html .= sprintf( '<select name="%1$s[%2$s][%3$s]" id="%1$s[%2$s][%3$s]"%4$s>', esc_attr( $menu ), esc_attr( $id ), esc_attr( $x ), esc_attr( $disabled ) );
-			$html .= sprintf( '<option value="">%s</option>', __( 'Select a choice…', 'wp-menu-cart' ) );
-
-			foreach ( (array) $args['options'] as $key => $label ) {
-				$html .= sprintf( '<option value="%s"%s>%s</option>', $key, selected( $current, $key, false ), esc_attr( $label ) );
-			}
-			$html .= '</select>';
-
-			if ( isset( $args['description'] ) ) {
-				$html .= sprintf( '<p class="description">%s</p>', wp_kses_post( $args['description'] ) );
-			}
-
-			if ( $x > 1 ) {
-				$html .= ' <span class="pro-feature"><i>' . __( 'This feature only available in', 'wp-menu-cart' ) . ' <a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucartmultiplemenus">Menu Cart Pro</a></i></span>';
-				$html .= '<div class="hidden-input"></div>';
-				$html = '<div class="pro-setting-wrapper">' . $html . '</div>';
-			}
-
-			$html .= '<br />';
-
-			echo wp_kses( $html, $this->get_allowed_html() );
-		}
 	}
 
 	/**

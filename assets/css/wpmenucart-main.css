@@ -8,15 +8,6 @@
 	margin: 0 0.25em;
 }
 
-.wpmenucart-display-standard {
-	
-}
-.wpmenucart-display-right {
-	float: right !important;
-}
-.wpmenucart-display-left {
-	float: left !important;
-}
 .wpmenucart-icon-shopping-cart {
 	background-image: none;
 	vertical-align: inherit;
