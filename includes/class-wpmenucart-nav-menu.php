@@ -312,9 +312,12 @@ if ( ! class_exists( 'WpMenuCart_Nav_Menu' ) ) :
 				} ) );
 			}
 
-			// Free supports one menu only. If this menu or any other has already been
-			// rendered this request, strip the item so no bare placeholder is left behind.
-			if ( ! empty( $this->rendered_menus ) ) {
+			$menu_id = isset( $args->menu->term_id ) ? $args->menu->term_id : 0;
+
+			// Free supports one menu only. If a different menu has already been rendered
+			// this request, strip the item so no bare placeholder is left behind.
+			// The same menu assigned to multiple theme locations is allowed to render in each.
+			if ( ! empty( $this->rendered_menus ) && ! in_array( $menu_id, $this->rendered_menus, true ) ) {
 				return array_values( array_filter( $menu_items, function( $item ) use ( $cart_item_id ) {
 					return $item->ID !== $cart_item_id;
 				} ) );
