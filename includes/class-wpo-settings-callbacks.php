@@ -252,7 +252,7 @@ if ( !class_exists( 'WPO_Settings_Callbacks_2' ) ) :
 		 *
 		 * @return array|false
 		 */
-		public function get_languages(): array|false {
+		public function get_languages() {
 			$wpml = class_exists( 'SitePress' );
 			// $wpml = true; // for development
 
