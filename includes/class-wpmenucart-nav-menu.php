@@ -54,8 +54,15 @@ if ( ! class_exists( 'WpMenuCart_Nav_Menu' ) ) :
 				return;
 			}
 
-			$options    = get_option( 'wpmenucart', array() );
-			$menu_slugs = ! empty( $options['menu_slugs'] ) ? $options['menu_slugs'] : array();
+			// Read from the new option key. Fall back to the legacy key in case
+			// maybe_migrate_options() hasn't run yet (e.g. very first load after update).
+			$main_settings = get_option( 'wpo_wpmenucart_main_settings', array() );
+			$menu_slugs    = ! empty( $main_settings['menu_slugs'] ) ? $main_settings['menu_slugs'] : array();
+
+			if ( empty( $menu_slugs ) ) {
+				$legacy     = get_option( 'wpmenucart', array() );
+				$menu_slugs = ! empty( $legacy['menu_slugs'] ) ? $legacy['menu_slugs'] : array();
+			}
 
 			foreach ( $menu_slugs as $menu_slug ) {
 				if ( empty( $menu_slug ) || '0' === $menu_slug ) {
@@ -313,6 +320,13 @@ if ( ! class_exists( 'WpMenuCart_Nav_Menu' ) ) :
 			}
 
 			$menu_id = isset( $args->menu->term_id ) ? $args->menu->term_id : 0;
+
+			// Remove the item entirely when the cart should not render on this page.
+			if ( false === WPO_Menu_Cart()->should_render_menucart() ) {
+				return array_values( array_filter( $menu_items, function( $item ) use ( $cart_item_id ) {
+					return $item->ID !== $cart_item_id;
+				} ) );
+			}
 
 			// Free supports one menu only. If a different menu has already been rendered
 			// this request, strip the item so no bare placeholder is left behind.

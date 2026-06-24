@@ -12,7 +12,7 @@ if ( ! class_exists( 'WPMenuCart_WooCommerce' ) ) {
 
 			$menu_item = array(
 				'cart_url'            => $this->get_cart_url(),
-				'shop_page_url'       => wc_get_page_permalink( 'shop' ),
+				'shop_page_url'       => $this->get_shop_url(),
 				'cart_total'          => wp_strip_all_tags( $this->get_cart_total() ),
 				'cart_contents_count' => $this->get_cart_contents_count(),
 			);
@@ -47,7 +47,7 @@ if ( ! class_exists( 'WPMenuCart_WooCommerce' ) ) {
 		}
 
 		public function get_cart_total() {
-			$settings = get_option( 'wpmenucart', array() );
+			$settings = get_option( 'wpo_wpmenucart_main_settings', array() );
 
 			if ( defined('WC_VERSION') && version_compare( WC_VERSION, '3.3', '>=' ) ) {
 				if ( isset( $settings['total_price_type'] ) && 'subtotal' === $settings['total_price_type'] ) {
@@ -107,6 +107,15 @@ if ( ! class_exists( 'WPMenuCart_WooCommerce' ) ) {
 		public function get_cart_url(): string {
 			$wc_cart_url = apply_filters( 'woocommerce_get_cart_url', wc_get_page_permalink( 'cart' ) );
 			return apply_filters( 'wpmenucart_cart_url', $wc_cart_url, $this );
+		}
+
+		/**
+		 * Get the shop page URL.
+		 *
+		 * @return string
+		 */
+		public function get_shop_url(): string {
+			return wc_get_page_permalink( 'shop' );
 		}
 	}
 }

@@ -1,5 +1,6 @@
 /* Settings */
-body.woocommerce_page_wpmenucart_options_page {
+body.woocommerce_page_wpo_wpmenucart_options_page,
+body.settings_page_wpo_wpmenucart_options_page {
 	background: #fff;
 }
 .wpo_wpmenucart_settings {
@@ -11,6 +12,20 @@ body.woocommerce_page_wpmenucart_options_page {
 	font-weight: 400;
 	font-size: 18px;
 	margin: 0;
+}
+.wpo_wpmenucart_settings .nav-tab-wrapper {
+	padding: 9px 0 0 0;
+	margin-bottom: 15px !important;
+}
+.wpo_wpmenucart_settings .nav-tab-wrapper a.nav-tab {
+	background: transparent;
+	border: none;
+	padding: 1em 0;
+	margin: 0 1.2em;
+	font-size: 15px;
+}
+.wpo_wpmenucart_settings .nav-tab-wrapper a.nav-tab.nav-tab-active {
+	border-bottom: 3px solid #51266b;
 }
 .wpo_wpmenucart_settings .wpo_wpmenucart_settings_container .wpo_wpmenucart_settings_tab {
 	margin: 0;
@@ -37,11 +52,10 @@ body.woocommerce_page_wpmenucart_options_page {
 /* Pro Ad */
 .menucart-pro-ad {
 	border: 1px solid #3D5C99;
-	background-color: #EBF5FF;	
+	background-color: #EBF5FF;
 	border-radius: 5px;
 	padding: 15px;
 }
-
 .menucart-pro-ad-big {
 	margin-top: 15px;
 	min-height: 90px;
@@ -49,7 +63,6 @@ body.woocommerce_page_wpmenucart_options_page {
 	padding-left: 120px;
 	clear: both;
 }
-
 .menucart-pro-ad-small {
 	position: absolute;
 	right: 20px;
@@ -61,11 +74,11 @@ body.woocommerce_page_wpmenucart_options_page {
 	left: -10px;
 }
 
+/* Pro setting overlay */
 .wpo_wpmenucart_settings .pro-setting-wrapper {
 	display: inline-block;
 	position: relative;
 }
-
 .wpo_wpmenucart_settings .hidden-input,
 .wpo_wpmenucart_settings .hidden-input-icon {
 	position: absolute;
@@ -78,7 +91,6 @@ body.woocommerce_page_wpmenucart_options_page {
 	opacity: 0;
 	filter: alpha(opacity=0);
 }
-
 .wpo_wpmenucart_settings .pro-feature,
 .wpo_wpmenucart_settings .pro-icon {
 	display: none;

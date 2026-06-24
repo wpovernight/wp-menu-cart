@@ -39,7 +39,7 @@ class WpMenuCart {
 	/**
 	 * @var array
 	 */
-	public $options;
+	public $main_settings;
 
 	/**
 	 * @var string
@@ -89,16 +89,19 @@ class WpMenuCart {
 	public function __construct() {
 		$this->plugin_slug     = basename( dirname( __FILE__ ) );
 		$this->plugin_basename = plugin_basename( __FILE__ );
-		$this->options         = get_option( 'wpmenucart', array() );
+		$this->main_settings   = get_option( 'wpo_wpmenucart_main_settings', array() );
 		$this->asset_suffix    = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 		$this->define( 'WPMENUCART_VERSION', $this->plugin_version );
-		
+
+		// Run option key migration before anything else loads.
+		add_action( 'init', array( $this, 'maybe_migrate_options' ), 1 );
+
 		// load the localisation & classes
 		add_action( 'init', array( &$this, 'wpml' ), 0 );
 		add_action( 'init', array( &$this, 'languages' ), 8 );
 		add_action( 'init', array( $this, 'load_classes' ), 9 );
-		
+
 		add_filter( 'load_textdomain_mofile', array( $this, 'textdomain_fallback' ), 10, 2 );
 
 		// enqueue scripts & styles
@@ -113,8 +116,7 @@ class WpMenuCart {
 
 		// add filters to selected menus to add cart item <li>
 		add_action( 'init', array( $this, 'filter_nav_menus' ) );
-		// $this->filter_nav_menus();
-		
+
 		// HPOS compatibility
 		add_action( 'before_woocommerce_init', array( $this, 'woocommerce_hpos_compatible' ) );
 
@@ -134,11 +136,56 @@ class WpMenuCart {
 	}
 
 	/**
+	 * Migrate settings from the legacy option key 'wpmenucart' to 'wpo_wpmenucart_main_settings'.
+	 *
+	 * Runs once on init priority 1 so all subsequent hooks read the new key. A version flag
+	 * prevents the migration from running more than once.
+	 *
+	 * @return void
+	 */
+	public function maybe_migrate_options() {
+		if ( get_option( 'wpo_wpmenucart_options_migrated' ) ) {
+			return;
+		}
+
+		$legacy = get_option( 'wpmenucart' );
+
+		if ( ! empty( $legacy ) && false === get_option( 'wpo_wpmenucart_main_settings' ) ) {
+			// Translate shop_plugin slug from old free format to Pro capitalized format.
+			$shop_plugin_map = array(
+				'woocommerce'                => 'WooCommerce',
+				'easy-digital-downloads'     => 'Easy Digital Downloads',
+				'easy-digital-downloads-pro' => 'Easy Digital Downloads Pro',
+			);
+
+			// Fields that belong elsewhere and should not be copied into main settings.
+			$dont_copy = array( 'custom_class', 'wpml_string_translation' );
+
+			$main_settings = array();
+			foreach ( $legacy as $key => $value ) {
+				if ( in_array( $key, $dont_copy, true ) ) {
+					continue;
+				}
+				if ( 'shop_plugin' === $key && ! empty( $shop_plugin_map[ $value ] ) ) {
+					$value = $shop_plugin_map[ $value ];
+				}
+				$main_settings[ $key ] = $value;
+			}
+			update_option( 'wpo_wpmenucart_main_settings', $main_settings );
+		}
+
+		update_option( 'wpo_wpmenucart_options_migrated', true );
+
+		// Refresh the in-memory copy so the rest of this request sees the migrated value.
+		$this->main_settings = get_option( 'wpo_wpmenucart_main_settings', array() );
+	}
+
+	/**
 	 * Load classes
 	 * @return void
 	 */
 	public function load_classes() {
-		include_once( 'includes/wpmenucart-settings.php' );
+		include_once( 'includes/class-wpmenucart-settings.php' );
 		$this->settings = new WpMenuCart_Settings();
 
 		include_once( 'includes/class-wpmenucart-nav-menu.php' );
@@ -146,30 +193,30 @@ class WpMenuCart {
 		$this->nav_menu->maybe_migrate_menu_slugs();
 
 		if ( $this->good_to_go() ) {
-			if ( isset( $this->options['shop_plugin'] ) ) {
-				if ( false === $this->is_shop_active( $this->options['shop_plugin'] ) ) {
+			if ( isset( $this->main_settings['shop_plugin'] ) ) {
+				if ( false === $this->is_shop_active( $this->main_settings['shop_plugin'] ) ) {
 					return;
 				}
-				
-				switch ( $this->options['shop_plugin'] ) {
-					case 'woocommerce':
-						include_once( 'includes/wpmenucart-woocommerce.php' );
+
+				switch ( $this->main_settings['shop_plugin'] ) {
+					case 'WooCommerce':
+						include_once( 'includes/shops/wpmenucart-woocommerce.php' );
 						$this->shop = new WPMenuCart_WooCommerce();
-						if ( ! isset( $this->options['builtin_ajax'] ) ) {
+						if ( ! isset( $this->main_settings['builtin_ajax'] ) ) {
 							add_filter( 'woocommerce_add_to_cart_fragments', array( $this, 'woocommerce_ajax_fragments' ) );
 						}
 						break;
-					case 'easy-digital-downloads':
-					case 'easy-digital-downloads-pro':
-						include_once( 'includes/wpmenucart-edd.php' );
+					case 'Easy Digital Downloads':
+					case 'Easy Digital Downloads Pro':
+						include_once( 'includes/shops/wpmenucart-edd.php' );
 						$this->shop = new WPMenuCart_EDD();
-						if ( ! isset( $this->options['builtin_ajax'] ) ) {
-							add_action("wp_enqueue_scripts", array( &$this, 'load_edd_ajax' ), 0 );
+						if ( ! isset( $this->main_settings['builtin_ajax'] ) ) {
+							add_action( "wp_enqueue_scripts", array( &$this, 'load_edd_ajax' ), 0 );
 						}
 						break;
 				}
-				
-				if ( isset( $this->options['builtin_ajax'] ) ) {
+
+				if ( isset( $this->main_settings['builtin_ajax'] ) ) {
 					add_action( 'wp_enqueue_scripts', array( &$this, 'load_custom_ajax' ), 0 );
 				}
 			}
@@ -212,11 +259,11 @@ class WpMenuCart {
 			}
 		} else {
 			switch ( $shop ) {
-				case 'woocommerce':
+				case 'WooCommerce':
 					return function_exists('WC');
 					break;
-				case 'easy-digital-downloads':
-				case 'easy-digital-downloads-pro':
+				case 'Easy Digital Downloads':
+				case 'Easy Digital Downloads Pro':
 					return function_exists('EDD');
 					break;
 				default:
@@ -243,10 +290,10 @@ class WpMenuCart {
 
 		return $active_plugins;
 	}
-	
+
 	/**
 	 * Get array of active shop plugins
-	 * 
+	 *
 	 * @return array plugin name => plugin path
 	 */
 	public static function get_active_shops() {
@@ -257,7 +304,7 @@ class WpMenuCart {
 			'Easy Digital Downloads'     => 'easy-digital-downloads/easy-digital-downloads.php',
 			'Easy Digital Downloads Pro' => 'easy-digital-downloads-pro/easy-digital-downloads.php',
 		);
-		
+
 		// filter shop plugins & add shop names as keys
 		$active_shop_plugins = array_intersect( $shop_plugins, $active_plugins );
 
@@ -266,23 +313,23 @@ class WpMenuCart {
 
 	/**
 	 * Get array of active old WooCommerce Menu Cart plugins
-	 * 
+	 *
 	 * @return array plugin paths
 	 */
 	public function get_active_old_versions() {
 		$active_plugins = $this->get_active_plugins();
-		
+
 		$old_versions = array(
 			'woocommerce-menu-bar-cart/wc_cart_nav.php',               //first version
 			'woocommerce-menu-bar-cart/woocommerce-menu-cart.php',     //last free version
 			'woocommerce-menu-cart/woocommerce-menu-cart.php',         //never actually released? just in case...
 			'woocommerce-menu-cart-pro/woocommerce-menu-cart-pro.php', //old pro version
 		);
-			
+
 		$active_old_plugins = array_intersect( $old_versions, $active_plugins );
-				
+
 		return $active_old_plugins;
-	}	
+	}
 
 	/**
 	 * Fallback admin notices
@@ -303,12 +350,11 @@ class WpMenuCart {
 			$nonce = sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) );
 
 			if ( ! wp_verify_nonce( $nonce, 'need_shop_notice_nonce' ) ) {
-				wcpdf_log_error( 'You do not have sufficient permissions to perform this action: need_shop_notice_nonce' );
-			} else {
-				update_option( 'wpmenucart_shop_check', 'hide' );
+				wp_die( esc_html__( 'You do not have sufficient permissions to perform this action.', 'wp-menu-cart' ) );
 			}
 
-			wp_redirect( remove_query_arg( array( 'hide_wpmenucart_shop_check', '_wpnonce' ) ) );
+			update_option( 'wpmenucart_shop_check', 'hide' );
+			wp_safe_redirect( remove_query_arg( array( 'hide_wpmenucart_shop_check', '_wpnonce' ) ) );
 			exit;
 		}
 	}
@@ -317,7 +363,7 @@ class WpMenuCart {
 		$error = __( 'An old version of Menu Cart for WooCommerce is currently activated, you need to disable or uninstall it for WP Menu Cart to function properly' , 'wp-menu-cart' );
 		printf( '<div class="notice notice-error"><p>%s</p></div>', esc_html( $error ) );
 	}
-	
+
 	/**
 	 * Declares WooCommerce HPOS compatibility.
 	 *
@@ -398,7 +444,7 @@ class WpMenuCart {
 	* Register strings for WPML String Translation
 	*/
 	public function wpml() {
-		if ( isset( $this->options['wpml_string_translation'] ) && function_exists( 'icl_register_string' ) ) {
+		if ( isset( $this->main_settings['wpml_string_translation'] ) && function_exists( 'icl_register_string' ) ) {
 			icl_register_string('WP Menu Cart', 'item text', 'item');
 			icl_register_string('WP Menu Cart', 'items text', 'items');
 			icl_register_string('WP Menu Cart', 'empty cart text', 'your cart is currently empty');
@@ -420,7 +466,7 @@ class WpMenuCart {
 		);
 
 		// get URL to WordPress ajax handling page  
-		if ( in_array( $this->options['shop_plugin'], [ 'easy-digital-downloads', 'easy-digital-downloads-pro' ] ) && function_exists( 'edd_get_ajax_url' ) ) {
+		if ( in_array( $this->main_settings['shop_plugin'], [ 'Easy Digital Downloads', 'Easy Digital Downloads Pro' ] ) && function_exists( 'edd_get_ajax_url' ) ) {
 			// use EDD function to prevent SSL issues http://git.io/V7w76A
 			$ajax_url = edd_get_ajax_url();
 		} else {
@@ -452,10 +498,10 @@ class WpMenuCart {
 		wp_localize_script(
 			'wpmenucart-edd-ajax',
 			'wpmenucart_ajax',
-			array(  
+			array(
 				'ajaxurl'        => function_exists( 'edd_get_ajax_url' ) ? edd_get_ajax_url() : admin_url( 'admin-ajax.php' ),
 				'nonce'          => wp_create_nonce('wpmenucart'),
-				'always_display' => isset($this->options['always_display']) ? $this->options['always_display'] : '',
+				'always_display' => isset($this->main_settings['always_display']) ? $this->main_settings['always_display'] : '',
 			)
 		);
 	}
@@ -484,9 +530,9 @@ class WpMenuCart {
 	 * Load admin assets
 	 */
 	public function load_admin_assets() {
-		if ( is_admin() && in_array( get_current_screen()->id, [ 'woocommerce_page_wpmenucart_options_page', 'settings_page_wpmenucart_options_page' ] ) ) {
+		if ( is_admin() && in_array( get_current_screen()->id, [ 'woocommerce_page_wpo_wpmenucart_options_page', 'settings_page_wpo_wpmenucart_options_page' ] ) ) {
 			wp_enqueue_style( 'wpmenucart-settings-styles', $this->plugin_url() . '/assets/css/wpmenucart-settings' . $this->asset_suffix . '.css', array(), WPMENUCART_VERSION );
-			
+
 			wp_enqueue_script(
 				'wpmenucart-settings-scripts',
 				$this->plugin_url() . '/assets/js/wpmenucart-settings' . $this->asset_suffix . '.js',
@@ -502,15 +548,15 @@ class WpMenuCart {
 	 */
 	public function load_frontend_assets() {
 
-		if ( isset( $this->options['icon_display'] ) ) {
+		if ( isset( $this->main_settings['icon_display'] ) ) {
 			wp_enqueue_style( 'wpmenucart-icons', $this->plugin_url() . '/assets/css/wpmenucart-icons' . $this->asset_suffix . '.css', array(), WPMENUCART_VERSION, 'all' );
 			wp_add_inline_style( 'wpmenucart-icons', $this->get_parsed_font_css() );
 		}
-		
+
 		wp_enqueue_style( 'wpmenucart', $this->get_main_css_url(), array(), WPMENUCART_VERSION, 'all' );
 
 		// Hide built-in theme carts
-		if ( isset( $this->options['hide_theme_cart'] ) ) {
+		if ( isset( $this->main_settings['hide_theme_cart'] ) ) {
 			wp_add_inline_style( 'wpmenucart', '.et-cart-info { display:none !important; } .site-header-cart { display:none !important; }' );
 		}
 
@@ -525,7 +571,7 @@ class WpMenuCart {
 		}
 
 		// extra script that improves AJAX behavior when 'Always display cart' is disabled
-		if ( ! isset( $this->options['always_display'] ) ) {
+		if ( ! isset( $this->main_settings['always_display'] ) ) {
 			wp_enqueue_script(
 				'wpmenucart-ajax-assist',
 				$this->plugin_url() . '/assets/js/wpmenucart-ajax-assist' . $this->asset_suffix . '.js',
@@ -536,13 +582,13 @@ class WpMenuCart {
 			wp_localize_script(
 				'wpmenucart-ajax-assist',
 				'wpmenucart_ajax_assist',
-				array(  
-					'shop_plugin'    => isset( $this->options['shop_plugin'] ) ? $this->options['shop_plugin'] : '',
-					'always_display' => isset( $this->options['always_display'] ) ? $this->options['always_display'] : '',
+				array(
+					'shop_plugin'    => isset( $this->main_settings['shop_plugin'] ) ? $this->main_settings['shop_plugin'] : '',
+					'always_display' => isset( $this->main_settings['always_display'] ) ? $this->main_settings['always_display'] : '',
 				)
 			);
 		}
-		if ( isset( $this->options['show_on_cart_checkout_page'] ) && function_exists( 'is_checkout' ) && function_exists( 'is_cart' ) && ( is_checkout() || is_cart() ) && version_compare( WC_VERSION, '7.7', '>' ) ) {
+		if ( isset( $this->main_settings['show_on_cart_checkout_page'] ) && function_exists( 'is_checkout' ) && function_exists( 'is_cart' ) && ( is_checkout() || is_cart() ) && version_compare( WC_VERSION, '7.7', '>' ) ) {
 			wp_enqueue_script( 'wc-cart-fragments' );
 		}
 	}
@@ -575,13 +621,18 @@ class WpMenuCart {
 
 		// add inline font css
 		$wp_styles->add_inline_style( 'wp-edit-blocks', $this->get_parsed_font_css() );
+
+		// Hide built-in theme carts in the block editor.
+		if ( isset( $this->main_settings['hide_theme_cart'] ) ) {
+			$wp_styles->add_inline_style( 'wpmenucart', '.et-cart-info { display:none !important; } .site-header-cart { display:none !important; }' );
+		}
 	}
 
 	public function register_cart_navigation_block() {
 		if ( ! function_exists( 'register_block_type' ) ) {
 			return;
 		}
-		
+
 		wp_register_script(
 			'wpmenucart-navigation-block',
 			$this->plugin_url() . '/assets/js/wpmenucart-navigation-block' . $this->asset_suffix . '.js',
@@ -617,6 +668,26 @@ class WpMenuCart {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Determine whether the menu cart should render in the current context.
+	 *
+	 * @return bool
+	 */
+	public function should_render_menucart(): bool {
+		$render = true;
+
+		if (
+			function_exists( 'is_checkout' ) &&
+			function_exists( 'is_cart' ) &&
+			( is_checkout() || is_cart() ) &&
+			empty( $this->main_settings['show_on_cart_checkout_page'] )
+		) {
+			$render = false;
+		}
+
+		return apply_filters( 'wpmenucart_should_render', $render );
 	}
 
 	public function is_block_theme() {
@@ -655,11 +726,11 @@ class WpMenuCart {
 		}
 
 		// Exit if no menus set.
-		if ( ! isset( $this->options['menu_slugs'] ) || empty( $this->options['menu_slugs'] ) ) {
+		if ( ! isset( $this->main_settings['menu_slugs'] ) || empty( $this->main_settings['menu_slugs'] ) ) {
 			return;
 		}
 
-		$menu_slug = $this->options['menu_slugs'][1];
+		$menu_slug = $this->main_settings['menu_slugs'][1];
 
 		if ( '0' === $menu_slug ) {
 			return;
@@ -675,16 +746,16 @@ class WpMenuCart {
 
 	/**
 	 * Gets the menu item <li>
-	 * 
+	 *
 	 * @param  string $classes
 	 * @param  string $context  can be 'classic' or 'block'
-	 * 
+	 *
 	 * @return string
 	 */
 	public function generate_menu_item_li( $classes, $context = 'classic' ) {
 		$classes  .= ' wpmenucartli';
-		
-		if ( function_exists( 'is_checkout' ) && function_exists( 'is_cart' ) && ( is_checkout() || is_cart() ) && empty( $this->options['show_on_cart_checkout_page'] ) ) {
+
+		if ( function_exists( 'is_checkout' ) && function_exists( 'is_cart' ) && ( is_checkout() || is_cart() ) && empty( $this->main_settings['show_on_cart_checkout_page'] ) ) {
 			$classes .= ' hidden-wpmenucart';
 		}
 
@@ -695,7 +766,7 @@ class WpMenuCart {
 		}
 
 		$item_data = $this->shop->menu_item();
-		if ( 0 === $item_data['cart_contents_count'] && ! isset( $this->options['always_display'] ) && ! $this->is_block_editor() ) {
+		if ( 0 === $item_data['cart_contents_count'] && ! isset( $this->main_settings['always_display'] ) && ! $this->is_block_editor() ) {
 			$classes .= ' empty-wpmenucart';
 		}
 
@@ -707,16 +778,16 @@ class WpMenuCart {
 
 		return '<li class="' . $classes . '" id="wpmenucartli">' . $menu_item_li . '</li>';
 	}
-	
+
 	/**
 	 * Add Menu Cart to menu
-	 * 
+	 *
 	 * @return menu items + Menu Cart item
 	 */
 	public function add_itemcart_to_menu( $items ) {
 		$common_classes = $this->get_common_li_classes( $items );
 		$menu_item_li   = $this->generate_menu_item_li( $common_classes, 'classic' );
-		
+
 		if ( apply_filters( 'wpmenucart_prepend_menu_item', false ) ) {
 			$items = apply_filters( 'wpmenucart_menu_item_wrapper', $menu_item_li ) . $items;
 		} else {
@@ -735,24 +806,24 @@ class WpMenuCart {
 		if ( empty( $items ) || ! class_exists( 'DOMDocument' ) ) {
 			return '';
 		}
-		
+
 		$libxml_previous_state = libxml_use_internal_errors( true ); // enable user error handling
 
 		$dom_items = new DOMDocument;
 		$dom_items->loadHTML( $items );
 		$lis = $dom_items->getElementsByTagName( 'li' );
-		
+
 		if ( empty( $lis ) ) {
 			libxml_clear_errors();
 			libxml_use_internal_errors( $libxml_previous_state );
 			return;
 		}
-		
+
 		foreach ( $lis as $li ) {
 			if ( 'ul' !== $li->parentNode->tagName )
 				$li_classes[] = explode( ' ', $li->getAttribute( 'class' ) );
 		}
-		
+
 		// Uncomment to dump DOM errors / warnings
 		//$errors = libxml_get_errors();
 		//print_r ($errors);
@@ -760,7 +831,7 @@ class WpMenuCart {
 		// clear errors and reset to previous error handling state
 		libxml_clear_errors();
 		libxml_use_internal_errors( $libxml_previous_state );
-		
+
 		if ( ! empty( $li_classes ) ) {
 			$common_li_classes = array_shift( $li_classes );
 			foreach ( $li_classes as $li_class ) {
@@ -792,12 +863,12 @@ class WpMenuCart {
 		$item_data = $this->shop->menu_item();
 
 		// Check empty cart settings
-		if ( 0 === $item_data['cart_contents_count'] && ! isset( $this->options['always_display'] ) && ! $this->is_block_editor() ) {
+		if ( 0 === $item_data['cart_contents_count'] && ! isset( $this->main_settings['always_display'] ) && ! $this->is_block_editor() ) {
 			$empty_menu_item = '<a class="wpmenucart-contents empty-wpmenucart" style="display:none">&nbsp;</a>';
 			return $empty_menu_item;
 		}
-		
-		if ( isset( $this->options['wpml_string_translation'] ) && function_exists( 'icl_t' ) ) {
+
+		if ( isset( $this->main_settings['wpml_string_translation'] ) && function_exists( 'icl_t' ) ) {
 			//use WPML
 			$viewing_cart   = icl_t('WP Menu Cart', 'hover text', 'View your shopping cart');
 			$start_shopping = icl_t('WP Menu Cart', 'empty hover text', 'Start shopping');
@@ -808,7 +879,7 @@ class WpMenuCart {
 			$start_shopping = __( 'Start shopping', 'wp-menu-cart' );
 			/* translators: item count */
 			$cart_contents  = sprintf( _n( '%d item', '%d items', $item_data['cart_contents_count'], 'wp-menu-cart' ), $item_data['cart_contents_count'] );
-		}	
+		}
 
 		$this->menu_items['menu']['cart_contents'] = $cart_contents;
 
@@ -830,18 +901,19 @@ class WpMenuCart {
 		}
 
 		$menu_item = '<a class="' . $menu_item_classes . '" href="' . $menu_item_href . '" title="' . $menu_item_title . '">';
-		
+
 		$menu_item_a_content = '';
-		if ( isset( $this->options['icon_display'] ) ) {
-			$icon                 = isset( $this->options['cart_icon'] ) ? $this->options['cart_icon'] : '0';
+		if ( isset( $this->main_settings['icon_display'] ) ) {
+			// Only icon 0 is available in free.
+			$icon                 = '0';
 			$menu_item_icon       = '<i class="wpmenucart-icon-shopping-cart-' . $icon . '" role="img" aria-label="' . __( 'Cart','wp-menu-cart' ) . '"></i>';
 			$menu_item_a_content .= $menu_item_icon;
 		} else {
 			$menu_item_icon = '';
 		}
-		
-		$items_display = $this->options['items_display'] ?? 3;
-		
+
+		$items_display = $this->main_settings['items_display'] ?? 3;
+
 		switch ( $items_display ) {
 			case 1: //items only
 				$menu_item_a_content .= '<span class="cartcontents">' . $cart_contents . '</span>';
@@ -853,20 +925,20 @@ class WpMenuCart {
 				$menu_item_a_content .= '<span class="cartcontents">' . $cart_contents . '</span><span class="amount">' . $item_data['cart_total'] . '</span>';
 				break;
 		}
-		
+
 		$menu_item_a_content = apply_filters( 'wpmenucart_menu_item_a_content', $menu_item_a_content, $menu_item_icon, $cart_contents, $item_data );
 
 		$this->menu_items['menu']['menu_item_a_content'] = $menu_item_a_content;
 
 		$menu_item .= $menu_item_a_content . '</a>';
-		
-		$menu_item = apply_filters ('wpmenucart_menu_item_a', $menu_item,  $item_data, $this->options, $menu_item_a_content, $viewing_cart, $start_shopping, $cart_contents);
+
+		$menu_item = apply_filters ('wpmenucart_menu_item_a', $menu_item,  $item_data, $this->main_settings, $menu_item_a_content, $viewing_cart, $start_shopping, $cart_contents);
 
 		if ( ! empty( $menu_item ) ) {
 			return $menu_item;
 		}
 	}
-	
+
 	public function wpmenucart_ajax() {
 		check_ajax_referer( 'wpmenucart', 'security' );
 
@@ -906,7 +978,7 @@ class WpMenuCart {
 		wp_localize_script(
 			'wpmenucart-cart-checkout-js',
 			'wpmenucart_cart_ajax',
-			array(  
+			array(
 				'ajaxurl' => admin_url( 'admin-ajax.php' ),
 				'nonce'   => wp_create_nonce( 'wpmenucart' ),
 			)
@@ -920,7 +992,7 @@ endif; // class_exists
 /**
  * Returns the main instance of WP Menu Cart to prevent the need to use globals.
  *
- * @return WPO_Menu_Cart
+ * @return WpMenuCart
  */
 function WPO_Menu_Cart() {
 	return WpMenuCart::instance();
