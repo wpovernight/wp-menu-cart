@@ -322,7 +322,7 @@ if ( ! class_exists( 'WpMenuCart_Nav_Menu' ) ) :
 			$menu_id = isset( $args->menu->term_id ) ? $args->menu->term_id : 0;
 
 			// Remove the item entirely when the cart should not render on this page.
-			if ( false === WPO_Menu_Cart()->should_render_menucart() ) {
+			if ( false === WPO_Menu_Cart()->main->should_render_menucart() ) {
 				return array_values( array_filter( $menu_items, function( $item ) use ( $cart_item_id ) {
 					return $item->ID !== $cart_item_id;
 				} ) );
@@ -376,9 +376,9 @@ if ( ! class_exists( 'WpMenuCart_Nav_Menu' ) ) :
 			unset( $this->pending_renders[ $key ] );
 			remove_filter( 'wp_nav_menu_items', array( $this, 'render_native_nav_menu_item' ), 10 );
 
-			$common_classes = WPO_Menu_Cart()->get_common_li_classes( $items_html );
-			$cart_html      = WPO_Menu_Cart()->generate_menu_item_li( $common_classes, 'classic' );
-			$cart_html      = apply_filters( 'wpmenucart_menu_item_wrapper', $cart_html );
+			$common_classes = WPO_Menu_Cart()->main->get_common_li_classes( $items_html );
+			$cart_html      = WPO_Menu_Cart()->main->generate_menu_item_li( $common_classes, 'classic' );
+			$cart_html      = apply_filters( 'wpmenucart_menu_item_wrapper', $cart_html, $data['menu_slug'], $args );
 
 			// Replace the full <li> for this item using its CSS ID class set by WP core.
 			$pattern = '/<li[^>]+\bmenu-item-' . $data['cart_item_id'] . '\b[^>]*>.*?<\/li>/is';
