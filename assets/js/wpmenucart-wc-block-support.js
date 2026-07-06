@@ -13,7 +13,18 @@ jQuery( function( $ ) {
 			url:     wpmenucart_cart_ajax.ajaxurl,
 			data:    data,
 			success: function( response ) {
-				$( '.wpmenucartli' ).html( response );
+				if ( typeof response !== 'object' || response === null || ! response.data ) {
+					return;
+				}
+
+				if ( response.data.menu_cart ) {
+					$( '.wpmenucartli' ).html( response.data.menu_cart );
+				}
+
+				if ( $( '.wpmenucart-slideout' ).length && response.data.mini_cart_slideout ) {
+					$( '.wpmenucart-slideout' ).replaceWith( response.data.mini_cart_slideout );
+				}
+
 				$( document ).trigger( 'wpmenucart_ajax_loaded', [ response ] );
 			}
 		} );

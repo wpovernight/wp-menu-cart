@@ -77,6 +77,11 @@ class WpMenuCart {
 	public $main;
 
 	/**
+	 * @var WpMenuCart_Conflict_Detector
+	 */
+	public $conflict_detector;
+
+	/**
 	 * @var WpMenuCart
 	 */
 	protected static $_instance = null;
@@ -107,9 +112,14 @@ class WpMenuCart {
 		add_action( 'init', array( $this, 'maybe_migrate_options' ), 1 );
 
 		// load the localisation & classes
-		add_action( 'init', array( &$this, 'wpml' ), 0 );
+		add_action( 'init', array( $this, 'wpml' ), 0 );
 		add_action( 'init', array( $this, 'translations' ), 8 );
 		add_action( 'init', array( $this, 'load_classes' ), 9 );
+
+		// run lifecycle methods
+		if ( is_admin() && ! defined( 'DOING_AJAX' ) ) {
+			add_action( 'wp_loaded', array( $this, 'do_install' ) );
+		}
 
 		add_filter( 'load_textdomain_mofile', array( $this, 'textdomain_fallback' ), 10, 2 );
 
@@ -130,47 +140,49 @@ class WpMenuCart {
 
 	/**
 	 * Migrate settings from the legacy option key 'wpmenucart' to 'wpo_wpmenucart_main_settings'.
-	 *
+	 * 
 	 * Runs once on init priority 1 so all subsequent hooks read the new key. A version flag
 	 * prevents the migration from running more than once.
-	 *
+	 * 
 	 * @return void
 	 */
-	public function maybe_migrate_options() {
-		if ( get_option( 'wpo_wpmenucart_options_migrated' ) ) {
-			return;
-		}
+	public function maybe_migrate_options(): void {
+		if ( ! get_option( 'wpo_wpmenucart_options_migrated' ) ) {
+			$legacy = get_option( 'wpmenucart' );
 
-		$legacy = get_option( 'wpmenucart' );
+			if ( ! empty( $legacy ) && false === get_option( 'wpo_wpmenucart_main_settings' ) ) {
+				// Translate shop_plugin slug from old format to new format.
+				$shop_plugin_map = array(
+					'woocommerce'                => 'WooCommerce',
+					'easy-digital-downloads'     => 'Easy Digital Downloads',
+					'easy-digital-downloads-pro' => 'Easy Digital Downloads Pro',
+				);
 
-		if ( ! empty( $legacy ) && false === get_option( 'wpo_wpmenucart_main_settings' ) ) {
-			// Translate shop_plugin slug from old free format to Pro capitalized format.
-			$shop_plugin_map = array(
-				'woocommerce'                => 'WooCommerce',
-				'easy-digital-downloads'     => 'Easy Digital Downloads',
-				'easy-digital-downloads-pro' => 'Easy Digital Downloads Pro',
-			);
+				// Fields that belong elsewhere and should not be copied into main settings.
+				$dont_copy = array( 'custom_class', 'wpml_string_translation' );
 
-			// Fields that belong elsewhere and should not be copied into main settings.
-			$dont_copy = array( 'custom_class', 'wpml_string_translation' );
+				$main_settings = array();
 
-			$main_settings = array();
-			foreach ( $legacy as $key => $value ) {
-				if ( in_array( $key, $dont_copy, true ) ) {
-					continue;
+				foreach ( $legacy as $key => $value ) {
+					if ( in_array( $key, $dont_copy, true ) ) {
+						continue;
+					}
+
+					if ( 'shop_plugin' === $key && ! empty( $shop_plugin_map[ $value ] ) ) {
+						$value = $shop_plugin_map[ $value ];
+					}
+
+					$main_settings[ $key ] = $value;
 				}
-				if ( 'shop_plugin' === $key && ! empty( $shop_plugin_map[ $value ] ) ) {
-					$value = $shop_plugin_map[ $value ];
-				}
-				$main_settings[ $key ] = $value;
+
+				update_option( 'wpo_wpmenucart_main_settings', $main_settings );
 			}
-			update_option( 'wpo_wpmenucart_main_settings', $main_settings );
+
+			update_option( 'wpo_wpmenucart_options_migrated', true );
+
+			// Refresh the in-memory copy so the rest of this request sees the migrated value.
+			$this->main_settings = get_option( 'wpo_wpmenucart_main_settings', array() );
 		}
-
-		update_option( 'wpo_wpmenucart_options_migrated', true );
-
-		// Refresh the in-memory copy so the rest of this request sees the migrated value.
-		$this->main_settings = get_option( 'wpo_wpmenucart_main_settings', array() );
 	}
 
 	/**
@@ -202,8 +214,14 @@ class WpMenuCart {
 		include_once( 'includes/class-wpmenucart-main.php' );
 		$this->main = new WpMenuCart_Main();
 
+		include_once( 'includes/class-wpmenucart-conflict-detector.php' );
+		$this->conflict_detector = new WpMenuCart_Conflict_Detector();
+
 		include_once( 'includes/class-wpmenucart-settings.php' );
 		$this->settings = new WpMenuCart_Settings();
+
+		include_once( 'includes/class-wpmenucart-template.php' );
+		include_once( 'includes/class-wpmenucart-data.php' );
 
 		if ( isset( $this->main_settings['shop_plugin'] ) ) {
 			switch ( $this->main_settings['shop_plugin'] ) {
@@ -258,10 +276,13 @@ class WpMenuCart {
 
 	/**
 	 * Return true if one or more shops are activated.
+	 * 
+	 * @param array  $active_plugins
+	 * @param string $shop
 	 *
 	 * @return bool
 	 */
-	public function is_shop_active( $active_plugins = array(), $shop = '' ) {
+	public function is_shop_active( array $active_plugins = array(), string $shop = '' ): bool {
 		if ( empty( $shop ) ) {
 			if ( count( $this->get_active_shops( $active_plugins ) ) > 0 ) {
 				return true;
@@ -280,6 +301,36 @@ class WpMenuCart {
 				break;
 			}
 		}
+	}
+
+	/**
+	 * Handles version checking.
+	 *
+	 * @return void
+	 */
+	public function do_install(): void {
+		$version_setting   = 'wpo_wpmenucart_free_version';
+		$installed_version = get_option( $version_setting );
+
+		// installed version lower than plugin version?
+		if ( version_compare( $installed_version, $this->plugin_version, '<' ) ) {
+			if ( $installed_version ) {
+				$this->upgrade( $installed_version );
+			}
+
+			// new version number
+			update_option( $version_setting, $this->plugin_version );
+		}
+	}
+
+	/**
+	 * Plugin upgrade method.
+	 *
+	 * @param string $installed_version the currently installed ('old') version
+	 * @return void
+	 */
+	protected function upgrade( string $installed_version ): void {
+		// Reserved for future version-gated migrations.
 	}
 
 	/**
@@ -313,7 +364,7 @@ class WpMenuCart {
 	public function required_shop_version_notice( string $shop, string $version ): void {
 		$error_message = sprintf(
 			/* translators: 1. Shop name, 2. Shop version */
-			esc_html__( 'WP Menu Cart Pro requires %1$s version %2$s or higher to be installed & activated!', 'wp-menu-cart-pro' ),
+			esc_html__( 'WP Menu Cart requires %1$s version %2$s or higher to be installed & activated!', 'wp-menu-cart' ),
 			esc_attr( $shop ),
 			esc_attr( $version )
 		);
@@ -426,10 +477,10 @@ class WpMenuCart {
 	public function required_php_version(): void {
 		$error = sprintf(
 			/* translators: 1. PHP version */
-			__( 'WP Menu Cart Pro requires PHP %s or higher.', 'wp-menu-cart-pro' ),
+			__( 'WP Menu Cart requires PHP %s or higher.', 'wp-menu-cart' ),
 			$this->version_php
 		);
-		$how_to_update = __( 'How to update your PHP version', 'wp-menu-cart-pro' );
+		$how_to_update = __( 'How to update your PHP version', 'wp-menu-cart' );
 		printf(
 			'<div class="notice notice-error"><p>%s</p><p><a href="%s" target="_blank" rel="noopener">%s</a></p></div>',
 			esc_html( $error ),
@@ -634,7 +685,7 @@ class WpMenuCart {
 		<div class="<?php echo esc_attr( $classes ); ?>" id="<?php echo esc_attr( $id ); ?>">
 			<p>
 				<?php echo $message; // phpcs:ignore WordPress.Security.EscapeOutput -- caller is responsible for escaping ?>
-				<a href="<?php echo esc_url( $dismiss_url ); ?>" style="margin-left:1em;"><?php esc_html_e( 'Dismiss', 'wp-menu-cart-pro' ); ?></a>
+				<a href="<?php echo esc_url( $dismiss_url ); ?>" style="margin-left:1em;"><?php esc_html_e( 'Dismiss', 'wp-menu-cart' ); ?></a>
 			</p>
 		</div>
 		<?php

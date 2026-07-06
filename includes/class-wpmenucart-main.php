@@ -21,6 +21,15 @@ if ( ! class_exists( 'WpMenuCart_Main' ) ) :
 			// AJAX
 			add_action( 'wp_ajax_wpmenucart_ajax', array( $this, 'wpmenucart_ajax' ), 0 );
 			add_action( 'wp_ajax_nopriv_wpmenucart_ajax', array( $this, 'wpmenucart_ajax' ), 0 );
+
+			// AJAX remove cart item
+			if ( WPO_Menu_Cart()->is_shop_active() ) {
+				add_action( 'wp_ajax_wpmenucart_ajax_remove_cart_item', array( $this, 'remove_cart_item' ) );
+				add_action( 'wp_ajax_nopriv_wpmenucart_ajax_remove_cart_item', array( $this, 'remove_cart_item' ) );
+			}
+
+			// Mini cart slide-out panel
+			add_action( 'wp_footer', array( $this, 'display_mini_cart_slideout' ) );
 		}
 
 		/**
@@ -31,8 +40,79 @@ if ( ! class_exists( 'WpMenuCart_Main' ) ) :
 		public function wpmenucart_ajax(): void {
 			check_ajax_referer( 'wpmenucart', 'security' );
 
-			$variable = $this->wpmenucart_menu_item();
-			echo wp_kses_post( $variable );
+			$response['menu_cart'] = $this->wpmenucart_menu_item();
+
+			if ( $this->is_cart_mode_active( 'sidebar' ) ) {
+				$response['mini_cart_slideout'] = $this->get_mini_cart_slideout();
+			}
+
+			wp_send_json_success( $response );
+			die();
+		}
+
+		/**
+		 * Ajax method to remove cart item.
+		 *
+		 * @return void
+		 */
+		public function remove_cart_item(): void {
+			check_ajax_referer( 'wpmenucart', 'security' );
+
+			if ( ! defined( 'WOOCOMMERCE_CART' ) ) {
+				define( 'WOOCOMMERCE_CART', true );
+			}
+
+			if ( isset( $_REQUEST['action'] ) && 'wpmenucart_ajax_remove_cart_item' == $_REQUEST['action'] && ! empty( $_REQUEST['key'] ) ) {
+
+				$cart_item_key = sanitize_text_field( wp_unslash( $_REQUEST['key'] ) );
+				$source        = isset( $_REQUEST['source'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['source'] ) ) : '';
+
+				/**
+				 * Whether a removal request should actually proceed, based on
+				 * which template the remove button came from.
+				 *
+				 * @param bool   $allow  Whether removal should proceed.
+				 * @param string $source The template_slug the request claims to be from.
+				 */
+				if ( ! apply_filters( 'wpo_wpmenucart_allow_cart_item_removal', true, $source ) ) {
+					wp_send_json_error( array( 'message' => __( 'Item removal is not allowed here.', 'wp-menu-cart' ) ) );
+					die();
+				}
+
+				if ( function_exists( 'WC' ) ) {
+					$output = WC()->cart->remove_cart_item( $cart_item_key );
+				} elseif ( function_exists( 'EDD' ) ) {
+					$cart_contents = EDD()->session->get( 'edd_cart' );
+					$output        = false;
+				
+					if ( ! empty( $cart_contents ) ) {
+						foreach ( $cart_contents as $key => $cart_item ) {
+							if ( $cart_item->id == $cart_item_key ) {
+								edd_remove_from_cart( $key );
+								$output = true;
+								break;
+							}
+						}
+					}
+				} else {
+					$output = false;
+				}
+			
+				if ( $output ) {
+					$response['menu_cart'] = $this->wpmenucart_menu_item();
+					// Include slide-out content for sidebar mode
+					if ( WPO_Menu_Cart()->main->is_cart_mode_active( 'sidebar' ) ) {
+						$response['mini_cart_slideout'] = $this->get_mini_cart_slideout();
+					}
+
+					$response = apply_filters( 'wpo_wpmenucart_remove_cart_item_jax_response', $response );
+
+					wp_send_json_success( $response );
+				} else {
+					wp_send_json_error( $output );
+				}
+			}
+
 			die();
 		}
 
@@ -204,8 +284,9 @@ if ( ! class_exists( 'WpMenuCart_Main' ) ) :
 			}
 
 			foreach ( $lis as $li ) {
-				if ( 'ul' !== $li->parentNode->tagName )
+				if ( 'ul' !== $li->parentNode->tagName ) {
 					$li_classes[] = explode( ' ', $li->getAttribute( 'class' ) );
+				}
 			}
 
 			// Uncomment to dump DOM errors / warnings
@@ -249,6 +330,13 @@ if ( ! class_exists( 'WpMenuCart_Main' ) ) :
 				$classes .= ' wp-block-navigation-item wp-block-navigation-link';
 			}
 
+			$settings     = WPO_Menu_Cart()->main_settings;
+			$desktop_mode = $settings['desktop_cart_mode'] ?? 'none';
+			$mobile_mode  = $settings['mobile_cart_mode'] ?? 'none';
+
+			$classes .= ' desktop-active-mode-' . $desktop_mode;
+			$classes .= ' mobile-active-mode-' . $mobile_mode;
+
 			$item_data = WPO_Menu_Cart()->shop->menu_item();
 			if ( 0 === $item_data['cart_contents_count'] && ! isset( WPO_Menu_Cart()->main_settings['always_display'] ) && ! WPO_Menu_Cart()->is_block_editor() ) {
 				$classes .= ' empty-wpmenucart';
@@ -284,6 +372,65 @@ if ( ! class_exists( 'WpMenuCart_Main' ) ) :
 		}
 
 		/**
+		 * Check whether a given cart mode is active on either desktop or mobile.
+		 *
+		 * @param  string $mode
+		 * @return bool
+		 */
+		public function is_cart_mode_active( string $mode ): bool {
+			$settings = WPO_Menu_Cart()->main_settings;
+			$desktop  = isset( $settings['desktop_cart_mode'] ) ? $settings['desktop_cart_mode'] : 'none';
+			$mobile   = isset( $settings['mobile_cart_mode'] )  ? $settings['mobile_cart_mode']  : 'none';
+
+			return $mode === $desktop || $mode === $mobile;
+		}
+
+		/**
+		 * Output the mini cart slideout panel in the footer when sidebar mode is active.
+		 *
+		 * @return void
+		 */
+		public function display_mini_cart_slideout(): void {
+			if ( true === $this->should_render_menucart() && $this->is_cart_mode_active( 'sidebar' ) ) {
+				echo wp_kses( $this->get_mini_cart_slideout(), $this->get_slideout_allowed_html() );
+			}
+		}
+
+		/**
+		 * Get the rendered HTML for the mini cart slideout panel.
+		 *
+		 * @param  string $nav_menu_items Nav menu items HTML.
+		 * @param  array  $args           Template arguments.
+		 * @return string
+		 */
+		public function get_mini_cart_slideout( string $nav_menu_items = '', array $args = array() ): string {
+			$slideout = new WpMenuCart_Template( 'menucart-slideout', $nav_menu_items, $args );
+			$slideout = $slideout->get_output();
+
+			return $slideout;
+		}
+
+		/**
+		 * Get the allowed HTML tags and attributes for the mini cart slideout panel.
+		 *
+		 * @return array
+		 */
+		private function get_slideout_allowed_html(): array {
+		    return array(
+		        'div'    => array( 'class' => true, 'role' => true, 'aria-modal' => true, 'aria-label' => true, 'data-key' => true, 'data-cart-count' => true ),
+		        'ul'     => array( 'class' => true, 'style' => true ),
+		        'li'     => array( 'class' => true ),
+		        'h2'     => array( 'class' => true ),
+		        'h3'     => array( 'class' => true ),
+		        'p'      => array( 'class' => true ),
+		        'span'   => array( 'class' => true ),
+		        'button' => array( 'type' => true, 'class' => true, 'aria-label' => true ),
+		        'a'      => array( 'href' => true, 'class' => true ),
+		        'img'    => array( 'src' => true, 'alt' => true, 'class' => true, 'width' => true, 'height' => true ),
+		    );
+		}
+
+		/**
 		 * Ajaxify Menu Cart.
 		 * 
 		 * @param array $fragments Existing WC fragments
@@ -297,6 +444,10 @@ if ( ! class_exists( 'WpMenuCart_Main' ) ) :
 
 			$fragments['a.wpmenucart-contents'] = $this->wpmenucart_menu_item();
 
+			if ( $this->is_cart_mode_active( 'sidebar' ) ) {
+				$fragments['.wpmenucart-slideout'] = $this->get_mini_cart_slideout();
+			}
+
 			return apply_filters( 'wpmenucart_menu_item_fragments', $fragments );
 		}
 
@@ -308,7 +459,7 @@ if ( ! class_exists( 'WpMenuCart_Main' ) ) :
 		 * @return string
 		 */
 		public function navigation_block_output( array $atts ): string {
-			$menu = sprintf( '<ul>%s</ul>', WPO_Menu_Cart()->main->generate_menu_item_li( '', 'block' ) );
+			$menu = sprintf( '<ul>%s</ul>', $this->generate_menu_item_li( '', 'block' ) );
 
 			if ( WPO_Menu_Cart()->is_block_editor() ) {
 				// deactivate links when using the full site or block editor to prevent navigating away from the editor

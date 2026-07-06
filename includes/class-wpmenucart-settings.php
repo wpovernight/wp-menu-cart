@@ -27,14 +27,14 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 		}
 
 		/**
-		* Set the callbacks instance, allowing extensions to swap in their own.
-		*
-		* @param  WPO_Settings_Callbacks_2 $callbacks
-		*
-		* @return void
-		*/
-		public function set_callbacks( WPO_Settings_Callbacks_2 $callbacks ): void {
-			$this->callbacks = $callbacks;
+		 * Resolve the callback to use for a given settings-related method name,
+		 * covering field callbacks, section callbacks, and the sanitize callback.
+		 *
+		 * @param  string $method
+		 * @return callable
+		 */
+		public function resolve_callback( string $method ): array {
+			return apply_filters( 'wpo_wpmenucart_settings_callback', array( $this->callbacks, $method ), $method );
 		}
 
 		/**
@@ -47,7 +47,7 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 			$option_name   = self::OPTION_NAME;
 			$option_values = get_option( $option_name, array() );
 
-			register_setting( $option_group, $option_name, array( $this->callbacks, 'validate' ) );
+			register_setting( $option_group, $option_name, $this->resolve_callback( 'validate' ) );
 
 			// Register defaults when settings are empty.
 			if ( empty( $option_values ) ) {
@@ -62,13 +62,15 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 
 			// Register Sections
 			$sections = apply_filters( 'wpo_wpmenucart_main_settings_sections', array(
-				'main_settings'          => array(
-					'title'    => __( 'Main settings', 'wp-menu-cart' ),
-					'callback' => array( $this->callbacks, 'section' ),
+				'cart_display_modes'    => array(
+					'title'    => '<span class="wpmenucart-section__icon" aria-hidden="true">' . $this->callbacks->get_svg( 'cart-display-modes.svg' ) . '</span> ' . __( 'Cart Display Modes', 'wp-menu-cart' ),
+					'callback' => function() use ( $option_values ) {
+						$this->callbacks->cart_display_modes_section( $option_values );
+					},
 				),
-				'floating_cart_settings' => array(
-					'title'    => __( 'Floating cart', 'wp-menu-cart' ),
-					'callback' => array( $this->callbacks, 'section' ),
+				'general_cart_settings' => array(
+					'title'    => '<span class="wpmenucart-section__icon" aria-hidden="true">' . $this->callbacks->get_svg( 'general.svg' ) . '</span> ' . __( 'General Cart Settings', 'wp-menu-cart' ),
+					'callback' => $this->resolve_callback( 'section' ),
 				),
 			) );
 
@@ -80,9 +82,9 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 
 			$fields = array(
 				'shop_plugin'                => array(
-					'section'  => 'main_settings',
+					'section'  => 'general_cart_settings',
 					'title'    => __( 'E-commerce Plugin', 'wp-menu-cart' ),
-					'callback' => array( $this->callbacks, 'shop_select' ),
+					'callback' => $this->resolve_callback( 'shop_select' ),
 					'args'     => array(
 						'option_name' => $option_name,
 						'id'          => 'shop_plugin',
@@ -91,9 +93,9 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 					),
 				),
 				'block_theme_enabled'        => array(
-					'section'  => 'main_settings',
+					'section'  => 'general_cart_settings',
 					'title'    => __( 'Current theme is block type', 'wp-menu-cart' ),
-					'callback' => array( $this->callbacks, 'checkbox' ),
+					'callback' => $this->resolve_callback( 'checkbox' ),
 					'args'     => array(
 						'option_name' => $option_name,
 						'id'          => 'block_theme_enabled',
@@ -109,9 +111,9 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 					'show_if'  => WPO_Menu_Cart()->is_block_theme(),
 				),
 				'hide_theme_cart'            => array(
-					'section'  => 'main_settings',
+					'section'  => 'general_cart_settings',
 					'title'    => __( 'Hide theme shopping cart icon', 'wp-menu-cart' ),
-					'callback' => array( $this->callbacks, 'checkbox' ),
+					'callback' => $this->resolve_callback( 'checkbox' ),
 					'args'     => array(
 						'option_name' => $option_name,
 						'id'          => 'hide_theme_cart',
@@ -119,9 +121,9 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 					'show_if'  => ! empty( $parent_theme ) && in_array( $parent_theme->get( 'Name' ), array( 'Storefront', 'Divi' ) ),
 				),
 				'always_display'             => array(
-					'section'  => 'main_settings',
+					'section'  => 'general_cart_settings',
 					'title'    => __( 'Always display cart', 'wp-menu-cart' ),
-					'callback' => array( $this->callbacks, 'checkbox' ),
+					'callback' => $this->resolve_callback( 'checkbox' ),
 					'args'     => array(
 						'option_name' => $option_name,
 						'id'          => 'always_display',
@@ -129,66 +131,29 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 					),
 				),
 				'show_on_cart_checkout_page' => array(
-					'section'  => 'main_settings',
+					'section'  => 'general_cart_settings',
 					'title'    => __( 'Show on cart & checkout page', 'wp-menu-cart' ),
-					'callback' => array( $this->callbacks, 'checkbox' ),
+					'callback' => $this->resolve_callback( 'checkbox' ),
 					'args'     => array(
 						'option_name' => $option_name,
 						'id'          => 'show_on_cart_checkout_page',
 						'description' => __( 'To avoid distracting your customers with duplicate information we do not display the menu cart item on the cart & checkout pages by default', 'wp-menu-cart' ),
 					),
-					'show_if'  => function_exists( 'WC' ),
-				),
-				'flyout_display'             => array(
-					'section'  => 'main_settings',
-					'title'    => __( 'Use Flyout', 'wp-menu-cart' ),
-					'callback' => array( $this->callbacks, 'checkbox' ),
-					'args'     => array(
-						'option_name' => $option_name,
-						'id'          => 'flyout_display',
-						'disabled'    => true,
-						'pro'         => true,
-						'description' => __( 'Select to display cart contents in menu fly-out.', 'wp-menu-cart' ),
-					),
-				),
-				'flyout_itemnumber'          => array(
-					'section'  => 'main_settings',
-					'title'    => __( 'Flyout item number', 'wp-menu-cart' ),
-					'callback' => array( $this->callbacks, 'select' ),
-					'args'     => array(
-						'option_name' => $option_name,
-						'id'          => 'flyout_itemnumber',
-						'options'     => array(
-							'0'  => __( 'Unlimited', 'wp-menu-cart' ),
-							'1'  => '1',
-							'2'  => '2',
-							'3'  => '3',
-							'4'  => '4',
-							'5'  => '5',
-							'6'  => '6',
-							'7'  => '7',
-							'8'  => '8',
-							'9'  => '9',
-							'10' => '10',
-						),
-						'disabled'    => true,
-						'pro'         => true,
-						'description' => __( 'Set maximum number of products to display in fly-out.', 'wp-menu-cart' ),
-					),
+					'show_if'  => WPO_Menu_Cart()->is_shop_active( array(), 'WooCommerce' ),
 				),
 				'icon_display'               => array(
-					'section'  => 'main_settings',
+					'section'  => 'general_cart_settings',
 					'title'    => __( 'Display shopping cart icon', 'wp-menu-cart' ),
-					'callback' => array( $this->callbacks, 'checkbox' ),
+					'callback' => $this->resolve_callback( 'checkbox' ),
 					'args'     => array(
 						'option_name' => $option_name,
 						'id'          => 'icon_display',
 					),
 				),
 				'cart_icon'                  => array(
-					'section'  => 'main_settings',
+					'section'  => 'general_cart_settings',
 					'title'    => __( 'Choose a cart icon.', 'wp-menu-cart' ),
-					'callback' => array( $this->callbacks, 'icons_radio_element_callback' ),
+					'callback' => $this->resolve_callback( 'icons_radio_element_callback' ),
 					'args'     => array(
 						'option_name' => $option_name,
 						'id'          => 'cart_icon',
@@ -211,9 +176,9 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 					),
 				),
 				'cart_icon_color'            => array(
-					'section'  => 'main_settings',
+					'section'  => 'general_cart_settings',
 					'title'    => __( 'Override icon color', 'wp-menu-cart' ),
-					'callback' => array( $this->callbacks, 'checkbox' ),
+					'callback' => $this->resolve_callback( 'checkbox' ),
 					'args'     => array(
 						'option_name' => $option_name,
 						'id'          => 'cart_icon_color',
@@ -222,9 +187,9 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 					),
 				),
 				'custom_icon'                => array(
-					'section'  => 'main_settings',
+					'section'  => 'general_cart_settings',
 					'title'    => __( 'Custom Icon', 'wp-menu-cart' ),
-					'callback' => array( $this->callbacks, 'media_upload_callback' ),
+					'callback' => $this->resolve_callback( 'media_upload_callback' ),
 					'args'     => array(
 						'option_name'          => $option_name,
 						'id'                   => 'custom_icon',
@@ -237,9 +202,9 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 					),
 				),
 				'items_display'              => array(
-					'section'  => 'main_settings',
+					'section'  => 'general_cart_settings',
 					'title'    => __( 'Contents of the menu cart item', 'wp-menu-cart' ),
-					'callback' => array( $this->callbacks, 'radio_button' ),
+					'callback' => $this->resolve_callback( 'radio_button' ),
 					'args'     => array(
 						'option_name' => $option_name,
 						'id'          => 'items_display',
@@ -251,9 +216,9 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 					),
 				),
 				'total_price_type'           => array(
-					'section'  => 'main_settings',
+					'section'  => 'general_cart_settings',
 					'title'    => __( 'Price to display', 'wp-menu-cart' ),
-					'callback' => array( $this->callbacks, 'select' ),
+					'callback' => $this->resolve_callback( 'select' ),
 					'args'     => array(
 						'option_name' => $option_name,
 						'id'          => 'total_price_type',
@@ -267,9 +232,9 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 					'show_if'  => class_exists( 'WooCommerce' ),
 				),
 				'custom_class'               => array(
-					'section'  => 'main_settings',
+					'section'  => 'general_cart_settings',
 					'title'    => __( 'Enter a custom CSS class (optional)', 'wp-menu-cart' ),
-					'callback' => array( $this->callbacks, 'text_input' ),
+					'callback' => $this->resolve_callback( 'text_input' ),
 					'args'     => array(
 						'option_name' => $option_name,
 						'id'          => 'custom_class',
@@ -278,60 +243,10 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 						'size'        => 30,
 					),
 				),
-				'floating_cart'              => array(
-					'section'  => 'floating_cart_settings',
-					'title'    => __( 'Enable', 'wp-menu-cart' ),
-					'callback' => array( $this->callbacks, 'select' ),
-					'args'     => array(
-						'option_name' => $option_name,
-						'id'          => 'floating_cart',
-						'options'     => array(
-							'no'            => __( 'No', 'wp-menu-cart' ),
-							'always'        => __( 'Always', 'wp-menu-cart' ),
-							'small-devices' => __( 'Only on small devices', 'wp-menu-cart' ),
-							'large-devices' => __( 'Only on large devices', 'wp-menu-cart' ),
-						),
-						'disabled'    => true,
-						'pro'         => true,
-					),
-				),
-				'floating_cart_style'        => array(
-					'section'  => 'floating_cart_settings',
-					'title'    => __( 'Display style', 'wp-menu-cart' ),
-					'callback' => array( $this->callbacks, 'select' ),
-					'args'     => array(
-						'option_name' => $option_name,
-						'id'          => 'floating_cart_style',
-						'options'     => array(
-							'floating-circle' => __( 'Floating circle', 'wp-menu-cart' ),
-							'side-square'     => __( 'Side square', 'wp-menu-cart' ),
-						),
-						'disabled'    => true,
-						'pro'         => true,
-					),
-				),
-				'floating_cart_position'     => array(
-					'section'  => 'floating_cart_settings',
-					'title'    => __( 'Position', 'wp-menu-cart' ),
-					'callback' => array( $this->callbacks, 'select' ),
-					'args'     => array(
-						'option_name' => $option_name,
-						'id'          => 'floating_cart_position',
-						'options'     => array(
-							'bottom-right' => __( 'Bottom right', 'wp-menu-cart' ),
-							'bottom-left'  => __( 'Bottom left', 'wp-menu-cart' ),
-							'top-right'    => __( 'Top right', 'wp-menu-cart' ),
-							'top-left'     => __( 'Top left', 'wp-menu-cart' ),
-						),
-						'disabled'    => true,
-						'pro'         => true,
-						'description' => __( 'Set a position for the floating cart icon.', 'wp-menu-cart' ),
-					),
-				),
 				'wpml_string_translation'    => array(
-					'section'  => 'main_settings',
+					'section'  => 'general_cart_settings',
 					'title'    => __( 'Use WPML String Translation', 'wp-menu-cart' ),
-					'callback' => array( $this->callbacks, 'checkbox' ),
+					'callback' => $this->resolve_callback( 'checkbox' ),
 					'args'     => array(
 						'option_name' => $option_name,
 						'id'          => 'wpml_string_translation',
@@ -339,9 +254,9 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 					'show_if'  => function_exists( 'icl_register_string' ),
 				),
 				'builtin_ajax'               => array(
-					'section'  => 'main_settings',
+					'section'  => 'general_cart_settings',
 					'title'    => __( 'Use custom AJAX', 'wp-menu-cart' ),
-					'callback' => array( $this->callbacks, 'checkbox' ),
+					'callback' => $this->resolve_callback( 'checkbox' ),
 					'args'     => array(
 						'option_name' => $option_name,
 						'id'          => 'builtin_ajax',
@@ -627,16 +542,20 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 			$first_active        = ! empty( $active_shop_plugins ) ? array_key_first( $active_shop_plugins ) : '';
 
 			$default = array(
-				'always_display'    => '',
-				'icon_display'      => '1',
-				'items_display'     => '3',
-				'custom_class'      => '',
-				'flyout_display'    => '',
-				'flyout_itemnumber' => '5',
-				'cart_icon'         => '0',
-				'shop_plugin'       => $first_active,
-				'builtin_ajax'      => '',
-				'hide_theme_cart'   => 1,
+				'desktop_cart_mode'       => 'none',
+				'mobile_cart_mode'        => 'none',
+				'desktop_sidebar_width'   => 360,
+				'desktop_overlay_opacity' => 40,
+				'mobile_sidebar_width'    => 360,
+				'mobile_overlay_opacity'  => 40,
+				'always_display'          => '',
+				'icon_display'            => '1',
+				'items_display'           => '3',
+				'custom_class'            => '',
+				'cart_icon'               => '0',
+				'shop_plugin'             => $first_active,
+				'builtin_ajax'            => '',
+				'hide_theme_cart'         => 1,
 			);
 
 			update_option( self::OPTION_NAME, $default );

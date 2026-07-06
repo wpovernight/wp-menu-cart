@@ -11,8 +11,18 @@ jQuery( function( $ ) {
 			url:     wpmenucart_ajax.ajaxurl,
 			data:    data,
 			success: function( ajaxResponse ) {
-				$( '.wpmenucartli' ).html( ajaxResponse );
-				$( 'div.wpmenucart-shortcode span.reload_shortcode' ).html( ajaxResponse );
+				if ( typeof ajaxResponse !== 'object' || ajaxResponse === null || ! ajaxResponse.data ) {
+					return;
+				}
+
+				if ( ajaxResponse.data.menu_cart ) {
+					$( '.wpmenucartli' ).html( ajaxResponse.data.menu_cart );
+				}
+
+				if ( $( '.wpmenucart-slideout' ).length && ajaxResponse.data.mini_cart_slideout ) {
+					$( '.wpmenucart-slideout' ).replaceWith( ajaxResponse.data.mini_cart_slideout );
+				}
+
 				$( document ).trigger( 'wpmenucart_ajax_loaded', [ ajaxResponse ] );
 			}
 		});

@@ -146,7 +146,7 @@ if ( ! class_exists( 'WpMenuCart_Assets' ) ) :
 			}
 
 			// Load Stylesheet if twentytwelve is active
-			if ( 'Twenty Twelve' === wp_get_theme() ) {
+			if ( 'Twenty Twelve' === wp_get_theme()->get( 'Name' ) ) {
 				wp_enqueue_style(
 					'wpmenucart-twentytwelve',
 					$this->get_asset_url( 'wpmenucart-twentytwelve' ),
@@ -156,7 +156,7 @@ if ( ! class_exists( 'WpMenuCart_Assets' ) ) :
 			}
 
 			// Load Stylesheet if twentyfourteen is active
-			if ( 'Twenty Fourteen' === wp_get_theme() ) {
+			if ( 'Twenty Fourteen' === wp_get_theme()->get( 'Name' ) ) {
 				wp_enqueue_style(
 					'wpmenucart-twentyfourteen',
 					$this->get_asset_url( 'wpmenucart-twentyfourteen' ),
@@ -187,6 +187,62 @@ if ( ! class_exists( 'WpMenuCart_Assets' ) ) :
 			if ( isset( WPO_Menu_Cart()->main_settings['show_on_cart_checkout_page'] ) && function_exists( 'is_checkout' ) && function_exists( 'is_cart' ) && ( is_checkout() || is_cart() ) && version_compare( WC_VERSION, '7.7', '>' ) ) {
 				wp_enqueue_script( 'wc-cart-fragments' );
 			}
+
+			if ( WPO_Menu_Cart()->is_shop_active() ) {
+				wp_enqueue_script(
+					'wpmenucart-remove',
+					$this->get_asset_url( 'wpmenucart-remove', 'js' ),
+					array( 'jquery' ),
+					WPMENUCART_VERSION,
+					true
+				);
+				wp_localize_script( 'wpmenucart-remove', 'wpmenucart_ajax', array(
+					'ajaxurl' => admin_url( 'admin-ajax.php' ),
+					'nonce'   => wp_create_nonce( 'wpmenucart' ),
+				) );
+			}
+
+			// Slideout assets
+			if ( WPO_Menu_Cart()->main->is_cart_mode_active( 'sidebar' ) ) {
+				wp_enqueue_style(
+					'wpmenucart-slideout',
+					$this->get_asset_url( 'wpmenucart-slideout' ),
+					array(),
+					WPMENUCART_VERSION
+				);
+
+				$desktop_width   = intval( WPO_Menu_Cart()->main_settings['desktop_sidebar_width'] ?? 360 );
+				$desktop_overlay = round( intval( WPO_Menu_Cart()->main_settings['desktop_overlay_opacity'] ?? 40 ) / 100, 2 );
+				$mobile_width    = intval( WPO_Menu_Cart()->main_settings['mobile_sidebar_width'] ?? 360 );
+				$mobile_overlay  = round( intval( WPO_Menu_Cart()->main_settings['mobile_overlay_opacity'] ?? 40 ) / 100, 2 );
+				
+				// Inject variables into :root for immediate availability and AJAX persistence
+				$vars = "
+					:root {
+						--wpmenucart-desktop-width: {$desktop_width}px;
+						--wpmenucart-desktop-overlay: {$desktop_overlay};
+						--wpmenucart-mobile-width: {$mobile_width}px;
+						--wpmenucart-mobile-overlay: {$mobile_overlay};
+					}
+				";
+				wp_add_inline_style( 'wpmenucart-slideout', $vars );
+
+				wp_enqueue_script(
+					'wpmenucart-slideout',
+					$this->get_asset_url( 'wpmenucart-slideout', 'js' ),
+					array( 'jquery' ),
+					WPMENUCART_VERSION,
+					true
+				);
+
+				wp_localize_script(
+					'wpmenucart-slideout',
+					'wpmenucart_slideout',
+					array(
+						'mobile_breakpoint' => 768,
+					)
+				);
+			}
 		}
 
 		/**
@@ -201,7 +257,7 @@ if ( ! class_exists( 'WpMenuCart_Assets' ) ) :
 				wp_enqueue_style(
 					'wpmenucart-settings-css',
 					$this->get_asset_url( 'wpmenucart-settings' ),
-					array(),
+					array( 'jquery-ui-style' ),
 					WPMENUCART_VERSION
 				);
 
