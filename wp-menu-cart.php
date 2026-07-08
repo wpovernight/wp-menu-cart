@@ -223,7 +223,7 @@ class WpMenuCart {
 		include_once( 'includes/class-wpmenucart-template.php' );
 		include_once( 'includes/class-wpmenucart-data.php' );
 
-		if ( isset( $this->main_settings['shop_plugin'] ) ) {
+		if ( isset( $this->main_settings['shop_plugin'] ) && $this->is_shop_active( array(), $this->main_settings['shop_plugin'] ) ) {
 			switch ( $this->main_settings['shop_plugin'] ) {
 				case 'WooCommerce':
 					include_once( 'includes/shops/wpmenucart-woocommerce.php' );

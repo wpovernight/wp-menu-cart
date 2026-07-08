@@ -257,7 +257,7 @@ if ( ! class_exists( 'WpMenuCart_Assets' ) ) :
 				wp_enqueue_style(
 					'wpmenucart-settings-css',
 					$this->get_asset_url( 'wpmenucart-settings' ),
-					array( 'jquery-ui-style' ),
+					array(),
 					WPMENUCART_VERSION
 				);
 
