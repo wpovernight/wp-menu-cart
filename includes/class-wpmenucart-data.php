@@ -16,6 +16,14 @@ if ( ! class_exists( 'WpMenuCart_Data' ) ) :
 		public $nav_menu_items;
 		public $template_slug;
 
+		/**
+		 * Constructor.
+		 *
+		 * @param string $nav_menu_items Nav menu items HTML.
+		 * @param string $menu_slug      The menu slug.
+		 * @param array  $menu_args      Menu arguments.
+		 * @param string $template_slug  The template slug being rendered.
+		 */
 		public function __construct( $nav_menu_items, $menu_slug, $menu_args, $template_slug = '' ) {
 			$this->nav_menu_items = $nav_menu_items;
 			$this->menu_slug      = $menu_slug;
@@ -55,7 +63,12 @@ if ( ! class_exists( 'WpMenuCart_Data' ) ) :
 			return apply_filters( 'wpmenucart_slideout_close_aria_label', __( 'Close mini cart', 'wp-menu-cart' ) );
 		}
 
-		public function submenu_ul_class() {
+		/**
+		 * Get the submenu (cart contents list) wrapper classes.
+		 *
+		 * @return string
+		 */
+		public function submenu_ul_class(): string {
 			$classes = apply_filters( 'wpmenucart_submenu_classes', 'sub-menu wpmenucart' );
 
 			if ( 0 === $this->item_data['cart_contents_count'] ) {
@@ -68,12 +81,23 @@ if ( ! class_exists( 'WpMenuCart_Data' ) ) :
 			return apply_filters( 'wpmenucart_submenu_ul_class', $classes, $this->item_data, WPO_Menu_Cart()->main_settings );
 		}
 
-		public function submenu_ul_style() {
+		/**
+		 * Get the submenu wrapper inline style.
+		 *
+		 * @return string
+		 */
+		public function submenu_ul_style(): string {
 			$submenu_style = apply_filters( 'wpmenucart_submenu_style', '' );
 			return apply_filters( 'wpmenucart_submenu_ul_style', $submenu_style, $this->item_data, WPO_Menu_Cart()->main_settings );
 		}
 
-		public function submenu_li_class( $submenu_item_data = array() ) {
+		/**
+		 * Get the classes for a single submenu item's <li>.
+		 *
+		 * @param  array $submenu_item_data Cart item data.
+		 * @return string
+		 */
+		public function submenu_li_class( array $submenu_item_data = array() ): string {
 			// legacy filter
 			$classes = apply_filters( 'wpmenucart_submenu_item_li_classes', 'menu-item wpmenucart-submenu-item', $this->item_data );
 
@@ -198,7 +222,14 @@ if ( ! class_exists( 'WpMenuCart_Data' ) ) :
 			return apply_filters( 'wpmenucart_submenu_item_price', $price, $this->item_data, $submenu_item_data, WPO_Menu_Cart()->main_settings );
 		}
 
-		public function submenu_item_remove( $submenu_item_data ) {
+		/**
+		 * Get the remove button markup for a cart item, or null if it
+		 * shouldn't render (no shop active, or filtered out downstream).
+		 *
+		 * @param  array $submenu_item_data Cart item data.
+		 * @return string|null
+		 */
+		public function submenu_item_remove( array $submenu_item_data ) {
 			if ( ! empty( $submenu_item_data['cart_item']['key'] ) ) {      // WC
 				$key = $submenu_item_data['cart_item']['key'];
 			} elseif ( ! empty( $submenu_item_data['cart_item']['id'] ) ) { // EDD
@@ -223,7 +254,7 @@ if ( ! class_exists( 'WpMenuCart_Data' ) ) :
 		 *
 		 * @return string
 		 */
-		public function view_cart_button_text() {
+		public function view_cart_button_text(): string {
 			$text = __( 'View Cart', 'wp-menu-cart' );
 			return apply_filters( 'wpmenucart_view_cart_button_text', $text, $this->item_data, WPO_Menu_Cart()->main_settings );
 		}
@@ -233,7 +264,7 @@ if ( ! class_exists( 'WpMenuCart_Data' ) ) :
 		 *
 		 * @return string
 		 */
-		public function checkout_button_text() {
+		public function checkout_button_text(): string {
 			$text = __( 'Checkout', 'wp-menu-cart' );
 			return apply_filters( 'wpmenucart_checkout_button_text', $text, $this->item_data, WPO_Menu_Cart()->main_settings );
 		}
@@ -243,7 +274,7 @@ if ( ! class_exists( 'WpMenuCart_Data' ) ) :
 		 *
 		 * @return string
 		 */
-		public function start_shopping_button_text() {
+		public function start_shopping_button_text(): string {
 			$text = __( 'Start Shopping', 'wp-menu-cart' );
 			return apply_filters( 'wpmenucart_start_shopping_button_text', $text, $this->item_data, WPO_Menu_Cart()->main_settings );
 		}
@@ -253,7 +284,7 @@ if ( ! class_exists( 'WpMenuCart_Data' ) ) :
 		 *
 		 * @return string
 		 */
-		public function empty_cart_title_text() {
+		public function empty_cart_title_text(): string {
 			$text = __( 'Your cart is empty', 'wp-menu-cart' );
 			return apply_filters( 'wpmenucart_empty_cart_title_text', $text, $this->item_data, WPO_Menu_Cart()->main_settings );
 		}
@@ -263,17 +294,27 @@ if ( ! class_exists( 'WpMenuCart_Data' ) ) :
 		 *
 		 * @return string
 		 */
-		public function empty_cart_subtitle_text() {
+		public function empty_cart_subtitle_text(): string {
 			$text = __( 'Nothing to show here right now', 'wp-menu-cart' );
 			return apply_filters( 'wpmenucart_empty_cart_subtitle_text', $text, $this->item_data, WPO_Menu_Cart()->main_settings );
 		}
 
-		public function cart_url() {
+		/**
+		 * Get the cart URL.
+		 *
+		 * @return string
+		 */
+		public function cart_url(): string {
 			$url = apply_filters( 'wpmenucart_fullurl', $this->item_data['cart_url'] );
 			return apply_filters( 'wpmenucart_cart_url', $url, $this->item_data, WPO_Menu_Cart()->main_settings );
 		}
 
-		public function shop_url() {
+		/**
+		 * Get the shop page URL.
+		 *
+		 * @return string
+		 */
+		public function shop_url(): string {
 			$url = apply_filters( 'wpmenucart_emptyurl', $this->item_data['shop_page_url'] );
 			return apply_filters( 'wpmenucart_shop_url', $url, $this->item_data, WPO_Menu_Cart()->main_settings );
 		}

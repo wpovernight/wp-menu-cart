@@ -73,8 +73,6 @@
 		} );
 	}
 
-	$( function() {
-		initEvents();
-	} );
+	$( initEvents );
 
 } )( jQuery );

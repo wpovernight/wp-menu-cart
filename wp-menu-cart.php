@@ -211,18 +211,6 @@ class WpMenuCart {
 		include_once( 'includes/class-wpmenucart-assets.php' );
 		$this->assets = new WpMenuCart_Assets();
 
-		include_once( 'includes/class-wpmenucart-main.php' );
-		$this->main = new WpMenuCart_Main();
-
-		include_once( 'includes/class-wpmenucart-conflict-detector.php' );
-		$this->conflict_detector = new WpMenuCart_Conflict_Detector();
-
-		include_once( 'includes/class-wpmenucart-settings.php' );
-		$this->settings = new WpMenuCart_Settings();
-
-		include_once( 'includes/class-wpmenucart-template.php' );
-		include_once( 'includes/class-wpmenucart-data.php' );
-
 		if ( isset( $this->main_settings['shop_plugin'] ) && $this->is_shop_active( array(), $this->main_settings['shop_plugin'] ) ) {
 			switch ( $this->main_settings['shop_plugin'] ) {
 				case 'WooCommerce':
@@ -242,6 +230,18 @@ class WpMenuCart {
 					break;
 			}
 		}
+
+		include_once( 'includes/class-wpmenucart-main.php' );
+		$this->main = new WpMenuCart_Main();
+
+		include_once( 'includes/class-wpmenucart-conflict-detector.php' );
+		$this->conflict_detector = new WpMenuCart_Conflict_Detector();
+
+		include_once( 'includes/class-wpmenucart-settings.php' );
+		$this->settings = new WpMenuCart_Settings();
+
+		include_once( 'includes/class-wpmenucart-template.php' );
+		include_once( 'includes/class-wpmenucart-data.php' );
 	}
 
 	/**

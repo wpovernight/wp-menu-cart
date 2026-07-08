@@ -292,12 +292,6 @@ if ( ! class_exists( 'WpMenuCart_Template' ) ) :
 			return $template;
 		}
 
-		/**
-		 * @return void
-		 */
-		public function write_output(): void {
-			echo wp_kses_post( $this->get_output() );
-		}
 	}
 
 

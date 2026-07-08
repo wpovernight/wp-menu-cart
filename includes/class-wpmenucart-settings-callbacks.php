@@ -488,7 +488,7 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 		 *
 		 * @return array[] Array of mode definition arrays with keys: value, name, description.
 		 */
-		protected function get_cart_mode_options(): array {
+		public function get_cart_mode_options(): array {
 			return apply_filters( 'wpo_wpmenucart_cart_mode_options', array(
 				array(
 					'value'       => 'none',

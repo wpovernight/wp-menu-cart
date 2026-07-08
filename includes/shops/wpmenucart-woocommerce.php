@@ -24,7 +24,7 @@ if ( ! class_exists( 'WPMenuCart_WooCommerce' ) ) {
 				'cart_url'            => $this->get_cart_url(),
 				'shop_page_url'       => $this->get_shop_url(),
 				'checkout_url'        => $this->get_checkout_url(),
-				'cart_total'          => $this->get_cart_total(),
+				'cart_total'          => wp_strip_all_tags( $this->get_cart_total() ),
 				'cart_contents_count' => $this->get_cart_contents_count(),
 			);
 
@@ -37,21 +37,11 @@ if ( ! class_exists( 'WPMenuCart_WooCommerce' ) ) {
 		 * @return void
 		 */
 		public function maybe_load_cart(): void {
-			if ( function_exists( 'WC' ) ) {
-				if ( function_exists( 'wc_load_cart' ) && did_action( 'before_woocommerce_init' ) ) {
-					wc_load_cart(); // loads session, customer & cart - WC 3.6.4+ 
-				} else {
-					if ( empty( WC()->cart ) ) {
-						WC()->cart = new WC_Cart();
-					}
-				}
-				WC()->cart->get_cart(); // force cart contents refresh
-			} else {
-				global $woocommerce;
-				if ( empty( $woocommerce->cart ) ) {
-					$woocommerce->cart = new WC_Cart();
-				}
+			if ( did_action( 'before_woocommerce_init' ) ) {
+				wc_load_cart(); // loads session, customer & cart
 			}
+
+			WC()->cart->get_cart(); // force cart contents refresh
 		}
 
 		/**

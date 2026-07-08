@@ -116,25 +116,28 @@ if ( ! class_exists( 'WpMenuCart_Assets' ) ) :
 				wp_add_inline_style( 'wpmenucart', '.et-cart-info { display:none !important; } .site-header-cart { display:none !important; }' );
 			}
 
-			if ( isset( WPO_Menu_Cart()->main_settings['builtin_ajax'] ) ) {
-				wp_enqueue_script(
-					'wpmenucart',
-					$this->get_asset_url( 'wpmenucart', 'js' ),
-					array( 'jquery' ),
-					WPMENUCART_VERSION,
-					true
-				);
-
-				// get URL to WordPress ajax handling page  
-				if ( in_array( WPO_Menu_Cart()->main_settings['shop_plugin'], array( 'Easy Digital Downloads', 'Easy Digital Downloads Pro' ) ) && function_exists( 'edd_get_ajax_url' ) ) {
+			// The single source of truth for the wpmenucart_ajax JS global. Attached
+			// to wpmenucart-remove since it's the only script enqueued unconditionally
+			// whenever a shop is active, guaranteeing it's always present on the page
+			// before wpmenucart or wpmenucart-edd-ajax (both declare it as a dependency
+			// below) ever need to read from it.
+			if ( WPO_Menu_Cart()->is_shop_active() ) {
+				if ( in_array( WPO_Menu_Cart()->main_settings['shop_plugin'] ?? '', array( 'Easy Digital Downloads', 'Easy Digital Downloads Pro' ) ) && function_exists( 'edd_get_ajax_url' ) ) {
 					// use EDD function to prevent SSL issues http://git.io/V7w76A
 					$ajax_url = edd_get_ajax_url();
 				} else {
 					$ajax_url = admin_url( 'admin-ajax.php' );
 				}
 
+				wp_enqueue_script(
+					'wpmenucart-remove',
+					$this->get_asset_url( 'wpmenucart-remove', 'js' ),
+					array( 'jquery' ),
+					WPMENUCART_VERSION,
+					true
+				);
 				wp_localize_script(
-					'wpmenucart',
+					'wpmenucart-remove',
 					'wpmenucart_ajax',
 					array(
 						'ajaxurl'        => $ajax_url,
@@ -142,6 +145,16 @@ if ( ! class_exists( 'WpMenuCart_Assets' ) ) :
 						'action'         => $this->get_ajax_action(),
 						'always_display' => isset( WPO_Menu_Cart()->main_settings['always_display'] ) ? '1' : '0',
 					)
+				);
+			}
+
+			if ( isset( WPO_Menu_Cart()->main_settings['builtin_ajax'] ) ) {
+				wp_enqueue_script(
+					'wpmenucart',
+					$this->get_asset_url( 'wpmenucart', 'js' ),
+					array( 'jquery', 'wpmenucart-remove' ),
+					WPMENUCART_VERSION,
+					true
 				);
 			}
 
@@ -186,20 +199,6 @@ if ( ! class_exists( 'WpMenuCart_Assets' ) ) :
 
 			if ( isset( WPO_Menu_Cart()->main_settings['show_on_cart_checkout_page'] ) && function_exists( 'is_checkout' ) && function_exists( 'is_cart' ) && ( is_checkout() || is_cart() ) && version_compare( WC_VERSION, '7.7', '>' ) ) {
 				wp_enqueue_script( 'wc-cart-fragments' );
-			}
-
-			if ( WPO_Menu_Cart()->is_shop_active() ) {
-				wp_enqueue_script(
-					'wpmenucart-remove',
-					$this->get_asset_url( 'wpmenucart-remove', 'js' ),
-					array( 'jquery' ),
-					WPMENUCART_VERSION,
-					true
-				);
-				wp_localize_script( 'wpmenucart-remove', 'wpmenucart_ajax', array(
-					'ajaxurl' => admin_url( 'admin-ajax.php' ),
-					'nonce'   => wp_create_nonce( 'wpmenucart' ),
-				) );
 			}
 
 			// Slideout assets
@@ -379,17 +378,6 @@ if ( ! class_exists( 'WpMenuCart_Assets' ) ) :
 				array( 'jquery' ),
 				WPMENUCART_VERSION,
 				true
-			);
-
-			wp_localize_script(
-				'wpmenucart-edd-ajax',
-				'wpmenucart_ajax',
-				array(
-					'ajaxurl'        => function_exists( 'edd_get_ajax_url' ) ? edd_get_ajax_url() : admin_url( 'admin-ajax.php' ),
-					'nonce'          => wp_create_nonce( 'wpmenucart' ),
-					'action'         => $this->get_ajax_action(),
-					'always_display' => isset( WPO_Menu_Cart()->main_settings['always_display'] ) ? WPO_Menu_Cart()->main_settings['always_display'] : '',
-				)
 			);
 		}
 
