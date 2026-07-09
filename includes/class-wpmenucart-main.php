@@ -79,23 +79,22 @@ if ( ! class_exists( 'WpMenuCart_Main' ) ) :
 					die();
 				}
 
-				if ( function_exists( 'WC' ) ) {
+				$output = false;
+
+				if ( 'WC' === WPO_Menu_Cart()->get_active_shop() ) {
 					$output = WC()->cart->remove_cart_item( $cart_item_key );
-				} elseif ( function_exists( 'EDD' ) ) {
-					$cart_contents = EDD()->session->get( 'edd_cart' );
-					$output        = false;
-				
+				} elseif ( 'EDD' === WPO_Menu_Cart()->get_active_shop() ) {
+					$cart_contents = edd_get_cart_contents();
+
 					if ( ! empty( $cart_contents ) ) {
 						foreach ( $cart_contents as $key => $cart_item ) {
-							if ( $cart_item->id == $cart_item_key ) {
+							if ( ! empty( $cart_item ) && isset( $cart_item['id'] ) && (string) $cart_item['id'] === $cart_item_key ) {
 								edd_remove_from_cart( $key );
 								$output = true;
 								break;
 							}
 						}
 					}
-				} else {
-					$output = false;
 				}
 			
 				if ( $output ) {

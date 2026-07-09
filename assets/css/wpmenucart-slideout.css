@@ -415,6 +415,14 @@ li.wpmenucart-submenu-item.wpmenucart-slideout__item:hover .wpmenucart-product-r
 	display: none;
 }
 
+.wpmenucart-slideout.is-edd .wpmenucart-wc-only {
+	display: none;
+}
+
+.wpmenucart-slideout.is-wc .wpmenucart-edd-only {
+	display: none;
+}
+
 .wpmenucart-slideout__button {
 	display: flex;
 	width: 100%;

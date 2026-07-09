@@ -304,6 +304,23 @@ class WpMenuCart {
 	}
 
 	/**
+	 * Get active shop plugin
+	 * 
+	 * @return string
+	 */
+	public function get_active_shop(): string {
+		$shop = '';
+
+		if ( $this->shop instanceof WPMenuCart_WooCommerce ) {
+			$shop = 'WC';
+		} elseif ( $this->shop instanceof WPMenuCart_EDD ) {
+			$shop = 'EDD';
+		}
+
+		return $shop;
+	}
+
+	/**
 	 * Handles version checking.
 	 *
 	 * @return void

@@ -33,6 +33,23 @@ if ( ! class_exists( 'WpMenuCart_Data' ) ) :
 		}
 
 		/**
+		 * Get the slideout wrapper classes.
+		 *
+		 * @return string
+		 */
+		public function slideout_class(): string {
+			$classes = 'wpmenucart-slideout';
+
+			if ( 'WC' === WPO_Menu_Cart()->get_active_shop() ) {
+				$classes .= ' is-wc';
+			} elseif ( 'EDD' === WPO_Menu_Cart()->get_active_shop() ) {
+				$classes .= ' is-edd';
+			}
+
+			return apply_filters( 'wpmenucart_slideout_class', $classes, $this->item_data, WPO_Menu_Cart()->main_settings );
+		}
+
+		/**
 		 * Get the aria label text.
 		 *
 		 * @return string
