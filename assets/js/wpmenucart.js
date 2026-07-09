@@ -13,55 +13,77 @@
  * });
  */
 
-jQuery( function( $ ) {
-	let wpmenucart_ajax_timer;
-	let buttons = [
-		".edd-add-to-cart",
-		"div.cartopt p label.update input#update",
-		".add_to_cart_button",
-		".woocommerce-cart input.minus",
-		".cart_item a.remove",
-		"#order_review .opc_cart_item a.remove",
-		".woocommerce-cart input.plus",
-		".single_add_to_cart_button",
-		".emptycart"
-	];
+jQuery(
+	function ( $ ) {
+		let wpmenucart_ajax_timer;
+		let buttons = [
+			".edd-add-to-cart",
+			"div.cartopt p label.update input#update",
+			".add_to_cart_button",
+			".woocommerce-cart input.minus",
+			".cart_item a.remove",
+			"#order_review .opc_cart_item a.remove",
+			".woocommerce-cart input.plus",
+			".single_add_to_cart_button",
+			".emptycart"
+		];
 
-	let inputs = [
-		"input.edd-item-quantity"
-	];
+		let inputs = [
+			"input.edd-item-quantity"
+		];
 
-	$(document.body).on('click', buttons.join(','), function(){
-		WPMenucart_Timeout();
-	});
-
-	$(document.body).on('change', inputs.join(','), function(){
-		WPMenucart_Timeout();
-	});
-
-	// allow triggering refresh with a custom handle
-	$(document).on('wpmenucart_update_cart_ajax', function( event ) {
-		WPMenucart_Timeout();
-	});
-		
-	function WPMenucart_Timeout() {
-		clearTimeout( wpmenucart_ajax_timer );
-		wpmenucart_ajax_timer = setTimeout( WPMenucart_Load_AJAX, 1000);
-	}
-
-	function WPMenucart_Load_AJAX() {
-		let data = {
-			security:	wpmenucart_ajax.nonce,
-			action:		"wpmenucart_ajax",
-		};
-
-		xhr = $.ajax({
-			type:		'POST',
-			url:		wpmenucart_ajax.ajaxurl,
-			data:		data,
-			success:	function( response ) {
-				$('.wpmenucartli').html( response );
+		$(document.body).on(
+			'click', buttons.join(','), function () {
+				WPMenucart_Timeout();
 			}
-		});
+		);
+
+		$(document.body).on(
+			'change', inputs.join(','), function () {
+				WPMenucart_Timeout();
+			}
+		);
+
+		// allow triggering refresh with a custom handle
+		$(document).on(
+			'wpmenucart_update_cart_ajax', function ( event ) {
+				WPMenucart_Timeout();
+			}
+		);
+		
+		function WPMenucart_Timeout()
+		{
+			clearTimeout(wpmenucart_ajax_timer);
+			wpmenucart_ajax_timer = setTimeout(WPMenucart_Load_AJAX, 1000);
+		}
+
+		function WPMenucart_Load_AJAX()
+		{
+			let data = {
+				security: wpmenucart_ajax.nonce,
+				action:   wpmenucart_ajax.action,
+			};
+
+			xhr = $.ajax({
+				type:    'POST',
+				url:     wpmenucart_ajax.ajaxurl,
+				data:    data,
+				success: function( response ) {
+					if ( typeof response !== 'object' || response === null || ! response.data ) {
+						return;
+					}
+
+					if ( response.data.menu_cart ) {
+						$( '.wpmenucartli' ).html( response.data.menu_cart );
+					}
+
+					if ( $( '.wpmenucart-slideout' ).length && response.data.mini_cart_slideout ) {
+						$( '.wpmenucart-slideout' ).replaceWith( response.data.mini_cart_slideout );
+					}
+
+					$( document ).trigger( 'wpmenucart_ajax_loaded', [ response ] );
+				}
+			});
+		}
 	}
-});
+);

@@ -1,0 +1,56 @@
+<div class="{{slideout_class}}" role="dialog" aria-modal="true" aria-label="{{slideout_aria_label}}">
+	<div class="wpmenucart-slideout__overlay"></div>
+	<div class="wpmenucart-slideout__panel" tabindex="-1">
+		<div class="wpmenucart-slideout__header">
+			<h2 class="wpmenucart-slideout__title">{{slideout_title}}</h2>
+			<button type="button" class="wpmenucart-slideout__close" aria-label="{{slideout_close_aria_label}}"></button>
+		</div>
+		<div class="wpmenucart-slideout__content">
+			{{submenu_start}}
+			<ul class="{{submenu_ul_class}}" style="{{submenu_ul_style}}">
+				{{submenu_items_start}}
+				<li class="{{submenu_li_class}} wpmenucart-slideout__item">
+					<div class="wpmenucart-slideout__undo-card">
+						<div class="wpmenucart-slideout__undo-label">
+							<span>{{submenu_item_remove_undo_label}}</span>
+							<button type="button" class="wpmenucart-undo-button">{{submenu_item_remove_undo_button_label}}</button>
+						</div>
+					</div>
+					<div class="wpmenucart-slideout__item-image">
+						{{submenu_item_image}}
+					</div>
+					<div class="wpmenucart-slideout__item-details">
+						<h3 class="wpmenucart-slideout__item-title">{{submenu_item_name}}</h3>
+						<div class="wpmenucart-slideout__item-meta">{{submenu_item_meta}}</div>
+						<div class="wpmenucart-slideout__item-price">{{submenu_item_quantity}} × {{submenu_item_price}}</div>
+					</div>
+					{{submenu_item_remove}}
+				</li>
+				{{submenu_items_end}}
+				{{empty_cart_start}}
+				<li class="wpmenucart-slideout__empty">
+					<h3 class="wpmenucart-slideout__empty-title">{{empty_cart_title_text}}</h3>
+					<div class="wpmenucart-slideout__empty-content">
+						<div class="wpmenucart-slideout__empty-icon"></div>
+						<p class="wpmenucart-slideout__empty-text">{{empty_cart_subtitle_text}}</p>
+					</div>
+				</li>
+				{{empty_cart_end}}
+				{{full_cart_start}}
+				{{full_cart_end}}
+			</ul>
+			{{submenu_end}}
+		</div>
+		<div class="wpmenucart-slideout__footer">
+			<div class="wpmenucart-slideout__total">
+				<span class="wpmenucart-slideout__total-label">{{cart_total_label}}:</span>
+				<span class="wpmenucart-slideout__total-amount">{{cart_total}}</span>
+			</div>
+			<div class="wpmenucart-slideout__actions" data-cart-count="{{cart_contents_count}}">
+				<a href="{{shop_url}}" class="wpmenucart-slideout__button wpmenucart-slideout__button--primary wpmenucart-empty-only">{{start_shopping_button_text}}</a>
+				<a href="{{cart_url}}" class="wpmenucart-slideout__button wpmenucart-slideout__button--secondary wpmenucart-full-only wpmenucart-wc-only">{{view_cart_button_text}}</a>
+				<a href="{{checkout_url}}" class="wpmenucart-slideout__button wpmenucart-slideout__button--primary wpmenucart-full-only">{{checkout_button_text}}</a>
+			</div>
+		</div>
+	</div>
+</div>
