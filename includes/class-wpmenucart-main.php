@@ -104,7 +104,7 @@ if ( ! class_exists( 'WpMenuCart_Main' ) ) :
 						$response['mini_cart_slideout'] = $this->get_mini_cart_slideout();
 					}
 
-					$response = apply_filters( 'wpo_wpmenucart_remove_cart_item_jax_response', $response );
+					$response = apply_filters( 'wpo_wpmenucart_remove_cart_item_ajax_response', $response );
 
 					wp_send_json_success( $response );
 				} else {
