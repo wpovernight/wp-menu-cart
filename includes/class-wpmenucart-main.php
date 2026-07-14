@@ -363,7 +363,7 @@ if ( ! class_exists( 'WpMenuCart_Main' ) ) :
 			if ( false === WPO_Menu_Cart()->is_shop_active( array(), $shop_plugin ) ) {
 				$render = false;
 			} elseif ( 'WooCommerce' === $shop_plugin ) {
-				if ( is_admin() && ( isset( $_GET['action'] ) && 'elementor' == $_GET['action'] ) ) {
+				if ( is_admin() && ( isset( $_GET['action'] ) && 'elementor' === $_GET['action'] ) ) {
 					$render = false;
 				} elseif ( ! $is_ajax && function_exists( 'WC' ) && ( is_checkout() || is_cart() ) && empty( WPO_Menu_Cart()->main_settings['show_on_cart_checkout_page'] ) ) {
 					$render = false;
