@@ -39,6 +39,11 @@ class WpMenuCart {
 	/**
 	 * @var string
 	 */
+	public $version_edd = '2.8.7';
+
+	/**
+	 * @var string
+	 */
 	public $plugin_slug;
 
 	/**
@@ -216,23 +221,28 @@ class WpMenuCart {
 				case 'WooCommerce':
 					include_once( 'includes/shops/wpmenucart-woocommerce.php' );
 					$this->shop = new WPMenuCart_WooCommerce();
-					if ( ! isset( $this->main_settings['builtin_ajax'] ) ) {
-						add_filter( 'woocommerce_add_to_cart_fragments', array( $this->main, 'woocommerce_ajax_fragments' ) );
-					}
 					break;
 				case 'Easy Digital Downloads':
 				case 'Easy Digital Downloads Pro':
 					include_once( 'includes/shops/wpmenucart-edd.php' );
 					$this->shop = new WPMenuCart_EDD();
-					if ( ! isset( $this->main_settings['builtin_ajax'] ) ) {
-						add_action( 'wp_enqueue_scripts', array( $this->assets, 'load_edd_ajax' ), 0 );
-					}
 					break;
 			}
 		}
 
 		include_once( 'includes/class-wpmenucart-main.php' );
 		$this->main = new WpMenuCart_Main();
+
+		if ( ! isset( $this->main_settings['builtin_ajax'] ) ) {
+			switch ( $this->get_active_shop() ) {
+				case 'WC':
+					add_filter( 'woocommerce_add_to_cart_fragments', array( $this->main, 'woocommerce_ajax_fragments' ) );
+					break;
+				case 'EDD':
+					add_action( 'wp_enqueue_scripts', array( $this->assets, 'load_edd_ajax' ), 0 );
+					break;
+			}
+		}
 
 		include_once( 'includes/class-wpmenucart-conflict-detector.php' );
 		$this->conflict_detector = new WpMenuCart_Conflict_Detector();
@@ -363,6 +373,18 @@ class WpMenuCart {
 		if ( isset( $active_shops['WooCommerce'] ) && defined( 'WC_VERSION' ) && ! version_compare( WC_VERSION, $this->version_woo, '>=' ) ) {
 			add_action( 'admin_notices', function() {
 				$this->required_shop_version_notice( 'WooCommerce', $this->version_woo );
+			} );
+
+			return false;
+		}
+
+		if (
+			( isset( $active_shops['Easy Digital Downloads'] ) || isset( $active_shops['Easy Digital Downloads Pro'] ) )
+			&& defined( 'EDD_VERSION' )
+			&& ! version_compare( EDD_VERSION, $this->version_edd, '>=' )
+		) {
+			add_action( 'admin_notices', function() {
+				$this->required_shop_version_notice( 'Easy Digital Downloads', $this->version_edd );
 			} );
 
 			return false;
