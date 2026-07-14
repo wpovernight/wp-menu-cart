@@ -39,6 +39,11 @@ class WpMenuCart {
 	/**
 	 * @var string
 	 */
+	public $version_edd = '2.8.7';
+
+	/**
+	 * @var string
+	 */
 	public $plugin_slug;
 
 	/**
@@ -368,6 +373,18 @@ class WpMenuCart {
 		if ( isset( $active_shops['WooCommerce'] ) && defined( 'WC_VERSION' ) && ! version_compare( WC_VERSION, $this->version_woo, '>=' ) ) {
 			add_action( 'admin_notices', function() {
 				$this->required_shop_version_notice( 'WooCommerce', $this->version_woo );
+			} );
+
+			return false;
+		}
+
+		if (
+			( isset( $active_shops['Easy Digital Downloads'] ) || isset( $active_shops['Easy Digital Downloads Pro'] ) )
+			&& defined( 'EDD_VERSION' )
+			&& ! version_compare( EDD_VERSION, $this->version_edd, '>=' )
+		) {
+			add_action( 'admin_notices', function() {
+				$this->required_shop_version_notice( 'Easy Digital Downloads', $this->version_edd );
 			} );
 
 			return false;
