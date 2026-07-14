@@ -7,7 +7,10 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 
 	class WpMenuCart_Settings {
 
-		const OPTION_NAME = 'wpo_wpmenucart_main_settings';
+		const OPTION_NAME        = 'wpo_wpmenucart_main_settings';
+		const PAGE_DISPLAY_MODES = 'wpo_wpmenucart_display_modes';
+		const PAGE_ICON_STYLE    = 'wpo_wpmenucart_icon_style';
+		const PAGE_GENERAL       = 'wpo_wpmenucart_general_settings';
 
 		/**
 		 * @var WpMenuCart_Settings_Callbacks
@@ -21,7 +24,6 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 
 			add_action( 'admin_init', array( $this, 'main_settings' ) );
 			add_action( 'admin_menu', array( $this, 'add_menu_page' ) );
-			add_action( 'wpo_wpmenucart_settings_tab_content_main', array( $this, 'render_main_tab' ) );
 
 			add_filter( 'plugin_action_links_' . WPO_Menu_Cart()->plugin_basename, array( $this, 'add_settings_link' ) );
 		}
@@ -62,27 +64,35 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 
 			// Register Sections
 			$sections = apply_filters( 'wpo_wpmenucart_main_settings_sections', array(
-				'cart_display_modes'    => array(
+				'cart_display_modes'  => array(
 					'title'    => '<span class="wpmenucart-section__icon" aria-hidden="true">' . $this->callbacks->get_svg( 'cart-display-modes.svg' ) . '</span> ' . __( 'Cart Display Modes', 'wp-menu-cart' ),
 					'callback' => function() use ( $option_values ) {
 						$this->callbacks->cart_display_modes_section( $option_values );
 					},
+					'page'     => self::PAGE_DISPLAY_MODES,
 				),
-				'general_cart_settings' => array(
-					'title'    => '<span class="wpmenucart-section__icon" aria-hidden="true">' . $this->callbacks->get_svg( 'general.svg' ) . '</span> ' . __( 'General Cart Settings', 'wp-menu-cart' ),
+				'menu_icon_style'     => array(
+					'title'    => '<span class="wpmenucart-section__icon" aria-hidden="true">' . $this->callbacks->get_svg( 'general.svg' ) . '</span> ' . __( 'Menu Icon Style', 'wp-menu-cart' ),
 					'callback' => $this->resolve_callback( 'section' ),
+					'page'     => self::PAGE_ICON_STYLE,
+				),
+				'general_settings'    => array(
+					'title'    => '<span class="wpmenucart-section__icon" aria-hidden="true">' . $this->callbacks->get_svg( 'general.svg' ) . '</span> ' . __( 'General Settings', 'wp-menu-cart' ),
+					'callback' => $this->resolve_callback( 'section' ),
+					'page'     => self::PAGE_GENERAL,
 				),
 			) );
 
 			foreach ( $sections as $id => $section ) {
-				add_settings_section( $id, $section['title'], $section['callback'], $option_group );
+				add_settings_section( $id, $section['title'], $section['callback'], $section['page'] );
 			}
 
 			$parent_theme = wp_get_theme( get_template() );
 
 			$fields = array(
 				'shop_plugin'                => array(
-					'section'  => 'general_cart_settings',
+					'section'  => 'general_settings',
+					'page'     => self::PAGE_GENERAL,
 					'title'    => __( 'E-commerce Plugin', 'wp-menu-cart' ),
 					'callback' => $this->resolve_callback( 'shop_select' ),
 					'args'     => array(
@@ -93,7 +103,8 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 					),
 				),
 				'block_theme_enabled'        => array(
-					'section'  => 'general_cart_settings',
+					'section'  => 'general_settings',
+					'page'     => self::PAGE_GENERAL,
 					'title'    => __( 'Current theme is block type', 'wp-menu-cart' ),
 					'callback' => $this->resolve_callback( 'checkbox' ),
 					'args'     => array(
@@ -111,7 +122,8 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 					'show_if'  => WPO_Menu_Cart()->is_block_theme(),
 				),
 				'hide_theme_cart'            => array(
-					'section'  => 'general_cart_settings',
+					'section'  => 'general_settings',
+					'page'     => self::PAGE_GENERAL,
 					'title'    => __( 'Hide theme shopping cart icon', 'wp-menu-cart' ),
 					'callback' => $this->resolve_callback( 'checkbox' ),
 					'args'     => array(
@@ -121,7 +133,8 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 					'show_if'  => ! empty( $parent_theme ) && in_array( $parent_theme->get( 'Name' ), array( 'Storefront', 'Divi' ) ),
 				),
 				'always_display'             => array(
-					'section'  => 'general_cart_settings',
+					'section'  => 'general_settings',
+					'page'     => self::PAGE_GENERAL,
 					'title'    => __( 'Always display cart', 'wp-menu-cart' ),
 					'callback' => $this->resolve_callback( 'checkbox' ),
 					'args'     => array(
@@ -131,7 +144,8 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 					),
 				),
 				'show_on_cart_checkout_page' => array(
-					'section'  => 'general_cart_settings',
+					'section'  => 'general_settings',
+					'page'     => self::PAGE_GENERAL,
 					'title'    => __( 'Show on cart & checkout page', 'wp-menu-cart' ),
 					'callback' => $this->resolve_callback( 'checkbox' ),
 					'args'     => array(
@@ -142,7 +156,8 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 					'show_if'  => WPO_Menu_Cart()->is_shop_active( array(), 'WooCommerce' ),
 				),
 				'icon_display'               => array(
-					'section'  => 'general_cart_settings',
+					'section'  => 'menu_icon_style',
+					'page'     => self::PAGE_ICON_STYLE,
 					'title'    => __( 'Display shopping cart icon', 'wp-menu-cart' ),
 					'callback' => $this->resolve_callback( 'checkbox' ),
 					'args'     => array(
@@ -151,7 +166,8 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 					),
 				),
 				'cart_icon'                  => array(
-					'section'  => 'general_cart_settings',
+					'section'  => 'menu_icon_style',
+					'page'     => self::PAGE_ICON_STYLE,
 					'title'    => __( 'Choose a cart icon.', 'wp-menu-cart' ),
 					'callback' => $this->resolve_callback( 'icons_radio_element_callback' ),
 					'args'     => array(
@@ -176,7 +192,8 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 					),
 				),
 				'cart_icon_color'            => array(
-					'section'  => 'general_cart_settings',
+					'section'  => 'menu_icon_style',
+					'page'     => self::PAGE_ICON_STYLE,
 					'title'    => __( 'Override icon color', 'wp-menu-cart' ),
 					'callback' => $this->resolve_callback( 'checkbox' ),
 					'args'     => array(
@@ -187,7 +204,8 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 					),
 				),
 				'custom_icon'                => array(
-					'section'  => 'general_cart_settings',
+					'section'  => 'menu_icon_style',
+					'page'     => self::PAGE_ICON_STYLE,
 					'title'    => __( 'Custom Icon', 'wp-menu-cart' ),
 					'callback' => $this->resolve_callback( 'media_upload_callback' ),
 					'args'     => array(
@@ -202,7 +220,8 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 					),
 				),
 				'items_display'              => array(
-					'section'  => 'general_cart_settings',
+					'section'  => 'general_settings',
+					'page'     => self::PAGE_GENERAL,
 					'title'    => __( 'Contents of the menu cart item', 'wp-menu-cart' ),
 					'callback' => $this->resolve_callback( 'radio_button' ),
 					'args'     => array(
@@ -216,7 +235,8 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 					),
 				),
 				'total_price_type'           => array(
-					'section'  => 'general_cart_settings',
+					'section'  => 'general_settings',
+					'page'     => self::PAGE_GENERAL,
 					'title'    => __( 'Price to display', 'wp-menu-cart' ),
 					'callback' => $this->resolve_callback( 'select' ),
 					'args'     => array(
@@ -232,7 +252,8 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 					'show_if'  => class_exists( 'WooCommerce' ),
 				),
 				'custom_class'               => array(
-					'section'  => 'general_cart_settings',
+					'section'  => 'general_settings',
+					'page'     => self::PAGE_GENERAL,
 					'title'    => __( 'Enter a custom CSS class (optional)', 'wp-menu-cart' ),
 					'callback' => $this->resolve_callback( 'text_input' ),
 					'args'     => array(
@@ -244,7 +265,8 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 					),
 				),
 				'wpml_string_translation'    => array(
-					'section'  => 'general_cart_settings',
+					'section'  => 'general_settings',
+					'page'     => self::PAGE_GENERAL,
 					'title'    => __( 'Use WPML String Translation', 'wp-menu-cart' ),
 					'callback' => $this->resolve_callback( 'checkbox' ),
 					'args'     => array(
@@ -254,7 +276,8 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 					'show_if'  => function_exists( 'icl_register_string' ),
 				),
 				'builtin_ajax'               => array(
-					'section'  => 'general_cart_settings',
+					'section'  => 'general_settings',
+					'page'     => self::PAGE_GENERAL,
 					'title'    => __( 'Use custom AJAX', 'wp-menu-cart' ),
 					'callback' => $this->resolve_callback( 'checkbox' ),
 					'args'     => array(
@@ -275,7 +298,7 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 						$field_id,
 						$field['title'],
 						$field['callback'],
-						$option_group,
+						$field['page'] ?? $option_group,
 						$field['section'],
 						$field['args']
 					);
@@ -349,7 +372,7 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 		public function render_settings_page(): void {
 			settings_errors();
 
-			$current_tab = isset( $_REQUEST['tab'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['tab'] ) ) : 'main';
+			$current_tab = isset( $_REQUEST['tab'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['tab'] ) ) : 'cart_design_behavior';
 
 			/**
 			 * Filter the settings tabs.
@@ -362,14 +385,15 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 			$settings_tabs = apply_filters(
 				'wpo_wpmenucart_settings_tabs',
 				array(
-					'main' => __( 'Main', 'wp-menu-cart' ),
+					'cart_design_behavior' => __( 'Cart Design & Behavior', 'wp-menu-cart' ),
+					'global_settings'      => __( 'Global Settings', 'wp-menu-cart' ),
 				),
 				$current_tab
 			);
 
 			// Guard against an unknown tab being requested.
 			if ( ! array_key_exists( $current_tab, $settings_tabs ) ) {
-				$current_tab = 'main';
+				$current_tab = 'cart_design_behavior';
 			}
 			?>
 			<div class="wrap">
@@ -401,21 +425,14 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 
 					<?php do_action( 'wpo_wpmenucart_after_settings_tabs', $current_tab ); ?>
 
+					<?php $this->render_subtab_nav( $current_tab ); ?>
+
 					<div class="wpo_wpmenucart_settings_container">
 						<?php do_action( 'wpo_wpmenucart_before_settings_tab_content', $current_tab ); ?>
 						<?php do_action_deprecated( 'wpo_wpmenucart_settings_content', array( $current_tab ), '3.0.1', 'wpo_wpmenucart_settings_tab_content_' . $current_tab ); ?>
 
 						<div class="wpo_wpmenucart_settings_tab">
-							<?php
-							/**
-							 * Fires to render the content of the active tab.
-							 *
-							 * Hook into wpo_wpmenucart_settings_tab_content_{tab_slug} to
-							 * output a complete <form> with settings_fields(), do_settings_sections(),
-							 * and submit_button() for your tab.
-							 */
-							do_action( 'wpo_wpmenucart_settings_tab_content_' . $current_tab );
-							?>
+							<?php $this->render_tab_content( $current_tab ); ?>
 						</div>
 
 						<?php do_action( 'wpo_wpmenucart_after_settings_tab_content', $current_tab ); ?>
@@ -427,24 +444,129 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 		}
 
 		/**
-		 * Render the Main tab content.
+		 * Render the subtab nav for a given top-level tab.
+		 *
+		 * Falls back to a hook for any tab not registered here, so a tab
+		 * added via wpo_wpmenucart_settings_tabs can still have its own
+		 * subtab nav.
+		 *
+		 * @param  string $tab The current top-level tab slug.
+		 * @return void
+		 */
+		protected function render_subtab_nav( string $tab ): void {
+			switch ( $tab ) {
+				case 'cart_design_behavior':
+					$this->render_cart_design_behavior_subtab_nav();
+					break;
+				case 'global_settings':
+					$this->render_global_settings_subtab_nav();
+					break;
+				default:
+					do_action( 'wpo_wpmenucart_settings_subtab_nav_' . $tab );
+			}
+		}
+
+		/**
+		 * Render the main content for a given top-level tab, same fallback
+		 * logic as render_subtab_nav().
+		 *
+		 * @param  string $tab The current top-level tab slug.
+		 * @return void
+		 */
+		protected function render_tab_content( string $tab ): void {
+			switch ( $tab ) {
+				case 'cart_design_behavior':
+					$this->render_cart_design_behavior_tab();
+					break;
+				case 'global_settings':
+					$this->render_global_settings_tab();
+					break;
+				default:
+					do_action( 'wpo_wpmenucart_settings_tab_content_' . $tab );
+			}
+		}
+
+		/**
+		 * Render the Cart Design & Behavior subtab nav.
 		 *
 		 * @return void
 		 */
-		public function render_main_tab(): void {
+		public function render_cart_design_behavior_subtab_nav(): void {
+			?>
+			<div class="nav-tab-wrapper wpmenucart-subtab-nav">
+				<a href="#" class="nav-tab nav-tab-active" data-subtab="display_modes"><?php esc_html_e( 'Cart Display Modes', 'wp-menu-cart' ); ?></a>
+				<a href="#" class="nav-tab" data-subtab="icon_style"><?php esc_html_e( 'Menu Icon Style', 'wp-menu-cart' ); ?></a>
+				<?php do_action( 'wpo_wpmenucart_cart_design_behavior_subtab_nav' ); ?>
+			</div>
+			<?php
+		}
+
+		/**
+		 * Render the Cart Design & Behavior tab content: a subtab nav plus
+		 * panels for Cart Display Modes and Menu Icon Style, switched
+		 * client-side. Both subtabs save to the same option, so they share
+		 * one form.
+		 *
+		 * @return void
+		 */
+		public function render_cart_design_behavior_tab(): void {
 			$this->maybe_render_nav_error_notice();
 			?>
 			<form method="post" action="options.php" id="wpo-wpmenucart-settings">
-				<?php
-				settings_fields( self::OPTION_NAME );
-				do_settings_sections( self::OPTION_NAME );
-				submit_button();
-				?>
+				<?php settings_fields( self::OPTION_NAME ); ?>
+
+				<div class="wpmenucart-subtab-panel wpmenucart-subtab-panel--active" data-subtab="display_modes">
+					<?php do_settings_sections( self::PAGE_DISPLAY_MODES ); ?>
+				</div>
+
+				<div class="wpmenucart-subtab-panel" data-subtab="icon_style">
+					<?php do_settings_sections( self::PAGE_ICON_STYLE ); ?>
+				</div>
+
+				<?php submit_button(); ?>
 			</form>
+
 			<?php
+			do_action( 'wpo_wpmenucart_cart_design_behavior_subtab_panels' );
+
 			if ( apply_filters( 'wpo_wpmenucart_show_upgrade_ad', true ) ) {
 				$this->render_pro_ad();
 			}
+		}
+
+		/**
+		 * Render the Global Settings subtab nav.
+		 *
+		 * @return void
+		 */
+		public function render_global_settings_subtab_nav(): void {
+			?>
+			<div class="nav-tab-wrapper wpmenucart-subtab-nav">
+				<a href="#" class="nav-tab nav-tab-active" data-subtab="general"><?php esc_html_e( 'General', 'wp-menu-cart' ); ?></a>
+				<?php do_action( 'wpo_wpmenucart_global_settings_subtab_nav' ); ?>
+			</div>
+			<?php
+		}
+
+		/**
+		 * Render the Global Settings tab content.
+		 *
+		 * @return void
+		 */
+		public function render_global_settings_tab(): void {
+			?>
+			<form method="post" action="options.php" id="wpo-wpmenucart-settings">
+				<?php settings_fields( self::OPTION_NAME ); ?>
+
+				<div class="wpmenucart-subtab-panel wpmenucart-subtab-panel--active" data-subtab="general">
+					<?php do_settings_sections( self::PAGE_GENERAL ); ?>
+				</div>
+
+				<?php submit_button(); ?>
+			</form>
+
+			<?php do_action( 'wpo_wpmenucart_global_settings_subtab_panels' ); ?>
+			<?php
 		}
 
 		/**

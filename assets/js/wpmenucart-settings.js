@@ -76,5 +76,26 @@ jQuery(
 		}
 
 		initCartModeSelectors();
+
+		// Subtab nav: show/hide panels client-side, no page reload.
+		function initSubtabNav() {
+			$( '.wpo_wpmenucart_settings' ).each( function() {
+				var $wrap = $( this );
+
+				$wrap.on( 'click', '.wpmenucart-subtab-nav a', function( e ) {
+					e.preventDefault();
+
+					var subtab = $( this ).data( 'subtab' );
+
+					$wrap.find( '.wpmenucart-subtab-nav a' ).removeClass( 'nav-tab-active' );
+					$( this ).addClass( 'nav-tab-active' );
+
+					$wrap.find( '.wpmenucart-subtab-panel' ).removeClass( 'wpmenucart-subtab-panel--active' );
+					$wrap.find( '.wpmenucart-subtab-panel[data-subtab="' + subtab + '"]' ).addClass( 'wpmenucart-subtab-panel--active' );
+				} );
+			} );
+		}
+
+		initSubtabNav();
 	}
 );
