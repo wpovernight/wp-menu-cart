@@ -351,23 +351,35 @@ if ( ! class_exists( 'WpMenuCart_Main' ) ) :
 		}
 
 		/**
+		 * Base check to determine whether the menu cart should render in the current context.
+		 *
+		 * @return bool
+		 */
+		public function should_render_base(): bool {
+			$is_ajax     = function_exists( 'wp_doing_ajax' ) ? wp_doing_ajax() : defined( 'DOING_AJAX' ) && DOING_AJAX;
+			$render      = true;
+			$shop_plugin = WPO_Menu_Cart()->main_settings['shop_plugin'] ?: '';
+
+			if ( false === WPO_Menu_Cart()->is_shop_active( array(), $shop_plugin ) ) {
+				$render = false;
+			} elseif ( 'WooCommerce' === $shop_plugin ) {
+				if ( is_admin() && ( isset( $_GET['action'] ) && 'elementor' === $_GET['action'] ) ) {
+					$render = false;
+				} elseif ( ! $is_ajax && function_exists( 'WC' ) && ( is_checkout() || is_cart() ) && empty( WPO_Menu_Cart()->main_settings['show_on_cart_checkout_page'] ) ) {
+					$render = false;
+				}
+			}
+
+			return $render;
+		}
+
+		/**
 		 * Determine whether the menu cart should render in the current context.
 		 *
 		 * @return bool
 		 */
 		public function should_render_menucart(): bool {
-			$render = true;
-
-			if (
-				function_exists( 'is_checkout' ) &&
-				function_exists( 'is_cart' ) &&
-				( is_checkout() || is_cart() ) &&
-				empty( WPO_Menu_Cart()->main_settings['show_on_cart_checkout_page'] )
-			) {
-				$render = false;
-			}
-
-			return apply_filters( 'wpmenucart_should_render', $render );
+			return apply_filters( 'wpmenucart_should_render', $this->should_render_base() );
 		}
 
 		/**
