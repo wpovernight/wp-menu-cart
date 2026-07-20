@@ -79,20 +79,43 @@ jQuery(
 
 		// Subtab nav: show/hide panels client-side, no page reload.
 		function initSubtabNav() {
+			function withSubtabParam( url, subtab ) {
+				url = url.replace( /([?&])subtab=[^&]*/, '' );
+				return url + ( url.indexOf( '?' ) === -1 ? '?' : '&' ) + 'subtab=' + encodeURIComponent( subtab );
+			}
+
 			$( '.wpo_wpmenucart_settings' ).each( function() {
 				var $wrap = $( this );
 
-				$wrap.on( 'click', '.wpmenucart-subtab-nav a', function( e ) {
-					e.preventDefault();
-
-					var subtab = $( this ).data( 'subtab' );
-
+				function activateSubtab( subtab ) {
 					$wrap.find( '.wpmenucart-subtab-nav a' ).removeClass( 'nav-tab-active' );
-					$( this ).addClass( 'nav-tab-active' );
+					$wrap.find( '.wpmenucart-subtab-nav a[data-subtab="' + subtab + '"]' ).addClass( 'nav-tab-active' );
 
 					$wrap.find( '.wpmenucart-subtab-panel' ).removeClass( 'wpmenucart-subtab-panel--active' );
 					$wrap.find( '.wpmenucart-subtab-panel[data-subtab="' + subtab + '"]' ).addClass( 'wpmenucart-subtab-panel--active' );
+
+					if ( window.history && window.history.replaceState ) {
+						window.history.replaceState( null, '', withSubtabParam( window.location.href, subtab ) );
+					}
+
+					$wrap.find( '.wpmenucart-subtab-panel[data-subtab="' + subtab + '"] input[name="_wp_http_referer"]' ).each( function() {
+						var $referer = $( this );
+						$referer.val( withSubtabParam( $referer.val(), subtab ) );
+					} );
+				}
+
+				$wrap.on( 'click', '.wpmenucart-subtab-nav a', function( e ) {
+					e.preventDefault();
+					activateSubtab( $( this ).data( 'subtab' ) );
 				} );
+
+				if ( ! $wrap.find( '.wpmenucart-subtab-panel--active' ).length ) {
+					var $firstLink = $wrap.find( '.wpmenucart-subtab-nav a' ).first();
+
+					if ( $firstLink.length ) {
+						activateSubtab( $firstLink.data( 'subtab' ) );
+					}
+				}
 			} );
 		}
 

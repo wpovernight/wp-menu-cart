@@ -571,6 +571,15 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 				return $output;
 			}
 
+			// This option is edited from several separate subtab forms.
+			// A save only posts that form's own fields, so merge with what's
+			// already stored to keep the other subtabs' fields intact.
+			$option_page = isset( $_POST['option_page'] ) ? sanitize_text_field( wp_unslash( $_POST['option_page'] ) ) : '';
+
+			if ( WpMenuCart_Settings::OPTION_NAME === $option_page ) {
+				$output = array_merge( get_option( WpMenuCart_Settings::OPTION_NAME, array() ), $output );
+			}
+
 			$is_main_settings = isset( $output['shop_plugin'] )
 				|| isset( $output['items_display'] )
 				|| isset( $output['desktop_cart_mode'] )

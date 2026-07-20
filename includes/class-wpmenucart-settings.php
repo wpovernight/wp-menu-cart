@@ -492,10 +492,11 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 		 * @return void
 		 */
 		public function render_cart_design_behavior_subtab_nav(): void {
+			$current_subtab = isset( $_REQUEST['subtab'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['subtab'] ) ) : '';
 			?>
 			<div class="nav-tab-wrapper wpmenucart-subtab-nav">
-				<a href="#" class="nav-tab nav-tab-active" data-subtab="display_modes"><?php esc_html_e( 'Cart Display Modes', 'wp-menu-cart' ); ?></a>
-				<a href="#" class="nav-tab" data-subtab="icon_style"><?php esc_html_e( 'Menu Icon Style', 'wp-menu-cart' ); ?></a>
+				<a href="#" class="nav-tab<?php echo ( 'display_modes' === $current_subtab ) ? ' nav-tab-active' : ''; ?>" data-subtab="display_modes"><?php esc_html_e( 'Cart Display Modes', 'wp-menu-cart' ); ?></a>
+				<a href="#" class="nav-tab<?php echo ( 'icon_style' === $current_subtab ) ? ' nav-tab-active' : ''; ?>" data-subtab="icon_style"><?php esc_html_e( 'Menu Icon Style', 'wp-menu-cart' ); ?></a>
 				<?php do_action( 'wpo_wpmenucart_cart_design_behavior_subtab_nav' ); ?>
 			</div>
 			<?php
@@ -511,26 +512,29 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 		 */
 		public function render_cart_design_behavior_tab(): void {
 			$this->maybe_render_nav_error_notice();
+			$current_subtab = isset( $_REQUEST['subtab'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['subtab'] ) ) : '';
 			?>
-			<form method="post" action="options.php" id="wpo-wpmenucart-settings">
-				<?php settings_fields( self::OPTION_NAME ); ?>
+			<div class="wpmenucart-subtab-panel<?php echo ( 'display_modes' === $current_subtab ) ? ' wpmenucart-subtab-panel--active' : ''; ?>" data-subtab="display_modes">
+				<form method="post" action="options.php">
+					<?php
+					settings_fields( self::OPTION_NAME );
+					do_settings_sections( self::PAGE_DISPLAY_MODES );
+					submit_button();
+					?>
+				</form>
+			</div>
 
-				<div class="wpmenucart-subtab-panel wpmenucart-subtab-panel--active" data-subtab="display_modes">
-					<?php do_settings_sections( self::PAGE_DISPLAY_MODES ); ?>
-				</div>
+			<div class="wpmenucart-subtab-panel<?php echo ( 'icon_style' === $current_subtab ) ? ' wpmenucart-subtab-panel--active' : ''; ?>" data-subtab="icon_style">
+				<form method="post" action="options.php">
+					<?php
+					settings_fields( self::OPTION_NAME );
+					do_settings_sections( self::PAGE_ICON_STYLE );
+					submit_button();
+					?>
+				</form>
+			</div>
 
-				<div class="wpmenucart-subtab-panel" data-subtab="icon_style">
-					<?php do_settings_sections( self::PAGE_ICON_STYLE ); ?>
-				</div>
-
-				<?php
-				do_action( 'wpo_wpmenucart_cart_design_behavior_subtab_panels' );
-
-				submit_button();
-				?>
-			</form>
-
-			<?php do_action( 'wpo_wpmenucart_cart_design_behavior_after_subtab_panels' ); ?>
+			<?php do_action( 'wpo_wpmenucart_cart_design_behavior_subtab_panels' ); ?>
 
 			<?php
 			if ( apply_filters( 'wpo_wpmenucart_show_upgrade_ad', true ) ) {
@@ -544,9 +548,10 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 		 * @return void
 		 */
 		public function render_global_settings_subtab_nav(): void {
+			$current_subtab = isset( $_REQUEST['subtab'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['subtab'] ) ) : '';
 			?>
 			<div class="nav-tab-wrapper wpmenucart-subtab-nav">
-				<a href="#" class="nav-tab nav-tab-active" data-subtab="general"><?php esc_html_e( 'General', 'wp-menu-cart' ); ?></a>
+				<a href="#" class="nav-tab<?php echo ( 'general' === $current_subtab ) ? ' nav-tab-active' : ''; ?>" data-subtab="general"><?php esc_html_e( 'General', 'wp-menu-cart' ); ?></a>
 				<?php do_action( 'wpo_wpmenucart_global_settings_subtab_nav' ); ?>
 			</div>
 			<?php
@@ -558,23 +563,20 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 		 * @return void
 		 */
 		public function render_global_settings_tab(): void {
+			$current_subtab = isset( $_REQUEST['subtab'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['subtab'] ) ) : '';
 			?>
-			<form method="post" action="options.php" id="wpo-wpmenucart-settings">
-				<?php settings_fields( self::OPTION_NAME ); ?>
-
-				<div class="wpmenucart-subtab-panel wpmenucart-subtab-panel--active" data-subtab="general">
-					<?php do_settings_sections( self::PAGE_GENERAL ); ?>
-				</div>
-
-				<?php
-				do_action( 'wpo_wpmenucart_global_settings_subtab_panels' );
-
-				submit_button();
-				?>
-			</form>
+			<div class="wpmenucart-subtab-panel<?php echo ( 'general' === $current_subtab ) ? ' wpmenucart-subtab-panel--active' : ''; ?>" data-subtab="general">
+				<form method="post" action="options.php">
+					<?php
+					settings_fields( self::OPTION_NAME );
+					do_settings_sections( self::PAGE_GENERAL );
+					submit_button();
+					?>
+				</form>
+			</div>
 
 			<?php
-			do_action( 'wpo_wpmenucart_global_settings_after_subtab_panels' );
+			do_action( 'wpo_wpmenucart_global_settings_subtab_panels' );
 		}
 
 		/**
