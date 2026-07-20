@@ -523,12 +523,16 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 					<?php do_settings_sections( self::PAGE_ICON_STYLE ); ?>
 				</div>
 
-				<?php submit_button(); ?>
+				<?php
+				do_action( 'wpo_wpmenucart_cart_design_behavior_subtab_panels' );
+
+				submit_button();
+				?>
 			</form>
 
-			<?php
-			do_action( 'wpo_wpmenucart_cart_design_behavior_subtab_panels' );
+			<?php do_action( 'wpo_wpmenucart_cart_design_behavior_after_subtab_panels' ); ?>
 
+			<?php
 			if ( apply_filters( 'wpo_wpmenucart_show_upgrade_ad', true ) ) {
 				$this->render_pro_ad();
 			}
@@ -562,11 +566,15 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 					<?php do_settings_sections( self::PAGE_GENERAL ); ?>
 				</div>
 
-				<?php submit_button(); ?>
+				<?php
+				do_action( 'wpo_wpmenucart_global_settings_subtab_panels' );
+
+				submit_button();
+				?>
 			</form>
 
-			<?php do_action( 'wpo_wpmenucart_global_settings_subtab_panels' ); ?>
 			<?php
+			do_action( 'wpo_wpmenucart_global_settings_after_subtab_panels' );
 		}
 
 		/**
