@@ -35,12 +35,6 @@ body.settings_page_wpo_wpmenucart_options_page {
 .wpo_wpmenucart_settings .wpmenucart-subtab-nav:has( .nav-tab:only-child ) {
 	display: none;
 }
-.wpmenucart-subtab-panel {
-	display: none;
-}
-.wpmenucart-subtab-panel--active {
-	display: block;
-}
 .wpo_wpmenucart_settings .wpo_wpmenucart_settings_container .wpo_wpmenucart_settings_tab {
 	margin: 0;
 }
