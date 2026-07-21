@@ -516,8 +516,9 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 			?>
 			<div class="wpmenucart-subtab-panel<?php echo ( 'display_modes' === $current_subtab ) ? ' wpmenucart-subtab-panel--active' : ''; ?>" data-subtab="display_modes">
 				<form method="post" action="options.php">
+					<?php settings_fields( self::OPTION_NAME ); ?>
+					<input type="hidden" name="wpo_wpmenucart_settings_page" value="<?php echo esc_attr( self::PAGE_DISPLAY_MODES ); ?>" />
 					<?php
-					settings_fields( self::OPTION_NAME );
 					do_settings_sections( self::PAGE_DISPLAY_MODES );
 					submit_button();
 					?>
@@ -526,8 +527,9 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 
 			<div class="wpmenucart-subtab-panel<?php echo ( 'icon_style' === $current_subtab ) ? ' wpmenucart-subtab-panel--active' : ''; ?>" data-subtab="icon_style">
 				<form method="post" action="options.php">
+					<?php settings_fields( self::OPTION_NAME ); ?>
+					<input type="hidden" name="wpo_wpmenucart_settings_page" value="<?php echo esc_attr( self::PAGE_ICON_STYLE ); ?>" />
 					<?php
-					settings_fields( self::OPTION_NAME );
 					do_settings_sections( self::PAGE_ICON_STYLE );
 					submit_button();
 					?>
@@ -567,8 +569,9 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 			?>
 			<div class="wpmenucart-subtab-panel<?php echo ( 'general' === $current_subtab ) ? ' wpmenucart-subtab-panel--active' : ''; ?>" data-subtab="general">
 				<form method="post" action="options.php">
+					<?php settings_fields( self::OPTION_NAME ); ?>
+					<input type="hidden" name="wpo_wpmenucart_settings_page" value="<?php echo esc_attr( self::PAGE_GENERAL ); ?>" />
 					<?php
-					settings_fields( self::OPTION_NAME );
 					do_settings_sections( self::PAGE_GENERAL );
 					submit_button();
 					?>

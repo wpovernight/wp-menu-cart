@@ -87,7 +87,30 @@ jQuery(
 			$( '.wpo_wpmenucart_settings' ).each( function() {
 				var $wrap = $( this );
 
+				// Track whether a subtab's own form has unsaved changes.
+				$wrap.find( '.wpmenucart-subtab-panel form' ).each( function() {
+					var $form  = $( this );
+					var $panel = $form.closest( '.wpmenucart-subtab-panel' );
+
+					$panel.data( 'wpmenucart-initial-state', $form.serialize() );
+
+					$form.on( 'change input', function() {
+						$panel.data( 'wpmenucart-dirty', $form.serialize() !== $panel.data( 'wpmenucart-initial-state' ) );
+					} );
+
+					$form.on( 'submit', function() {
+						$panel.data( 'wpmenucart-initial-state', $form.serialize() );
+						$panel.data( 'wpmenucart-dirty', false );
+					} );
+				} );
+
 				function activateSubtab( subtab ) {
+					var $current = $wrap.find( '.wpmenucart-subtab-panel--active' );
+
+					if ( $current.data( 'wpmenucart-dirty' ) && ! window.confirm( wpmenucart_settings_l10n.unsavedChanges ) ) {
+						return;
+					}
+
 					$wrap.find( '.wpmenucart-subtab-nav a' ).removeClass( 'nav-tab-active' );
 					$wrap.find( '.wpmenucart-subtab-nav a[data-subtab="' + subtab + '"]' ).addClass( 'nav-tab-active' );
 
@@ -120,5 +143,23 @@ jQuery(
 		}
 
 		initSubtabNav();
+
+		// Warn before leaving the page (switching top-level tabs, closing
+		// the browser tab, navigating away) with unsaved changes anywhere.
+		$( window ).on( 'beforeunload', function( e ) {
+			var dirty = false;
+
+			$( '.wpmenucart-subtab-panel' ).each( function() {
+				if ( $( this ).data( 'wpmenucart-dirty' ) ) {
+					dirty = true;
+				}
+			} );
+
+			if ( dirty ) {
+				e.preventDefault();
+				e.returnValue = '';
+				return '';
+			}
+		} );
 	}
 );
