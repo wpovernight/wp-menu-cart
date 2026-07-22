@@ -299,18 +299,20 @@ if ( ! class_exists( 'WpMenuCart_Nav_Menu' ) ) :
 		 * @return array
 		 */
 		public function handle_nav_menu_objects( array $menu_items, stdClass $args ): array {
-			$cart_item_id = null;
+			$cart_item = null;
 
 			foreach ( $menu_items as $item ) {
 				if ( 'wpmenucart' === $item->type ) {
-					$cart_item_id = $item->ID;
+					$cart_item = $item;
 					break;
 				}
 			}
 
-			if ( ! $cart_item_id ) {
+			if ( ! $cart_item ) {
 				return $menu_items;
 			}
+
+			$cart_item_id = $cart_item->ID;
 
 			// If no shop is active, remove the cart item entirely so no bare link is left behind.
 			if ( ! isset( WPO_Menu_Cart()->shop ) ) {
@@ -340,11 +342,20 @@ if ( ! class_exists( 'WpMenuCart_Nav_Menu' ) ) :
 			$menu_slug = isset( $args->menu->slug ) ? $args->menu->slug : '';
 			$menu_id   = isset( $args->menu->term_id ) ? $args->menu->term_id : 0;
 
+			// Give the placeholder a unique, matchable title. Custom nav walkers aren't
+			// required to preserve the menu-item-{id} id attribute WP core normally
+			// writes, but every walker renders the item title, so it's a more reliable
+			// anchor for the HTML swap below (see https://github.com/wpovernight/wp-menu-cart/issues/80).
+			$marker                = 'wpmenucart-placeholder-' . $cart_item_id;
+			$cart_item->title      = $marker;
+			$cart_item->post_title = $marker;
+
 			// Stash per-render data keyed by the args object hash so multiple menus
 			// in the same request each get their own slot without overwriting each other.
 			$this->pending_renders[ spl_object_hash( $args ) ] = array(
 				'cart_item_id' => $cart_item_id,
 				'menu_slug'    => $menu_slug,
+				'marker'       => $marker,
 			);
 
 			$this->rendered_menus[] = $menu_id;
@@ -380,10 +391,20 @@ if ( ! class_exists( 'WpMenuCart_Nav_Menu' ) ) :
 			$cart_html      = WPO_Menu_Cart()->main->generate_menu_item_li( $common_classes, 'classic' );
 			$cart_html      = apply_filters( 'wpmenucart_menu_item_wrapper', $cart_html, $data['menu_slug'], $args );
 
-			// Replace the full <li> for this item using its CSS ID class set by WP core.
-			$pattern = '/<li[^>]+\bmenu-item-' . $data['cart_item_id'] . '\b[^>]*>.*?<\/li>/is';
+			// Match the smallest <li>...</li> block containing our placeholder marker
+			// title rather than relying on the menu-item-{id} id attribute, since
+			// custom nav walkers in some themes don't preserve it (see https://github.com/wpovernight/wp-menu-cart/issues/80).
+			$pattern  = '/<li[^>]*>(?:(?!<li[^>]*>).)*?' . preg_quote( $data['marker'], '/' ) . '.*?<\/li>/is';
+			$replaced = preg_replace( $pattern, $cart_html, $items_html, 1 );
 
-			return preg_replace( $pattern, $cart_html, $items_html );
+			// Fall back to the id based match if the marker somehow didn't make it
+			// into the output, so we never silently leave a raw placeholder link.
+			if ( null === $replaced || $replaced === $items_html ) {
+				$pattern  = '/<li[^>]+\bmenu-item-' . $data['cart_item_id'] . '\b[^>]*>.*?<\/li>/is';
+				$replaced = preg_replace( $pattern, $cart_html, $items_html, 1 );
+			}
+
+			return null === $replaced ? $items_html : $replaced;
 		}
 
 	}
