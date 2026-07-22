@@ -23,9 +23,17 @@ body.settings_page_wpo_wpmenucart_options_page {
 	padding: 1em 0;
 	margin: 0 1.2em;
 	font-size: 15px;
+	font-weight: 400;
+}
+.wpo_wpmenucart_settings .nav-tab-wrapper a.nav-tab:focus {
+	box-shadow: none;
 }
 .wpo_wpmenucart_settings .nav-tab-wrapper a.nav-tab.nav-tab-active {
 	border-bottom: 3px solid #51266b;
+	font-weight: 600;
+}
+.wpo_wpmenucart_settings .wpmenucart-subtab-nav:has( .nav-tab:only-child ) {
+	display: none;
 }
 .wpo_wpmenucart_settings .wpo_wpmenucart_settings_container .wpo_wpmenucart_settings_tab {
 	margin: 0;

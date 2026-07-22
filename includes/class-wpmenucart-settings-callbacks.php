@@ -571,6 +571,24 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 				return $output;
 			}
 
+			$option_page = isset( $_POST['option_page'] ) ? sanitize_text_field( wp_unslash( $_POST['option_page'] ) ) : '';
+
+			if ( WpMenuCart_Settings::OPTION_NAME === $option_page ) {
+				$page = isset( $_POST['wpo_wpmenucart_settings_page'] ) ? sanitize_text_field( wp_unslash( $_POST['wpo_wpmenucart_settings_page'] ) ) : '';
+
+				$existing = get_option( WpMenuCart_Settings::OPTION_NAME, array() );
+
+				global $wp_settings_fields;
+
+				foreach ( $wp_settings_fields[ $page ] ?? array() as $section_fields ) {
+					foreach ( array_keys( $section_fields ) as $field_id ) {
+						unset( $existing[ $field_id ] );
+					}
+				}
+
+				$output = array_merge( $existing, $output );
+			}
+
 			$is_main_settings = isset( $output['shop_plugin'] )
 				|| isset( $output['items_display'] )
 				|| isset( $output['desktop_cart_mode'] )
