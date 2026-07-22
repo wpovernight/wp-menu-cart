@@ -267,14 +267,6 @@ if ( ! class_exists( 'WpMenuCart_Assets' ) ) :
 					WPMENUCART_VERSION,
 					true
 				);
-
-				wp_localize_script(
-					'wpmenucart-settings-js',
-					'wpmenucart_settings_l10n',
-					array(
-						'unsavedChanges' => __( 'You have unsaved changes on this tab. Leave without saving?', 'wp-menu-cart' ),
-					)
-				);
 			}
 		}
 
