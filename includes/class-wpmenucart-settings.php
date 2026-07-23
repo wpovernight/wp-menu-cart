@@ -321,7 +321,7 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 			$page_hook = add_submenu_page(
 				$parent_slug,
 				__( 'Menu Cart', 'wp-menu-cart' ),
-				__( 'Menu Cart Setup', 'wp-menu-cart' ),
+				__( 'Menu Cart', 'wp-menu-cart' ),
 				'manage_options',
 				'wpo_wpmenucart_options_page',
 				array( $this, 'render_settings_page' )
