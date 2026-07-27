@@ -730,6 +730,26 @@ class WpMenuCart {
 		<?php
 	}
 
+	/**
+	 * Log a message via the active shop's logger.
+	 *
+	 * @param string $message
+	 * @param string $level
+	 * @return void
+	 */
+	public function log( string $message, string $level = 'debug' ): void {
+		switch ( $this->get_active_shop() ) {
+			case 'WC':
+				$logger  = wc_get_logger();
+				$context = array( 'source' => 'wp-menu-cart' );
+				$logger->log( $level, $message, $context );
+				break;
+			case 'EDD':
+				edd_debug_log( '[wp-menu-cart] ' . $message );
+				break;
+		}
+	}
+
 } // end class
 
 endif; // class_exists

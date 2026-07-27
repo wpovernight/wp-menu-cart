@@ -345,7 +345,7 @@ if ( ! class_exists( 'WpMenuCart_Nav_Menu' ) ) :
 			// Give the placeholder a unique, matchable title. Custom nav walkers aren't
 			// required to preserve the menu-item-{id} id attribute WP core normally
 			// writes, but every walker renders the item title, so it's a more reliable
-			// anchor for the HTML swap below (see https://github.com/wpovernight/wp-menu-cart/issues/80).
+			// anchor for the HTML swap below.
 			$marker                = 'wpmenucart-placeholder-' . $cart_item_id;
 			$cart_item->title      = $marker;
 			$cart_item->post_title = $marker;
@@ -393,18 +393,36 @@ if ( ! class_exists( 'WpMenuCart_Nav_Menu' ) ) :
 
 			// Match the smallest <li>...</li> block containing our placeholder marker
 			// title rather than relying on the menu-item-{id} id attribute, since
-			// custom nav walkers in some themes don't preserve it (see https://github.com/wpovernight/wp-menu-cart/issues/80).
+			// custom nav walkers in some themes don't preserve it.
 			$pattern  = '/<li[^>]*>(?:(?!<li[^>]*>).)*?' . preg_quote( $data['marker'], '/' ) . '.*?<\/li>/is';
 			$replaced = preg_replace( $pattern, $cart_html, $items_html, 1 );
 
 			// Fall back to the id based match if the marker somehow didn't make it
-			// into the output, so we never silently leave a raw placeholder link.
+			// into the output.
 			if ( null === $replaced || $replaced === $items_html ) {
 				$pattern  = '/<li[^>]+\bmenu-item-' . $data['cart_item_id'] . '\b[^>]*>.*?<\/li>/is';
 				$replaced = preg_replace( $pattern, $cart_html, $items_html, 1 );
 			}
 
-			return null === $replaced ? $items_html : $replaced;
+			// If neither match could locate the placeholder, strip it out entirely
+			// rather than leaving a broken #wpmenucart link on the page.
+			if ( null === $replaced || $replaced === $items_html ) {
+				$marker_pos = strpos( $items_html, $data['marker'] );
+				$li_start   = false !== $marker_pos ? strrpos( substr( $items_html, 0, $marker_pos ), '<li' ) : false;
+				$li_end     = false !== $marker_pos ? strpos( $items_html, '</li>', $marker_pos ) : false;
+
+				$replaced = ( false !== $li_start && false !== $li_end )
+					? substr( $items_html, 0, $li_start ) . substr( $items_html, $li_end + strlen( '</li>' ) )
+					: $items_html;
+
+				WPO_Menu_Cart()->log( sprintf(
+					'Could not locate the cart placeholder in the nav menu HTML (item ID %d). Theme: %s',
+					$data['cart_item_id'],
+					WPO_Menu_Cart()->get_current_theme_name()
+				), 'error' );
+			}
+
+			return $replaced;
 		}
 
 	}
