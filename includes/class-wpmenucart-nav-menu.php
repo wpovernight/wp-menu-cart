@@ -415,11 +415,18 @@ if ( ! class_exists( 'WpMenuCart_Nav_Menu' ) ) :
 					? substr( $items_html, 0, $li_start ) . substr( $items_html, $li_end + strlen( '</li>' ) )
 					: $items_html;
 
-				WPO_Menu_Cart()->log( sprintf(
-					'Could not locate the cart placeholder in the nav menu HTML (item ID %d). Theme: %s',
-					$data['cart_item_id'],
-					WPO_Menu_Cart()->get_current_theme_name()
-				), 'error' );
+				// log just once per day
+				$log_key = 'wpo_wpmenucart_placeholder_miss_logged';
+
+				if ( ! get_transient( $log_key ) ) {
+					set_transient( $log_key, true, DAY_IN_SECONDS );
+
+					WPO_Menu_Cart()->log( sprintf(
+						'Could not locate the cart placeholder in the nav menu HTML (item ID %d). Theme: %s',
+						$data['cart_item_id'],
+						WPO_Menu_Cart()->get_current_theme_name()
+					), 'error' );
+				}
 			}
 
 			return $replaced;
