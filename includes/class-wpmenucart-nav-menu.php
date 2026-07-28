@@ -404,10 +404,18 @@ if ( ! class_exists( 'WpMenuCart_Nav_Menu' ) ) :
 				$replaced = preg_replace( $pattern, $cart_html, $items_html, 1 );
 			}
 
-			// If neither match could locate the placeholder, blank out the marker
-			// text directly rather than leaving it visible on the page.
+			// If neither match could locate the placeholder, strip it out entirely
+			// rather than leaving a broken #wpmenucart link on the page.
 			if ( null === $replaced || $replaced === $items_html ) {
-				$replaced = str_replace( $data['marker'], '', $items_html );
+				$marker_pos = strpos( $items_html, $data['marker'] );
+				$li_start   = false !== $marker_pos ? strrpos( substr( $items_html, 0, $marker_pos ), '<li' ) : false;
+				$li_end     = false !== $marker_pos ? strpos( $items_html, '</li>', $marker_pos ) : false;
+
+				if ( false !== $li_start && false !== $li_end ) {
+					$replaced = substr( $items_html, 0, $li_start ) . substr( $items_html, $li_end + strlen( '</li>' ) );
+				} else {
+					$replaced = str_replace( $data['marker'], '', $items_html );
+				}
 
 				// log just once per day
 				$log_key = 'wpo_wpmenucart_placeholder_miss_logged';
