@@ -399,6 +399,13 @@ if ( ! class_exists( 'WpMenuCart_Nav_Menu' ) ) :
 			$pattern  = '/<li[^>]*>(?:(?!<li[^>]*>).)*?href=["\']' . preg_quote( $data['marker'], '/' ) . '["\'].*?<\/li>/is';
 			$replaced = preg_replace( $pattern, $cart_html, $items_html, 1 );
 
+			// Fall back to the menu-item-{id} match in case href wasn't preserved
+			// but the walker still writes core's default id attribute.
+			if ( null === $replaced || $replaced === $items_html ) {
+				$pattern  = '/<li[^>]*>(?:(?!<li[^>]*>).)*?\bmenu-item-' . $data['cart_item_id'] . '\b[^>]*>.*?<\/li>/is';
+				$replaced = preg_replace( $pattern, $cart_html, $items_html, 1 );
+			}
+
 			if ( null === $replaced || $replaced === $items_html ) {
 				// Log once per day, avoid flooding the log on every request.
 				$log_key = 'wpo_wpmenucart_placeholder_miss_logged';
@@ -409,7 +416,7 @@ if ( ! class_exists( 'WpMenuCart_Nav_Menu' ) ) :
 					WPO_Menu_Cart()->log( sprintf(
 						'Could not locate the cart placeholder in the nav menu HTML (item ID %d). Theme: %s',
 						$data['cart_item_id'],
-						WPO_Menu_Cart()->get_current_theme_name()
+						WPO_Menu_Cart()->get_current_theme_name() ?: 'unknown'
 					), 'error' );
 				}
 
