@@ -342,13 +342,11 @@ if ( ! class_exists( 'WpMenuCart_Nav_Menu' ) ) :
 			$menu_slug = isset( $args->menu->slug ) ? $args->menu->slug : '';
 			$menu_id   = isset( $args->menu->term_id ) ? $args->menu->term_id : 0;
 
-			// Give the placeholder a unique, matchable title. Custom nav walkers aren't
-			// required to preserve the menu-item-{id} id attribute WP core normally
-			// writes, but every walker renders the item title, so it's a more reliable
-			// anchor for the HTML swap below.
-			$marker                = 'wpmenucart-placeholder-' . $cart_item_id;
-			$cart_item->title      = $marker;
-			$cart_item->post_title = $marker;
+			// Give the placeholder a unique, matchable url
+			// so any theme/walker still renders it correctly if the swap fails.
+			$marker         = '#wpmenucart-placeholder-' . $cart_item_id;
+			$original_url   = $cart_item->url;
+			$cart_item->url = $marker;
 
 			// Stash per-render data keyed by the args object hash so multiple menus
 			// in the same request each get their own slot without overwriting each other.
@@ -356,6 +354,8 @@ if ( ! class_exists( 'WpMenuCart_Nav_Menu' ) ) :
 				'cart_item_id' => $cart_item_id,
 				'menu_slug'    => $menu_slug,
 				'marker'       => $marker,
+				'cart_item'    => $cart_item,
+				'original_url' => $original_url,
 			);
 
 			$this->rendered_menus[] = $menu_id;
@@ -387,37 +387,20 @@ if ( ! class_exists( 'WpMenuCart_Nav_Menu' ) ) :
 			unset( $this->pending_renders[ $key ] );
 			remove_filter( 'wp_nav_menu_items', array( $this, 'render_native_nav_menu_item' ), 10 );
 
+			// Restore the real url now that the marker has served its purpose.
+			$data['cart_item']->url = $data['original_url'];
+
 			$common_classes = WPO_Menu_Cart()->main->get_common_li_classes( $items_html );
 			$cart_html      = WPO_Menu_Cart()->main->generate_menu_item_li( $common_classes, 'classic' );
 			$cart_html      = apply_filters( 'wpmenucart_menu_item_wrapper', $cart_html, $data['menu_slug'], $args );
 
-			// Match the smallest <li>...</li> block containing our placeholder marker
-			// title rather than relying on the menu-item-{id} id attribute, since
-			// custom nav walkers in some themes don't preserve it.
-			$pattern  = '/<li[^>]*>(?:(?!<li[^>]*>).)*?' . preg_quote( $data['marker'], '/' ) . '.*?<\/li>/is';
+			// Match only the <li> that contains our placeholder href, without
+			// crossing into sibling <li> elements.
+			$pattern  = '/<li[^>]*>(?:(?!<li[^>]*>).)*?href=["\']' . preg_quote( $data['marker'], '/' ) . '["\'].*?<\/li>/is';
 			$replaced = preg_replace( $pattern, $cart_html, $items_html, 1 );
 
-			// Fall back to the id based match if the marker somehow didn't make it
-			// into the output.
 			if ( null === $replaced || $replaced === $items_html ) {
-				$pattern  = '/<li[^>]+\bmenu-item-' . $data['cart_item_id'] . '\b[^>]*>.*?<\/li>/is';
-				$replaced = preg_replace( $pattern, $cart_html, $items_html, 1 );
-			}
-
-			// If neither match could locate the placeholder, strip it out entirely
-			// rather than leaving a broken #wpmenucart link on the page.
-			if ( null === $replaced || $replaced === $items_html ) {
-				$marker_pos = strpos( $items_html, $data['marker'] );
-				$li_start   = false !== $marker_pos ? strrpos( substr( $items_html, 0, $marker_pos ), '<li' ) : false;
-				$li_end     = false !== $marker_pos ? strpos( $items_html, '</li>', $marker_pos ) : false;
-
-				if ( false !== $li_start && false !== $li_end ) {
-					$replaced = substr( $items_html, 0, $li_start ) . substr( $items_html, $li_end + strlen( '</li>' ) );
-				} else {
-					$replaced = str_replace( $data['marker'], '', $items_html );
-				}
-
-				// log just once per day
+				// Log once per day, avoid flooding the log on every request.
 				$log_key = 'wpo_wpmenucart_placeholder_miss_logged';
 
 				if ( ! get_transient( $log_key ) ) {
@@ -429,6 +412,8 @@ if ( ! class_exists( 'WpMenuCart_Nav_Menu' ) ) :
 						WPO_Menu_Cart()->get_current_theme_name()
 					), 'error' );
 				}
+
+				return $items_html;
 			}
 
 			return $replaced;
