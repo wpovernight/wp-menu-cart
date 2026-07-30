@@ -340,7 +340,6 @@ if ( ! class_exists( 'WpMenuCart_Nav_Menu' ) ) :
 			}
 
 			$menu_slug = isset( $args->menu->slug ) ? $args->menu->slug : '';
-			$menu_id   = isset( $args->menu->term_id ) ? $args->menu->term_id : 0;
 
 			// Give the placeholder a unique, matchable url
 			// so any theme/walker still renders it correctly if the swap fails.
@@ -407,8 +406,10 @@ if ( ! class_exists( 'WpMenuCart_Nav_Menu' ) ) :
 			}
 
 			if ( null === $replaced || $replaced === $items_html ) {
-				// Log once per day, avoid flooding the log on every request.
-				$log_key = 'wpo_wpmenucart_placeholder_miss_logged';
+				// Log once per day per plugin version + theme, so a fix (version bump
+				// or theme switch) isn't silenced by a stale transient from before it.
+				$theme_name = WPO_Menu_Cart()->get_current_theme_name() ?: 'unknown';
+				$log_key    = 'wpo_wpmenucart_placeholder_miss_logged_' . md5( WPMENUCART_VERSION . '_' . $theme_name );
 
 				if ( ! get_transient( $log_key ) ) {
 					set_transient( $log_key, true, DAY_IN_SECONDS );
@@ -416,7 +417,7 @@ if ( ! class_exists( 'WpMenuCart_Nav_Menu' ) ) :
 					WPO_Menu_Cart()->log( sprintf(
 						'Could not locate the cart placeholder in the nav menu HTML (item ID %d). Theme: %s',
 						$data['cart_item_id'],
-						WPO_Menu_Cart()->get_current_theme_name() ?: 'unknown'
+						$theme_name
 					), 'error' );
 				}
 
