@@ -299,14 +299,7 @@ if ( ! class_exists( 'WpMenuCart_Nav_Menu' ) ) :
 		 * @return array
 		 */
 		public function handle_nav_menu_objects( array $menu_items, stdClass $args ): array {
-			$cart_item = null;
-
-			foreach ( $menu_items as $item ) {
-				if ( 'wpmenucart' === $item->type ) {
-					$cart_item = $item;
-					break;
-				}
-			}
+			$cart_item = $this->find_cart_item( $menu_items );
 
 			if ( ! $cart_item ) {
 				return $menu_items;
@@ -316,45 +309,34 @@ if ( ! class_exists( 'WpMenuCart_Nav_Menu' ) ) :
 
 			// If no shop is active, remove the cart item entirely so no bare link is left behind.
 			if ( ! isset( WPO_Menu_Cart()->shop ) ) {
-				return array_values( array_filter( $menu_items, function( $item ) use ( $cart_item_id ) {
-					return $item->ID !== $cart_item_id;
-				} ) );
+				return $this->remove_cart_item( $menu_items, $cart_item_id );
 			}
 
 			$menu_id = isset( $args->menu->term_id ) ? $args->menu->term_id : 0;
 
 			// Remove the item entirely when the cart should not render on this page.
 			if ( false === WPO_Menu_Cart()->main->should_render_menucart() ) {
-				return array_values( array_filter( $menu_items, function( $item ) use ( $cart_item_id ) {
-					return $item->ID !== $cart_item_id;
-				} ) );
+				return $this->remove_cart_item( $menu_items, $cart_item_id );
 			}
 
 			// Free supports one menu only. If a different menu has already been rendered
 			// this request, strip the item so no bare placeholder is left behind.
 			// The same menu assigned to multiple theme locations is allowed to render in each.
 			if ( ! empty( $this->rendered_menus ) && ! in_array( $menu_id, $this->rendered_menus, true ) ) {
-				return array_values( array_filter( $menu_items, function( $item ) use ( $cart_item_id ) {
-					return $item->ID !== $cart_item_id;
-				} ) );
+				return $this->remove_cart_item( $menu_items, $cart_item_id );
 			}
 
 			$menu_slug = isset( $args->menu->slug ) ? $args->menu->slug : '';
-
-			// Give the placeholder a unique, matchable url
-			// so any theme/walker still renders it correctly if the swap fails.
-			$marker         = '#wpmenucart-placeholder-' . $cart_item_id;
-			$original_url   = $cart_item->url;
-			$cart_item->url = $marker;
+			$marker    = $this->apply_placeholder_marker( $cart_item );
 
 			// Stash per-render data keyed by the args object hash so multiple menus
 			// in the same request each get their own slot without overwriting each other.
 			$this->pending_renders[ spl_object_hash( $args ) ] = array(
 				'cart_item_id' => $cart_item_id,
 				'menu_slug'    => $menu_slug,
-				'marker'       => $marker,
+				'marker'       => $marker['marker'],
 				'cart_item'    => $cart_item,
-				'original_url' => $original_url,
+				'original_url' => $marker['original_url'],
 			);
 
 			$this->rendered_menus[] = $menu_id;
@@ -362,6 +344,55 @@ if ( ! class_exists( 'WpMenuCart_Nav_Menu' ) ) :
 			add_filter( 'wp_nav_menu_items', array( $this, 'render_native_nav_menu_item' ), 10, 2 );
 
 			return $menu_items;
+		}
+
+		/**
+		 * Find the cart item within a set of nav menu items, if present.
+		 *
+		 * @param  array $menu_items Array of nav menu item objects.
+		 *
+		 * @return object|null
+		 */
+		public function find_cart_item( array $menu_items ): ?object {
+			foreach ( $menu_items as $item ) {
+				if ( 'wpmenucart' === $item->type ) {
+					return $item;
+				}
+			}
+
+			return null;
+		}
+
+		/**
+		 * Remove the cart item from a set of nav menu items by ID.
+		 *
+		 * @param  array $menu_items   Array of nav menu item objects.
+		 * @param  int   $cart_item_id ID of the cart item to remove.
+		 *
+		 * @return array
+		 */
+		public function remove_cart_item( array $menu_items, int $cart_item_id ): array {
+			return array_values( array_filter( $menu_items, function( $item ) use ( $cart_item_id ) {
+				return $item->ID !== $cart_item_id;
+			} ) );
+		}
+
+		/**
+		 * Give a cart item a unique, matchable placeholder url and stash its original url.
+		 *
+		 * @param  object $cart_item The cart menu item object. Its url is mutated in place.
+		 *
+		 * @return array
+		 */
+		public function apply_placeholder_marker( object $cart_item ): array {
+			$marker         = '#wpmenucart-placeholder-' . $cart_item->ID;
+			$original_url   = $cart_item->url;
+			$cart_item->url = $marker;
+
+			return array(
+				'marker'       => $marker,
+				'original_url' => $original_url,
+			);
 		}
 
 		/**
@@ -393,15 +424,30 @@ if ( ! class_exists( 'WpMenuCart_Nav_Menu' ) ) :
 			$cart_html      = WPO_Menu_Cart()->main->generate_menu_item_li( $common_classes, 'classic' );
 			$cart_html      = apply_filters( 'wpmenucart_menu_item_wrapper', $cart_html, $data['menu_slug'], $args );
 
+			return $this->match_and_replace_placeholder( $items_html, $data['marker'], $data['cart_item_id'], $cart_html, WPMENUCART_VERSION );
+		}
+
+		/**
+		 * Replace the cart placeholder <li> in the rendered menu HTML with the cart HTML.
+		 *
+		 * @param  string $items_html   The HTML string of menu items.
+		 * @param  string $marker       The unique placeholder href used to locate the item.
+		 * @param  int    $cart_item_id The nav menu item ID, used for the id-based fallback match.
+		 * @param  string $cart_html    The cart HTML to swap in.
+		 * @param  string $version      Plugin version, used to key the throttled log transient.
+		 *
+		 * @return string
+		 */
+		public function match_and_replace_placeholder( string $items_html, string $marker, int $cart_item_id, string $cart_html, string $version ): string {
 			// Match only the <li> that contains our placeholder href, without
 			// crossing into sibling <li> elements.
-			$pattern  = '/<li[^>]*>(?:(?!<li[^>]*>).)*?href=["\']' . preg_quote( $data['marker'], '/' ) . '["\'].*?<\/li>/is';
+			$pattern  = '/<li[^>]*>(?:(?!<li[^>]*>).)*?href=["\']' . preg_quote( $marker, '/' ) . '["\'].*?<\/li>/is';
 			$replaced = preg_replace( $pattern, $cart_html, $items_html, 1 );
 
 			// Fall back to the menu-item-{id} match in case href wasn't preserved
 			// but the walker still writes core's default id attribute.
 			if ( null === $replaced || $replaced === $items_html ) {
-				$pattern  = '/<li[^>]*>(?:(?!<li[^>]*>).)*?\bmenu-item-' . $data['cart_item_id'] . '\b[^>]*>.*?<\/li>/is';
+				$pattern  = '/<li[^>]*>(?:(?!<li[^>]*>).)*?\bmenu-item-' . $cart_item_id . '\b[^>]*>.*?<\/li>/is';
 				$replaced = preg_replace( $pattern, $cart_html, $items_html, 1 );
 			}
 
@@ -409,14 +455,14 @@ if ( ! class_exists( 'WpMenuCart_Nav_Menu' ) ) :
 				// Log once per day per plugin version + theme, so a fix (version bump
 				// or theme switch) isn't silenced by a stale transient from before it.
 				$theme_name = WPO_Menu_Cart()->get_current_theme_name() ?: 'unknown';
-				$log_key    = 'wpo_wpmenucart_placeholder_miss_logged_' . md5( WPMENUCART_VERSION . '_' . $theme_name );
+				$log_key    = 'wpo_wpmenucart_placeholder_miss_logged_' . md5( $version . '_' . $theme_name );
 
 				if ( ! get_transient( $log_key ) ) {
 					set_transient( $log_key, true, DAY_IN_SECONDS );
 
 					WPO_Menu_Cart()->log( sprintf(
 						'Could not locate the cart placeholder in the nav menu HTML (item ID %d). Theme: %s',
-						$data['cart_item_id'],
+						$cart_item_id,
 						$theme_name
 					), 'error' );
 				}
