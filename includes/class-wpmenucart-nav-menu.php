@@ -351,9 +351,9 @@ if ( ! class_exists( 'WpMenuCart_Nav_Menu' ) ) :
 		 *
 		 * @param  array $menu_items Array of nav menu item objects.
 		 *
-		 * @return stdClass|null
+		 * @return object|null
 		 */
-		public function find_cart_item( array $menu_items ): ?stdClass {
+		public function find_cart_item( array $menu_items ): ?object {
 			foreach ( $menu_items as $item ) {
 				if ( 'wpmenucart' === $item->type ) {
 					return $item;
@@ -380,11 +380,11 @@ if ( ! class_exists( 'WpMenuCart_Nav_Menu' ) ) :
 		/**
 		 * Give a cart item a unique, matchable placeholder url and stash its original url.
 		 *
-		 * @param  stdClass $cart_item The cart menu item object. Its url is mutated in place.
+		 * @param  object $cart_item The cart menu item object. Its url is mutated in place.
 		 *
 		 * @return array
 		 */
-		public function apply_placeholder_marker( stdClass $cart_item ): array {
+		public function apply_placeholder_marker( object $cart_item ): array {
 			$marker         = '#wpmenucart-placeholder-' . $cart_item->ID;
 			$original_url   = $cart_item->url;
 			$cart_item->url = $marker;
