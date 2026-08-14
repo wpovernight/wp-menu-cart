@@ -76,5 +76,31 @@ jQuery(
 		}
 
 		initCartModeSelectors();
+
+		// Icon Style: toggle the Custom section, disabling the template gallery while it's on.
+		function initIconStyleCustomToggle() {
+			var $toggle = $( '#icon_style_custom_enabled' );
+
+			if ( ! $toggle.length ) {
+				return;
+			}
+
+			var $cards  = $( '.wpmenucart-section--icon-style .wpmenucart-mode-cards' );
+			var $notice = $( '.wpmenucart-icon-style-disabled-notice' );
+			var $fields = $( '.wpmenucart-custom-section-fields' );
+
+			function update() {
+				var enabled = $toggle.is( ':checked' );
+
+				$cards.toggleClass( 'wpmenucart-mode-cards--disabled', enabled );
+				$notice.toggle( enabled );
+				$fields.toggleClass( 'wpmenucart-custom-section-fields--collapsed', ! enabled );
+			}
+
+			$toggle.on( 'change', update );
+			update();
+		}
+
+		initIconStyleCustomToggle();
 	}
 );

@@ -62,6 +62,15 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 				update_option( $option_name, $option_values );
 			}
 
+			// Existing installs predate the Icon Style template system. Default them to
+			// the Custom section enabled, so their configured icon/items/price settings
+			// keep rendering exactly as before. Only ever runs once now that the
+			// checkbox always saves an explicit value going forward (see validate()).
+			if ( ! empty( $option_values ) && ! array_key_exists( 'icon_style_custom_enabled', $option_values ) ) {
+				$option_values['icon_style_custom_enabled'] = 1;
+				update_option( $option_name, $option_values );
+			}
+
 			// Register Sections
 			$sections = apply_filters( 'wpo_wpmenucart_main_settings_sections', array(
 				'cart_display_modes'  => array(
@@ -73,7 +82,9 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 				),
 				'menu_icon_style'     => array(
 					'title'    => '<span class="wpmenucart-section__icon" aria-hidden="true">' . $this->callbacks->get_svg( 'general.svg' ) . '</span> ' . __( 'Menu Icon Style', 'wp-menu-cart' ),
-					'callback' => $this->resolve_callback( 'section' ),
+					'callback' => function() use ( $option_values ) {
+						$this->callbacks->icon_style_section( $option_values );
+					},
 					'page'     => self::PAGE_ICON_STYLE,
 				),
 				'general_settings'    => array(
@@ -155,88 +166,92 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 					),
 					'show_if'  => WPO_Menu_Cart()->is_shop_active( array(), 'WooCommerce' ),
 				),
-				'icon_display'               => array(
-					'section'  => 'menu_icon_style',
+				'icon_style_custom_enabled'  => array(
+					'section'  => 'icon_style_custom_toggle',
 					'page'     => self::PAGE_ICON_STYLE,
-					'title'    => __( 'Display shopping cart icon', 'wp-menu-cart' ),
-					'callback' => $this->resolve_callback( 'checkbox' ),
+					'title'    => '',
+					'callback' => $this->resolve_callback( 'custom_section_toggle_callback' ),
 					'args'     => array(
 						'option_name' => $option_name,
-						'id'          => 'icon_display',
+						'id'          => 'icon_style_custom_enabled',
+					),
+				),
+				'icon_display'               => array(
+					'section'  => 'icon_style_custom',
+					'page'     => self::PAGE_ICON_STYLE,
+					'title'    => __( 'Display shopping cart icon', 'wp-menu-cart' ),
+					'callback' => $this->resolve_callback( 'toggle_switch_callback' ),
+					'args'     => array(
+						'option_name'    => $option_name,
+						'id'             => 'icon_display',
+						'description'    => __( 'Shows a graphical icon next to your cart totals in the menu.', 'wp-menu-cart' ),
+						'inline_toggle'  => true,
 					),
 				),
 				'cart_icon'                  => array(
-					'section'  => 'menu_icon_style',
+					'section'  => 'icon_style_custom',
 					'page'     => self::PAGE_ICON_STYLE,
-					'title'    => __( 'Choose a cart icon.', 'wp-menu-cart' ),
-					'callback' => $this->resolve_callback( 'icons_radio_element_callback' ),
+					'title'    => __( 'Choose a cart icon', 'wp-menu-cart' ),
+					'callback' => $this->resolve_callback( 'select_with_locked_options' ),
 					'args'     => array(
-						'option_name' => $option_name,
-						'id'          => 'cart_icon',
-						'options'     => array(
-							'0'  => '0',
-							'1'  => '1',
-							'2'  => '2',
-							'3'  => '3',
-							'4'  => '4',
-							'5'  => '5',
-							'6'  => '6',
-							'7'  => '7',
-							'8'  => '8',
-							'9'  => '9',
-							'10' => '10',
-							'11' => '11',
-							'12' => '12',
-							'13' => '13',
+						'option_name'    => $option_name,
+						'id'             => 'cart_icon',
+						'options'        => array(
+							'0' => __( 'Default Cart (FontAwesome)', 'wp-menu-cart' ),
+							'1' => __( 'Shopping Bag', 'wp-menu-cart' ),
+							'2' => __( 'Woven Basket', 'wp-menu-cart' ),
 						),
+						'locked_options' => array( '1', '2' ),
+						'description'    => __( 'Select from our library of standard e-commerce icons.', 'wp-menu-cart' ),
 					),
 				),
-				'cart_icon_color'            => array(
-					'section'  => 'menu_icon_style',
+				'custom_icon'                => array(
+					'section'  => 'icon_style_custom',
 					'page'     => self::PAGE_ICON_STYLE,
-					'title'    => __( 'Override icon color', 'wp-menu-cart' ),
-					'callback' => $this->resolve_callback( 'checkbox' ),
+					'title'    => __( 'Upload Custom Icon', 'wp-menu-cart' ),
+					'callback' => $this->resolve_callback( 'icon_upload_dropzone_callback' ),
 					'args'     => array(
 						'option_name' => $option_name,
-						'id'          => 'cart_icon_color',
+						'id'          => 'custom_icon',
+						'description' => __( 'Overrides the selected icon above. Supports SVG (recommended) or PNG.', 'wp-menu-cart' ),
 						'disabled'    => true,
 						'pro'         => true,
 					),
 				),
-				'custom_icon'                => array(
-					'section'  => 'menu_icon_style',
+				'cart_icon_color'            => array(
+					'section'  => 'icon_style_custom',
 					'page'     => self::PAGE_ICON_STYLE,
-					'title'    => __( 'Custom Icon', 'wp-menu-cart' ),
-					'callback' => $this->resolve_callback( 'media_upload_callback' ),
+					'title'    => __( 'Override icon colour', 'wp-menu-cart' ),
+					'callback' => $this->resolve_callback( 'color_swatch_callback' ),
 					'args'     => array(
-						'option_name'          => $option_name,
-						'id'                   => 'custom_icon',
-						'uploader_button_text' => __( 'Set image', 'wp-menu-cart' ),
-						'uploader_title'       => __( 'Select or upload a custom menu cart icon.', 'wp-menu-cart' ),
-						'remove_button_text'   => __( 'Remove image', 'wp-menu-cart' ),
-						'description'          => __( 'Upload a custom menu cart icon here if you do not want to use one of the icons above. Make sure you resize the icon before uploading. Icon should usually be 15-30px tall.', 'wp-menu-cart' ),
-						'disabled'             => true,
-						'pro'                  => true,
+						'option_name' => $option_name,
+						'id'          => 'cart_icon_color',
+						'description' => __( "By default, the icon inherits your menu's text color.", 'wp-menu-cart' ),
+						'disabled'    => true,
+						'pro'         => true,
 					),
 				),
 				'items_display'              => array(
-					'section'  => 'general_settings',
-					'page'     => self::PAGE_GENERAL,
-					'title'    => __( 'Contents of the menu cart item', 'wp-menu-cart' ),
-					'callback' => $this->resolve_callback( 'radio_button' ),
+					'section'  => 'icon_style_custom',
+					'page'     => self::PAGE_ICON_STYLE,
+					'title'    => __( 'Contents of the menu cart', 'wp-menu-cart' ),
+					'callback' => $this->resolve_callback( 'select_with_locked_options' ),
 					'args'     => array(
-						'option_name' => $option_name,
-						'id'          => 'items_display',
-						'options'     => array(
-							'1' => __( 'Items Only', 'wp-menu-cart' ),
-							'2' => __( 'Price Only', 'wp-menu-cart' ),
-							'3' => __( 'Both price and items', 'wp-menu-cart' ),
+						'option_name'    => $option_name,
+						'id'             => 'items_display',
+						'options'        => array(
+							'3'      => __( 'Items & Price (Default)', 'wp-menu-cart' ),
+							'1'      => __( 'Items Only', 'wp-menu-cart' ),
+							'2'      => __( 'Price Only', 'wp-menu-cart' ),
+							'custom' => __( 'Custom', 'wp-menu-cart' ),
 						),
+						'locked_options' => array( 'custom' ),
+						'description'    => __( 'Decide what data displays alongside the icon.', 'wp-menu-cart' ),
 					),
 				),
 				'total_price_type'           => array(
-					'section'  => 'general_settings',
-					'page'     => self::PAGE_GENERAL,
+					'section'  => 'icon_style_custom',
+					'page'     => self::PAGE_ICON_STYLE,
 					'title'    => __( 'Price to display', 'wp-menu-cart' ),
 					'callback' => $this->resolve_callback( 'select' ),
 					'args'     => array(
@@ -248,6 +263,7 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 							'checkout_total' => __( 'Checkout total (including discounts, fees & shipping)', 'wp-menu-cart' ),
 						),
 						'default'     => 'total',
+						'description' => __( 'Choose which calculation to show to the customer.', 'wp-menu-cart' ),
 					),
 					'show_if'  => class_exists( 'WooCommerce' ),
 				),
@@ -700,20 +716,21 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 			$first_active        = ! empty( $active_shop_plugins ) ? array_key_first( $active_shop_plugins ) : '';
 
 			$default = array(
-				'desktop_cart_mode'       => 'none',
-				'mobile_cart_mode'        => 'none',
-				'desktop_sidebar_width'   => 360,
-				'desktop_overlay_opacity' => 40,
-				'mobile_sidebar_width'    => 360,
-				'mobile_overlay_opacity'  => 40,
-				'always_display'          => '',
-				'icon_display'            => '1',
-				'items_display'           => '3',
-				'custom_class'            => '',
-				'cart_icon'               => '0',
-				'shop_plugin'             => $first_active,
-				'builtin_ajax'            => '',
-				'hide_theme_cart'         => 1,
+				'desktop_cart_mode'         => 'none',
+				'mobile_cart_mode'          => 'none',
+				'desktop_sidebar_width'     => 360,
+				'desktop_overlay_opacity'   => 40,
+				'mobile_sidebar_width'      => 360,
+				'mobile_overlay_opacity'    => 40,
+				'always_display'            => '',
+				'icon_display'              => '1',
+				'items_display'             => '3',
+				'custom_class'              => '',
+				'cart_icon'                 => '0',
+				'shop_plugin'               => $first_active,
+				'builtin_ajax'              => '',
+				'hide_theme_cart'           => 1,
+				'icon_style_custom_enabled' => 1,
 			);
 
 			update_option( self::OPTION_NAME, $default );
