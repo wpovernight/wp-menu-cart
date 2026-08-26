@@ -3,9 +3,9 @@ Contributors: pomegranate, jprummer, alexmigf, yordansoares, kluver, dpeyou
 Donate link: https://wpovernight.com/downloads/menu-cart-pro/
 Tags: woocommerce, edd, menu, cart, shopping cart
 Requires at least: 3.4
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 3.0.0
+Stable tag: 3.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -84,6 +84,18 @@ Once the plugin is activated navigate to Settings > Menu Cart Setup. Select your
 == Frequently Asked Questions ==
 
 == Changelog ==
+
+= 3.1.0 (2026-08-03) =
+* New: Refactor menu cart placeholder matching and logging for easier maintenance
+* New: Reorganized the settings tabs and moved specific sections into subtabs for easier navigation
+* New: Add minimum EDD version check
+* New: Prepare shared free plugin functionality and add the Slideout template
+* Tweak: Remove "Setup" suffix from the admin menu title
+* Fix: Menu cart item rendering as a plain custom link
+* Fix: Move `should_render_base` from pro to free and update `should_render_menucart` to use it instead
+* Fix: Prevent a fatal error when adding products via WooCommerce AJAX with custom AJAX disabled
+* Translations: Updated translation template (POT)
+* Tested up to WooCommerce 11.0 & WP 7.1
 
 = 3.0.0 (2026-06-22) =
 * New: Add native WP nav menu item support for Menu Cart, replacing the previous approach
