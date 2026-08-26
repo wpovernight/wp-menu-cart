@@ -3,6 +3,10 @@
 	display: none !important;
 }
 
+.wpmenucartli {
+	line-height: inherit !important;
+}
+
 .cartcontents + .amount:before {
 	content: '-';
 	margin: 0 0.25em;

@@ -95,6 +95,19 @@ jQuery(
 				$cards.toggleClass( 'wpmenucart-mode-cards--disabled', enabled );
 				$notice.toggle( enabled );
 				$fields.toggleClass( 'wpmenucart-custom-section-fields--collapsed', ! enabled );
+
+				$cards.find( '.wpmenucart-mode-card' ).removeClass( 'wpmenucart-mode-card--selected' );
+				$( '.wpmenucart-subpanel[data-context="icon_style"]' ).hide();
+
+				if ( ! enabled ) {
+					var $checked = $cards.find( 'input[type="radio"]:checked' );
+					$checked.closest( '.wpmenucart-mode-card' ).addClass( 'wpmenucart-mode-card--selected' );
+
+					var selectedMode = $checked.val();
+					if ( selectedMode ) {
+						$( '.wpmenucart-subpanel[data-context="icon_style"][data-mode="' + selectedMode + '"]' ).show();
+					}
+				}
 			}
 
 			$toggle.on( 'change', update );

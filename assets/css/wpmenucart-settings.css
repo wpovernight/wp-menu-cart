@@ -321,6 +321,7 @@ body.settings_page_wpo_wpmenucart_options_page {
 .wpmenucart-subpanel__field {
 	display: flex;
 	align-items: center;
+	justify-content: flex-end;
 	gap: 6px;
 	position: relative;
 	width: 252px;
@@ -503,7 +504,7 @@ input.wpmenucart-range-slider::-moz-range-thumb {
 	background: transparent;
 }
 
-/* Icon Style: disabled state for the template gallery while Custom is on */
+/* Icon Style */
 .wpmenucart-mode-cards--disabled {
 	opacity: 0.5;
 	pointer-events: none;
@@ -512,6 +513,9 @@ input.wpmenucart-range-slider::-moz-range-thumb {
 	color: #b42318;
 	font-size: 13px;
 	margin: 4px 0 16px;
+}
+.wpmenucart-section--icon-style .wpmenucart-mode-card__icon {
+	width: auto;
 }
 
 /* Custom section toggle row */
@@ -596,6 +600,7 @@ input.wpmenucart-range-slider::-moz-range-thumb {
 	padding: 8px;
 	cursor: pointer;
 	background: #F5F5F5;
+	border: none;
 }
 .wpmenucart-color-swatch-field[aria-disabled="true"] {
 	cursor: not-allowed;
@@ -649,6 +654,15 @@ input[type="color"].wpmenucart-color-swatch-field__input {
 .wpmenucart-upload-dropzone--active {
 	cursor: pointer;
 }
+.wpmenucart-upload-dropzone--dragover {
+	border-style: dashed !important;
+	border-color: #3858E9 !important;
+	background-color: #EFF2FF !important;
+}
+.wpmenucart-upload-dropzone--dragover .wpmenucart-upload-dropzone__icon {
+	background-color: #DBE2FF;
+	color: #3858E9;
+}
 .wpmenucart-upload-dropzone__preview {
 	max-width: 30px;
 	max-height: 30px;
@@ -656,6 +670,12 @@ input[type="color"].wpmenucart-color-swatch-field__input {
 }
 .wpmenucart-upload-dropzone__icon {
 	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	flex-shrink: 0;
 }
 .wpmenucart-upload-dropzone__content {
 	display: flex;
@@ -669,6 +689,30 @@ input[type="color"].wpmenucart-color-swatch-field__input {
 .wpmenucart-upload-dropzone__content-hint {
 	font-size: 12px;
 	color: #98a2b3;
+}
+.wpmenucart-upload-dropzone__preview-wrap {
+	position: relative;
+	display: inline-flex;
+	flex-shrink: 0;
+}
+.wpmenucart-upload-dropzone__remove {
+	position: absolute;
+	top: -6px;
+	right: -6px;
+	width: 16px;
+	height: 16px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	background: #535862;
+	color: #fff;
+	font-size: 12px;
+	line-height: 1;
+	cursor: pointer;
+}
+.wpmenucart-upload-dropzone__remove:hover {
+	background: #b42318;
 }
 
 /* Custom section field rows */

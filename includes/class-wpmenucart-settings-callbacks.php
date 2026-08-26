@@ -710,30 +710,16 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 		public function get_icon_style_options(): array {
 			return apply_filters( 'wpo_wpmenucart_icon_style_options', array(
 				array(
-					'value'       => 'pill_style',
-					'name'        => __( 'Pill Style', 'wp-menu-cart' ),
-					'description' => __( 'Rounded button with text', 'wp-menu-cart' ),
+					'value'       => 'cart_button',
+					'name'        => __( 'Cart button', 'wp-menu-cart' ),
+					'description' => __( 'Shape and total options', 'wp-menu-cart' ),
 					'disabled'    => true,
 					'pro'         => true,
 				),
 				array(
-					'value'       => 'horizontal_layout',
-					'name'        => __( 'Horizontal Layout', 'wp-menu-cart' ),
-					'description' => __( 'Icon with count and total', 'wp-menu-cart' ),
-					'disabled'    => true,
-					'pro'         => true,
-				),
-				array(
-					'value'       => 'minimalist_badge',
-					'name'        => __( 'Minimalist Badge', 'wp-menu-cart' ),
-					'description' => __( 'Simple circular counter badge', 'wp-menu-cart' ),
-					'disabled'    => true,
-					'pro'         => true,
-				),
-				array(
-					'value'       => 'progress_bar',
-					'name'        => __( 'Progress Bar Style', 'wp-menu-cart' ),
-					'description' => __( 'Shows cart progress', 'wp-menu-cart' ),
+					'value'       => 'icon_badge',
+					'name'        => __( 'Icon badge', 'wp-menu-cart' ),
+					'description' => __( 'Count overlays the icon', 'wp-menu-cart' ),
 					'disabled'    => true,
 					'pro'         => true,
 				),
@@ -909,24 +895,36 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 			}
 
 			$before .= sprintf(
-				'<span class="%1$s" role="button" tabindex="0"%2$s data-input_id="%3$s" data-uploader_title="%4$s" data-uploader_button_text="%5$s" data-remove_button_text="%6$s">',
+				'<span class="%1$s" role="button" tabindex="0"%2$s data-input_id="%3$s" data-uploader_title="%4$s" data-uploader_button_text="%5$s" data-remove_button_text="%6$s" data-mime-types="%7$s" data-extensions="%8$s">',
 				esc_attr( $dropzone_classes ),
 				( $disabled && $pro ) ? ' aria-disabled="true"' : '',
 				esc_attr( $id ),
 				esc_attr__( 'Select or upload a custom menu cart icon.', 'wp-menu-cart' ),
 				esc_attr__( 'Set image', 'wp-menu-cart' ),
-				esc_attr__( 'Remove image', 'wp-menu-cart' )
+				esc_attr__( 'Remove image', 'wp-menu-cart' ),
+				esc_attr( 'image/svg+xml,image/png,image/jpeg,image/gif' ),
+				esc_attr( 'svg,png,jpg,jpeg,gif' )
 			);
 
 			if ( ! empty( $current ) ) {
 				$attachment = wp_get_attachment_image_src( $current, 'thumbnail', false );
 
 				if ( $attachment ) {
+					$before .= '<span class="wpmenucart-upload-dropzone__preview-wrap">';
+
 					$before .= sprintf(
 						'<img src="%1$s" class="wpmenucart-upload-dropzone__preview" id="img-%2$s" />',
 						esc_url( $attachment[0] ),
 						esc_attr( $id )
 					);
+
+					$before .= sprintf(
+						'<span class="wpmenucart-upload-dropzone__remove wpo_remove_image_button" role="button" tabindex="0" data-input_id="%1$s" aria-label="%2$s">&times;</span>',
+						esc_attr( $id ),
+						esc_attr__( 'Remove image', 'wp-menu-cart' )
+					);
+
+					$before .= '</span>'; // .wpmenucart-upload-dropzone__preview-wrap
 				}
 			}
 
@@ -1201,7 +1199,7 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 				'select' => array( 'id' => array(), 'name' => array(), 'class' => array(), 'disabled' => array() ),
 				'option' => array( 'value' => array(), 'selected' => array(), 'disabled' => array() ),
 				'div'    => array( 'id' => array(), 'class' => array(), 'style' => array(), 'data-parent-select' => array() ),
-				'span'   => array( 'id' => array(), 'class' => array(), 'style' => array(), 'role' => array(), 'tabindex' => array(), 'aria-disabled' => array(), 'data-input_id' => array(), 'data-uploader_title' => array(), 'data-uploader_button_text' => array(), 'data-remove_button_text' => array() ),
+				'span'   => array( 'id' => array(), 'class' => array(), 'style' => array(), 'role' => array(), 'tabindex' => array(), 'aria-disabled' => array(), 'aria-hidden' => array(), 'aria-label' => array(), 'data-input_id' => array(), 'data-uploader_title' => array(), 'data-uploader_button_text' => array(), 'data-remove_button_text' => array(), 'data-mime-types' => array(), 'data-extensions' => array() ),
 				'p'      => array( 'id' => array(), 'class' => array(), 'style' => array() ),
 				'i'      => array( 'class' => array() ),
 				'img'    => array( 'id' => array(), 'class' => array(), 'src' => array() ),
