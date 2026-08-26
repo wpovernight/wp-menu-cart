@@ -3,10 +3,6 @@
 	display: none !important;
 }
 
-.wpmenucartli {
-	line-height: inherit !important;
-}
-
 .cartcontents + .amount:before {
 	content: '-';
 	margin: 0 0.25em;
@@ -45,6 +41,11 @@
 /* Hides from IE-mac \*/
 * html .wpmenucart .clearfix {height: 1%;}
 .wpmenucart .clearfix {display: block;}
+
+.wpmenucartli {
+	line-height: inherit !important;
+}
+
 /* End hide from IE-mac */
 /* Force Inline Display */
 li.wpmenucartli a.wpmenucart-contents span{
