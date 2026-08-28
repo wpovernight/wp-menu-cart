@@ -12,50 +12,6 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 	class WpMenuCart_Settings_Callbacks extends WPO_Settings_Callbacks_2 {
 
 		/**
-		 * Checkbox with optional Pro overlay.
-		 *
-		 * @param  array $args
-		 *
-		 * @return void
-		 */
-		public function checkbox( array $args ): void {
-			$this->render_with_pro_overlay( 'checkbox', $args, 'menucartflyout' );
-		}
-
-		/**
-		 * Select with optional Pro overlay.
-		 *
-		 * @param  array $args
-		 *
-		 * @return void
-		 */
-		public function select( array $args ): void {
-			$this->render_with_pro_overlay( 'select', $args, 'menucartflyout' );
-		}
-
-		/**
-		 * Text input with optional Pro overlay.
-		 *
-		 * @param  array $args
-		 *
-		 * @return void
-		 */
-		public function text_input( array $args ): void {
-			$this->render_with_pro_overlay( 'text_input', $args, 'menucartcustomclass' );
-		}
-
-		/**
-		 * Radio with optional Pro overlay.
-		 *
-		 * @param  array $args
-		 *
-		 * @return void
-		 */
-		public function radio_button( array $args ): void {
-			$this->render_with_pro_overlay( 'radio_button', $args, 'menucartflyout' );
-		}
-
-		/**
 		 * Range slider input callback.
 		 *
 		 * @param  array $args Field arguments.
@@ -318,20 +274,33 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 
 			$show_plain_tooltip = $disabled && empty( $pro ) && ! empty( $disabled_tooltip );
 
-			printf(
-				'<label class="%s" data-mode="%s"%s>',
-				esc_attr( implode( ' ', $card_classes ) ),
-				esc_attr( $mode ),
-				$show_plain_tooltip ? ' title="' . esc_attr( $disabled_tooltip ) . '"' : ''
-			);
+			$is_pro_locked = $disabled && ! empty( $pro );
 
-			printf(
-				'<input type="radio" name="%s" value="%s"%s%s />',
-				esc_attr( sprintf( '%s[%s]', WpMenuCart_Settings::OPTION_NAME, $option_key ) ),
-				esc_attr( $mode ),
-				checked( $current_value, $mode, false ),
-				$disabled ? ' disabled' : ''
-			);
+			if ( $is_pro_locked ) {
+				$card_classes[] = 'wpmenucart-mode-card--pro-locked';
+
+				printf(
+					'<a class="%s" data-mode="%s" href="%s">',
+					esc_attr( implode( ' ', $card_classes ) ),
+					esc_attr( $mode ),
+					esc_url( 'https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=cartmode' . $mode )
+				);
+			} else {
+				printf(
+					'<label class="%s" data-mode="%s"%s>',
+					esc_attr( implode( ' ', $card_classes ) ),
+					esc_attr( $mode ),
+					$show_plain_tooltip ? ' title="' . esc_attr( $disabled_tooltip ) . '"' : ''
+				);
+
+				printf(
+					'<input type="radio" name="%s" value="%s"%s%s />',
+					esc_attr( sprintf( '%s[%s]', WpMenuCart_Settings::OPTION_NAME, $option_key ) ),
+					esc_attr( $mode ),
+					checked( $current_value, $mode, false ),
+					$disabled ? ' disabled' : ''
+				);
+			}
 
 			echo '<div class="wpmenucart-mode-card__checkmark">';
 			$this->render_svg( 'checkmark.svg' );
@@ -342,9 +311,9 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 				$this->render_svg( 'conflict.svg' );
 				echo '</div>';
 			} elseif ( ! empty( $pro ) ) {
-				echo '<div class="wpmenucart-mode-card__pro-badge" title="' . esc_attr__( 'Requires Menu Cart Pro.', 'wp-menu-cart' ) . '">';
-				$this->render_svg( 'pro-badge.svg' );
-				echo '</div>';
+				echo '<span class="wpmenucart-mode-card__pro-badge" title="' . esc_attr__( 'Requires Menu Cart Pro.', 'wp-menu-cart' ) . '">';
+				echo __( 'Pro', 'wp-menu-cart' );
+				echo '</span>';
 			}
 
 			echo '<div class="wpmenucart-mode-card__icon" aria-hidden="true">';
@@ -354,13 +323,19 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 			echo '<div class="wpmenucart-mode-card__content">';
 			printf( '<strong class="wpmenucart-mode-card__name">%s</strong>', esc_html( $name ) );
 			printf( '<span class="wpmenucart-mode-card__description">%s</span>', esc_html( $description ) );
-			echo '</div>';
 
-			if ( $disabled && ! empty( $pro ) ) {
-				echo wp_kses( $this->pro_overlay( 'cartmode' . $mode ), $this->get_allowed_html() );
+			if ( $is_pro_locked ) {
+				printf(
+					' <span class="pro-feature">%s %s</span>',
+					/* translators: %s: "Menu Cart Pro" (product name, not translated) */
+					sprintf( esc_html__( 'In %s', 'wp-menu-cart' ), 'Menu Cart Pro' ),
+					$this->get_svg( 'open-in-new.svg' )
+				); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- SVG loaded from plugin directory.
 			}
 
-			echo '</label>';
+			echo '</div>';
+
+			echo $is_pro_locked ? '</a>' : '</label>';
 		}
 
 		/**
@@ -631,7 +606,7 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 		 * @param  string $filename SVG filename without path, e.g. 'checkmark.svg'.
 		 * @return void
 		 */
-		protected function render_svg( string $filename ): void {
+		public function render_svg( string $filename ): void {
 			echo $this->get_svg( $filename ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- SVG loaded from plugin directory.
 		}
 
@@ -662,8 +637,6 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 		 * @return void
 		 */
 		public function media_upload_callback( array $args ): void {
-			$pro = $args['pro'] ?? false;
-
 			extract( $this->normalize_settings_args( $args ) );
 
 			$disabled = isset( $disabled ) ? ' disabled' : '';
@@ -678,11 +651,6 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 
 			if ( isset( $description ) ) {
 				$html .= sprintf( '<p class="description">%s</p>', wp_kses_post( $description ) );
-			}
-
-			if ( $disabled && $pro ) {
-				$html .= $this->pro_overlay( 'menucartflyout' );
-				$html  = '<div class="pro-setting-wrapper">' . $html . '</div>';
 			}
 
 			echo wp_kses( $html, $this->get_allowed_html() );
@@ -702,69 +670,13 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 			$radios = '';
 
 			foreach ( $options as $key => $iconnumber ) {
-				if ( '0' === (string) $key ) {
-					$icons  .= sprintf( '<td style="padding-bottom:0;font-size:16pt;" align="center"><label for="%1$s[%2$s]"><i class="wpmenucart-icon-shopping-cart-%3$s"></i></label></td>', esc_attr( $id ), esc_attr( $key ), esc_attr( $iconnumber ) );
-					$radios .= sprintf( '<td style="padding-top:0" align="center"><input type="radio" class="radio" id="%1$s[%2$s]" name="%3$s" value="%2$s"%4$s /></td>', esc_attr( $id ), esc_attr( $key ), esc_attr( $setting_name ), checked( $current, $key, false ) );
-				} else {
-					$icons .= sprintf( '<td style="padding-bottom:0;font-size:16pt;" align="center"><label for="%1$s[%2$s]"><img src="%3$scart-icon-%4$s.png" /></label></td>', esc_attr( $id ), esc_attr( $key ), esc_url( WPO_Menu_Cart()->plugin_url() . '/assets/images/' ), esc_attr( $iconnumber ) );
-					$radio  = sprintf( '<input type="radio" class="radio" id="%1$s[%2$s]" name="%3$s" value="%2$s" disabled />', esc_attr( $id ), esc_attr( $key ), esc_attr( $setting_name ) );
-					$radio .= '<div class="hidden-input-icon"></div>';
-					$radio  = '<div class="pro-setting-wrapper">' . $radio . '</div>';
-					$radios .= '<td style="padding-top:0" align="center">' . $radio . '</td>';
-				}
+				$icons  .= sprintf( '<td style="padding-bottom:0;font-size:16pt;" align="center"><label for="%1$s[%2$s]"><i class="wpmenucart-icon-shopping-cart-%3$s"></i></label></td>', esc_attr( $id ), esc_attr( $key ), esc_attr( $iconnumber ) );
+				$radios .= sprintf( '<td style="padding-top:0" align="center"><input type="radio" class="radio" id="%1$s[%2$s]" name="%3$s" value="%2$s"%4$s /></td>', esc_attr( $id ), esc_attr( $key ), esc_attr( $setting_name ), checked( $current, $key, false ) );
 			}
 
-			$profeature = '<span style="display:none;" class="pro-icon"><i>' . __( 'Additional icons are only available in', 'wp-menu-cart' ) . ' <a href="https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=menucarticons">Menu Cart Pro</a></i></span>';
-			$html       = '<table><tr>' . $icons . '</tr><tr>' . $radios . '</tr></table>' . $profeature;
+			$html = '<table><tr>' . $icons . '</tr><tr>' . $radios . '</tr></table>';
 
 			echo wp_kses( $html, $this->get_allowed_html() );
-		}
-
-		/**
-		 * Helper method: Renders a callback from the base class and wraps it in a Pro overlay.
-		 *
-		 * @param string $method   The method to call.
-		 * @param array  $args     The field arguments.
-		 * @param string $campaign The UTM campaign slug for the link.
-		 *
-		 * @return void
-		 */
-		protected function render_with_pro_overlay( string $method, array $args, string $campaign ): void {
-			$pro      = $args['pro'] ?? false;
-			$disabled = ! empty( $args['disabled'] );
-
-			// Capture the exact HTML output from the base WPO class
-			ob_start();
-			parent::$method( $args );
-			$html = ob_get_clean();
-
-			if ( $disabled && $pro ) {
-				// The base class doesn't naturally support 'disabled' for fields like select & text.
-				// We can dynamically inject it here if it's missing, without rewriting the HTML logic.
-				if ( false === strpos( $html, 'disabled' ) ) {
-					$html = preg_replace( '/<(input|select|textarea)([^>]+)>/i', '<$1 disabled="disabled"$2>', $html );
-				}
-
-				$html .= $this->pro_overlay( $campaign );
-				$html  = '<div class="pro-setting-wrapper">' . $html . '</div>';
-			}
-
-			echo wp_kses( $html, $this->get_allowed_html() );
-		}
-
-		/**
-		 * Generate the Pro overlay HTML.
-		 *
-		 * @param  string $campaign UTM campaign slug.
-		 *
-		 * @return string
-		 */
-		protected function pro_overlay( string $campaign ): string {
-			return sprintf(
-				' <span class="pro-feature"><i>%s <a href="%s">Menu Cart Pro</a></i></span><div class="hidden-input"></div>',
-				esc_html__( 'This feature only available in', 'wp-menu-cart' ),
-				esc_url( 'https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=' . $campaign )
-			);
 		}
 
 		/**
