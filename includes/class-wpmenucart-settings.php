@@ -736,7 +736,7 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 						</span>
 					<?php endforeach; ?>
 				</div>
-				<a class="wpmenucart-upsell-strip__link" href="<?php echo esc_url( 'https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=' . $campaign ); ?>">
+				<a class="wpmenucart-upsell-strip__link" href="<?php echo esc_url( 'https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=' . $campaign ); ?>" target="_blank" rel="noopener noreferrer">
 					<?php esc_html_e( "See what's in Pro", 'wp-menu-cart' ); ?>
 					<?php $this->callbacks->render_svg( 'open-in-new.svg' ); ?>
 				</a>

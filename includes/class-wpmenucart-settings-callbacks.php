@@ -280,7 +280,7 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 				$card_classes[] = 'wpmenucart-mode-card--pro-locked';
 
 				printf(
-					'<a class="%s" data-mode="%s" href="%s">',
+					'<a class="%s" data-mode="%s" href="%s" target="_blank" rel="noopener noreferrer">',
 					esc_attr( implode( ' ', $card_classes ) ),
 					esc_attr( $mode ),
 					esc_url( 'https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=cartmode' . $mode )
