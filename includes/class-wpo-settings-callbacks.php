@@ -32,7 +32,7 @@ if ( !class_exists( 'WPO_Settings_Callbacks_2' ) ) :
 			$disabled = isset( $disabled ) ? ' disabled' : '';
 
 			// output checkbox  
-			printf( '<input type="checkbox" id="%1$s" name="%2$s" value="%3$s"%4$s %5$s />', esc_attr( $id ), esc_attr( $setting_name ), esc_attr( $value ), checked( $value, $current, false ), esc_attr( $disabled ) );
+			printf( '<input type="checkbox" id="%1$s" name="%2$s" value="%3$s"%4$s %5$s %6$s/>', esc_attr( $id ), esc_attr( $setting_name ), esc_attr( $value ), checked( $value, $current, false ), esc_attr( $disabled ), $custom_attributes );
 	
 			// output description.
 			if ( isset( $description ) ) {
@@ -60,7 +60,7 @@ if ( !class_exists( 'WPO_Settings_Callbacks_2' ) ) :
 				$type = 'text';
 			}
 
-			printf( '<input type="%1$s" id="%2$s" name="%3$s" value="%4$s" size="%5$s" placeholder="%6$s"/>', esc_attr( $type ), esc_attr( $id ), esc_attr( $setting_name ), esc_attr( $current ), esc_attr( $size ), esc_attr( $placeholder ) );
+			printf( '<input type="%1$s" id="%2$s" name="%3$s" value="%4$s" size="%5$s" placeholder="%6$s" %7$s/>', esc_attr( $type ), esc_attr( $id ), esc_attr( $setting_name ), esc_attr( $current ), esc_attr( $size ), esc_attr( $placeholder ), $custom_attributes );
 	
 			// output description.
 			if ( isset( $description ) ) {
@@ -84,7 +84,7 @@ if ( !class_exists( 'WPO_Settings_Callbacks_2' ) ) :
 		public function textarea( array $args ): void {
 			extract( $this->normalize_settings_args( $args ) );
 	
-			printf( '<textarea id="%1$s" name="%2$s" cols="%4$s" rows="%5$s" placeholder="%6$s"/>%3$s</textarea>', esc_attr( $id ), esc_attr( $setting_name ), esc_textarea( $current ), esc_attr( $width ), esc_attr( $height ), esc_attr( $placeholder ) );
+			printf( '<textarea id="%1$s" name="%2$s" cols="%4$s" rows="%5$s" placeholder="%6$s" %7$s/>%3$s</textarea>', esc_attr( $id ), esc_attr( $setting_name ), esc_textarea( $current ), esc_attr( $width ), esc_attr( $height ), esc_attr( $placeholder ), $custom_attributes );
 	
 			// output description.
 			if ( isset( $description ) ) {
@@ -102,7 +102,7 @@ if ( !class_exists( 'WPO_Settings_Callbacks_2' ) ) :
 		public function select( array $args ): void {
 			extract( $this->normalize_settings_args( $args ) );
 	
-			printf( '<select id="%1$s" name="%2$s">', esc_attr( $id ), esc_attr( $setting_name ) );
+			printf( '<select id="%1$s" name="%2$s" %3$s>', esc_attr( $id ), esc_attr( $setting_name ), $custom_attributes );
 
 			foreach ( $options as $key => $label ) {
 				printf( '<option value="%s"%s>%s</option>', esc_attr( $key ), selected( $current, $key, false ), esc_attr( $label ) );
@@ -111,7 +111,12 @@ if ( !class_exists( 'WPO_Settings_Callbacks_2' ) ) :
 			echo '</select>';
 
 			if ( isset( $custom ) ) {
-				printf( '<div class="%1$s_custom custom custom-select-option">', esc_attr( $id ) );
+				$custom_panel_attributes = $this->normalize_custom_attributes( array(
+					'data-show_for_option_name'   => $setting_name,
+					'data-show_for_option_values' => wp_json_encode( array( 'custom' ) ),
+				) );
+
+				printf( '<div class="%1$s_custom custom custom-select-option" %2$s>', esc_attr( $id ), $custom_panel_attributes );
 
 				if ( method_exists( $this, $custom['type'] ) ) {
 					call_user_func( array( $this, $custom['type'] ), $custom['args'] );
@@ -137,7 +142,7 @@ if ( !class_exists( 'WPO_Settings_Callbacks_2' ) ) :
 			extract( $this->normalize_settings_args( $args ) );
 	
 			foreach ( $options as $key => $label ) {
-				printf( '<input type="radio" class="radio" id="%1$s[%3$s]" name="%2$s" value="%3$s"%4$s />', esc_attr( $id ), esc_attr( $setting_name ), esc_attr( $key ), checked( $current, $key, false ) );
+				printf( '<input type="radio" class="radio" id="%1$s[%3$s]" name="%2$s" value="%3$s"%4$s %5$s/>', esc_attr( $id ), esc_attr( $setting_name ), esc_attr( $key ), checked( $current, $key, false ), $custom_attributes );
 				printf( '<label for="%1$s[%3$s]"> %4$s</label><br>', esc_attr( $id ), esc_attr( $setting_name ), esc_attr( $key ), esc_attr( $label ) );
 			}
 		
@@ -181,7 +186,7 @@ if ( !class_exists( 'WPO_Settings_Callbacks_2' ) ) :
 
 				// output field
 				$field_current = isset( $current[ $name ] ) ? $current[ $name ] : '';
-				printf( '<input type="text" id="%1$s_%3$s" name="%2$s[%3$s]" value="%4$s" size="%5$s" placeholder="%6$s"/>%7$s<br/>', esc_attr( $id ), esc_attr( $setting_name ), esc_attr( $name ), esc_attr( $field_current ), esc_attr( $size ), esc_attr( $placeholder ), esc_attr( $suffix ) );
+				printf( '<input type="text" id="%1$s_%3$s" name="%2$s[%3$s]" value="%4$s" size="%5$s" placeholder="%6$s" %8$s/>%7$s<br/>', esc_attr( $id ), esc_attr( $setting_name ), esc_attr( $name ), esc_attr( $field_current ), esc_attr( $size ), esc_attr( $placeholder ), esc_attr( $suffix ), $custom_attributes );
 
 			}
 	
@@ -336,7 +341,26 @@ if ( !class_exists( 'WPO_Settings_Callbacks_2' ) ) :
 				$args['current'] = isset( $args['default'] ) ? $args['default'] : '';
 			}
 
+			// Normalize custom attributes
+			$args['custom_attributes'] = $this->normalize_custom_attributes( $args['custom_attributes'] ?? array() );
+
 			return $args;
+		}
+
+		/**
+		 * Normalize custom attributes.
+		 *
+		 * @param  array  $custom_attributes Attribute name => value pairs.
+		 * @return string
+		 */
+		public function normalize_custom_attributes( array $custom_attributes ): string {
+			$attributes = array();
+
+			foreach ( $custom_attributes as $attribute => $attribute_value ) {
+				$attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $attribute_value ) . '"';
+			}
+
+			return ! empty( $attributes ) ? implode( ' ', $attributes ) : '';
 		}
 
 		/**

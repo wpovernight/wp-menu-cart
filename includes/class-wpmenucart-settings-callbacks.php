@@ -345,9 +345,14 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 
 			echo '</div>'; // .wpmenucart-mode-group
 
+			$notice_attributes = $this->normalize_custom_attributes( array(
+				'data-show_for_option_name' => WpMenuCart_Settings::OPTION_NAME . '[icon_style_custom_enabled]',
+			) );
+
 			printf(
-				'<p class="wpmenucart-icon-style-disabled-notice"%s>%s</p>',
+				'<p class="wpmenucart-icon-style-disabled-notice"%s %s>%s</p>',
 				$custom_enabled ? '' : ' style="display:none;"',
+				$notice_attributes,
 				esc_html__( 'Templates are disabled while Custom Section is enabled.', 'wp-menu-cart' )
 			);
 
@@ -405,14 +410,16 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 					continue;
 				}
 
-				$description = $args['description'] ?? '';
-				$inline_toggle = ! empty( $args['inline_toggle'] );
+				$description       = $args['description'] ?? '';
+				$tooltip           = $args['tooltip'] ?? '';
+				$inline_toggle     = ! empty( $args['inline_toggle'] );
+				$custom_attributes = $args['custom_attributes'] ?? array();
 
 				// The row itself displays the description on the left. Strip it
 				// from the args passed to the field callback, otherwise fields
 				// like select_with_locked_options() print it a second time
 				// inside the control column on the right.
-				unset( $args['description'] );
+				unset( $args['description'], $args['tooltip'], $args['custom_attributes'] );
 
 				$this->render_custom_field_row(
 					$field['title'],
@@ -421,7 +428,9 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 						call_user_func( $field['callback'], $args );
 					},
 					$inline_toggle,
-					$inline_toggle
+					$inline_toggle,
+					$tooltip,
+					$custom_attributes
 				);
 			}
 		}
@@ -432,13 +441,20 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 		 * distinct from render_subpanel_field_row()'s single-line label shape
 		 * used by Cart Display Modes' sub-panels.
 		 *
-		 * @param  string   $label       The translated field label.
-		 * @param  string   $description The translated description, shown under the label.
-		 * @param  callable $callback    Callable that renders the field control HTML.
+		 * @param  string   $label             The translated field label.
+		 * @param  string   $description       The translated description, shown under the label.
+		 * @param  callable $callback          Callable that renders the field control HTML.
+		 * @param  bool     $show_info_icon    Whether to render an info icon next to the label, tooltipped with $tooltip.
+		 * @param  bool     $inline_toggle     Whether the control renders inline with the label (e.g. a toggle switch) instead of in its own column.
+		 * @param  string   $tooltip           The translated tooltip text for the info icon. Ignored if $show_info_icon is false.
+		 * @param  array    $custom_attributes Extra data-* attributes for the row, e.g. conditional-visibility hooks. See normalize_custom_attributes().
 		 * @return void
 		 */
-		protected function render_custom_field_row( string $label, string $description, callable $callback, bool $show_info_icon = false, bool $inline_toggle = false ): void {
-			echo '<div class="wpmenucart-custom-field-row">';
+		protected function render_custom_field_row( string $label, string $description, callable $callback, bool $show_info_icon = false, bool $inline_toggle = false, string $tooltip = '', array $custom_attributes = array() ): void {
+			printf(
+				'<div class="wpmenucart-custom-field-row" %s>',
+				$this->normalize_custom_attributes( $custom_attributes )
+			);
 
 			echo '<div class="wpmenucart-custom-field-row__info">';
 			if ( $inline_toggle ) {
@@ -446,8 +462,8 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 			}
 			echo '<span class="wpmenucart-custom-field-row__label-row">';
 			printf( '<strong class="wpmenucart-custom-field-row__label">%s</strong>', esc_html( $label ) );
-			if ( $show_info_icon && $description ) {
-				printf( '<span class="wpmenucart-custom-field-row__info-icon" title="%s" aria-hidden="true">', esc_attr( $description ) );
+			if ( $show_info_icon && $tooltip ) {
+				printf( '<span class="wpmenucart-custom-field-row__info-icon" title="%s" aria-hidden="true">', esc_attr( $tooltip ) );
 				$this->render_svg( 'info.svg' );
 				echo '</span>';
 			}
@@ -583,68 +599,101 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 		}
 
 		/**
-		 * Render the Sidebar Slide-out Settings sub-panel.
+		 * Render a Cart Display Modes-style sub-panel.
 		 *
-		 * @param  string $context 'desktop' or 'mobile'.
+		 * @param  string   $context       'desktop', 'mobile', or another data-context value.
+		 * @param  string   $mode          The mode value this sub-panel belongs to, e.g. 'sidebar'.
+		 * @param  string   $title         The sub-panel's header title. Empty string skips the header entirely.
+		 * @param  callable $render_fields Callable that renders the field rows inside .wpmenucart-subpanel__fields.
+		 * @param  string   $option_key    The option array key holding the controlling value. Defaults to '{$context}_cart_mode'.
+		 * @param  string   $fields_class  Optional extra class on .wpmenucart-subpanel__fields, e.g. '--grid'.
 		 * @return void
 		 */
-		public function render_sidebar_subpanel( string $context ): void {
+		protected function render_mode_subpanel( string $context, string $mode, string $title, callable $render_fields, string $option_key = '', string $fields_class = '' ): void {
+			$option_key = $option_key ?: $context . '_cart_mode';
+
+			$subpanel_attributes = $this->normalize_custom_attributes( array(
+				'data-show_for_option_name'   => WpMenuCart_Settings::OPTION_NAME . '[' . $option_key . ']',
+				'data-show_for_option_values' => wp_json_encode( array( $mode ) ),
+			) );
+
 			printf(
-				'<div class="wpmenucart-subpanel" data-context="%s" data-mode="sidebar">',
-				esc_attr( $context )
+				'<div class="wpmenucart-subpanel" data-context="%s" data-mode="%s" %s>',
+				esc_attr( $context ),
+				esc_attr( $mode ),
+				$subpanel_attributes
 			);
 
-			$this->render_subpanel_header(
-				__( 'Sidebar Slide-out Settings', 'wp-menu-cart' ),
-				$context
-			);
+			if ( $title ) {
+				$badge_label = in_array( $context, array( 'desktop', 'mobile' ), true )
+					? ( 'desktop' === $context ? __( 'Desktop only', 'wp-menu-cart' ) : __( 'Mobile only', 'wp-menu-cart' ) )
+					: '';
 
-			echo '<div class="wpmenucart-subpanel__fields">';
+				$this->render_subpanel_header( $title, $context, $badge_label );
+			}
 
-			$this->range_slider( array(
-				'option_name' => WpMenuCart_Settings::OPTION_NAME,
-				'id'          => $context . '_sidebar_width',
-				'label'       => __( 'Sidebar width', 'wp-menu-cart' ),
-				'min'         => 320,
-				'max'         => 500,
-				'step'        => 10,
-				'unit'        => 'px',
-			) );
-
-			$this->range_slider( array(
-				'option_name' => WpMenuCart_Settings::OPTION_NAME,
-				'id'          => $context . '_overlay_opacity',
-				'label'       => __( 'Overlay opacity', 'wp-menu-cart' ),
-				'min'         => 10,
-				'max'         => 100,
-				'step'        => 5,
-				'unit'        => '%',
-			) );
-
+			printf( '<div class="wpmenucart-subpanel__fields%s">', $fields_class ? ' ' . esc_attr( $fields_class ) : '' );
+			$render_fields();
 			echo '</div>';
 
 			echo '</div>';
 		}
 
 		/**
-		 * Render the header row for a sub-panel.
+		 * Render the Sidebar Slide-out Settings sub-panel.
 		 *
-		 * @param  string $title   The translated sub-panel title.
 		 * @param  string $context 'desktop' or 'mobile'.
 		 * @return void
 		 */
-		protected function render_subpanel_header( string $title, string $context ): void {
-			$badge_label = 'desktop' === $context
-				? __( 'Desktop only', 'wp-menu-cart' )
-				: __( 'Mobile only', 'wp-menu-cart' );
+		public function render_sidebar_subpanel( string $context ): void {
+			$this->render_mode_subpanel(
+				$context,
+				'sidebar',
+				__( 'Sidebar Slide-out Settings', 'wp-menu-cart' ),
+				function() use ( $context ) {
+					$this->range_slider( array(
+						'option_name' => WpMenuCart_Settings::OPTION_NAME,
+						'id'          => $context . '_sidebar_width',
+						'label'       => __( 'Sidebar width', 'wp-menu-cart' ),
+						'min'         => 320,
+						'max'         => 500,
+						'step'        => 10,
+						'unit'        => 'px',
+					) );
 
+					$this->range_slider( array(
+						'option_name' => WpMenuCart_Settings::OPTION_NAME,
+						'id'          => $context . '_overlay_opacity',
+						'label'       => __( 'Overlay opacity', 'wp-menu-cart' ),
+						'min'         => 10,
+						'max'         => 100,
+						'step'        => 5,
+						'unit'        => '%',
+					) );
+				}
+			);
+		}
+
+		/**
+		 * Render the header row for a sub-panel.
+		 *
+		 * @param  string $title       The translated sub-panel title.
+		 * @param  string $context     Used only for the badge's modifier class, e.g. 'desktop'/'mobile'. Irrelevant when $badge_label is ''.
+		 * @param  string $badge_label Translated badge text, e.g. 'Desktop only'. Empty string omits the badge entirely.
+		 * @return void
+		 */
+		protected function render_subpanel_header( string $title, string $context, string $badge_label = '' ): void {
 			echo '<div class="wpmenucart-subpanel__header">';
 			printf( '<h4 class="wpmenucart-subpanel__title">%s</h4>', esc_html( $title ) );
-			printf(
-				'<span class="wpmenucart-subpanel__context-badge wpmenucart-subpanel__context-badge--%s">%s</span>',
-				esc_attr( $context ),
-				esc_html( $badge_label )
-			);
+
+			if ( $badge_label ) {
+				printf(
+					'<span class="wpmenucart-subpanel__context-badge wpmenucart-subpanel__context-badge--%s">%s</span>',
+					esc_attr( $context ),
+					esc_html( $badge_label )
+				);
+			}
+
 			echo '</div>';
 		}
 
@@ -810,7 +859,13 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 			echo '</select>';
 
 			if ( isset( $custom ) ) {
-				printf( '<div class="%1$s_custom wpmenucart-select-custom-panel" data-parent-select="%1$s">', esc_attr( $id ) );
+				$panel_attributes = $this->normalize_custom_attributes( array(
+					'data-show_for_option_name'   => $setting_name,
+					'data-show_for_option_values' => wp_json_encode( array( 'custom' ) ),
+					'data-keep_current_value'     => 'true',
+				) );
+
+				printf( '<div class="%1$s_custom wpmenucart-select-custom-panel" %2$s>', esc_attr( $id ), $panel_attributes );
 
 				$custom_callback = apply_filters( 'wpo_wpmenucart_settings_callback', array( $this, $custom['type'] ), $custom['type'] );
 
@@ -1198,7 +1253,7 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 				'a'      => array( 'href' => array(), 'title' => array(), 'id' => array(), 'class' => array(), 'style' => array(), 'target' => array(), 'rel' => array() ),
 				'select' => array( 'id' => array(), 'name' => array(), 'class' => array(), 'disabled' => array() ),
 				'option' => array( 'value' => array(), 'selected' => array(), 'disabled' => array() ),
-				'div'    => array( 'id' => array(), 'class' => array(), 'style' => array(), 'data-parent-select' => array() ),
+				'div'    => array( 'id' => array(), 'class' => array(), 'style' => array(), 'data-show_for_option_name' => array(), 'data-show_for_option_values' => array(), 'data-keep_current_value' => array() ),
 				'span'   => array( 'id' => array(), 'class' => array(), 'style' => array(), 'role' => array(), 'tabindex' => array(), 'aria-disabled' => array(), 'aria-hidden' => array(), 'aria-label' => array(), 'data-input_id' => array(), 'data-uploader_title' => array(), 'data-uploader_button_text' => array(), 'data-remove_button_text' => array(), 'data-mime-types' => array(), 'data-extensions' => array() ),
 				'p'      => array( 'id' => array(), 'class' => array(), 'style' => array() ),
 				'i'      => array( 'class' => array() ),

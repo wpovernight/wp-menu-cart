@@ -185,6 +185,7 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 						'option_name'    => $option_name,
 						'id'             => 'icon_display',
 						'description'    => __( 'Shows a graphical icon next to your cart totals in the menu.', 'wp-menu-cart' ),
+						'tooltip'        => __( 'The icon appears before your cart total in the menu. Turn it off to show text only.', 'wp-menu-cart' ),
 						'inline_toggle'  => true,
 					),
 				),
@@ -194,15 +195,19 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 					'title'    => __( 'Choose a cart icon', 'wp-menu-cart' ),
 					'callback' => $this->resolve_callback( 'select_with_locked_options' ),
 					'args'     => array(
-						'option_name'    => $option_name,
-						'id'             => 'cart_icon',
-						'options'        => array(
+						'option_name'       => $option_name,
+						'id'                => 'cart_icon',
+						'options'           => array(
 							'0' => __( 'Default Cart (FontAwesome)', 'wp-menu-cart' ),
 							'1' => __( 'Shopping Bag', 'wp-menu-cart' ),
 							'2' => __( 'Woven Basket', 'wp-menu-cart' ),
 						),
-						'locked_options' => array( '1', '2' ),
-						'description'    => __( 'Select from our library of standard e-commerce icons.', 'wp-menu-cart' ),
+						'locked_options'    => array( '1', '2' ),
+						'description'       => __( 'Select from our library of standard e-commerce icons.', 'wp-menu-cart' ),
+						'custom_attributes' => array(
+							'data-show_for_option_name' => $option_name . '[icon_display]',
+							'data-keep_current_value'   => 'true',
+						),
 					),
 				),
 				'custom_icon'                => array(
@@ -211,11 +216,15 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 					'title'    => __( 'Upload Custom Icon', 'wp-menu-cart' ),
 					'callback' => $this->resolve_callback( 'icon_upload_dropzone_callback' ),
 					'args'     => array(
-						'option_name' => $option_name,
-						'id'          => 'custom_icon',
-						'description' => __( 'Overrides the selected icon above. Supports SVG (recommended) or PNG.', 'wp-menu-cart' ),
-						'disabled'    => true,
-						'pro'         => true,
+						'option_name'       => $option_name,
+						'id'                => 'custom_icon',
+						'description'       => __( 'Overrides the selected icon above. Supports SVG (recommended) or PNG.', 'wp-menu-cart' ),
+						'disabled'          => true,
+						'pro'               => true,
+						'custom_attributes' => array(
+							'data-show_for_option_name' => $option_name . '[icon_display]',
+							'data-keep_current_value'   => 'true',
+						),
 					),
 				),
 				'cart_icon_color'            => array(
@@ -224,11 +233,15 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 					'title'    => __( 'Override icon colour', 'wp-menu-cart' ),
 					'callback' => $this->resolve_callback( 'color_swatch_callback' ),
 					'args'     => array(
-						'option_name' => $option_name,
-						'id'          => 'cart_icon_color',
-						'description' => __( "By default, the icon inherits your menu's text color.", 'wp-menu-cart' ),
-						'disabled'    => true,
-						'pro'         => true,
+						'option_name'       => $option_name,
+						'id'                => 'cart_icon_color',
+						'description'       => __( "By default, the icon inherits your menu's text color.", 'wp-menu-cart' ),
+						'disabled'          => true,
+						'pro'               => true,
+						'custom_attributes' => array(
+							'data-show_for_option_name' => $option_name . '[icon_display]',
+							'data-keep_current_value'   => 'true',
+						),
 					),
 				),
 				'items_display'              => array(
