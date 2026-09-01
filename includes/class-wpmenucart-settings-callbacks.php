@@ -324,15 +324,6 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 			printf( '<strong class="wpmenucart-mode-card__name">%s</strong>', esc_html( $name ) );
 			printf( '<span class="wpmenucart-mode-card__description">%s</span>', esc_html( $description ) );
 
-			if ( $is_pro_locked ) {
-				printf(
-					' <span class="pro-feature">%s %s</span>',
-					/* translators: %s: "Menu Cart Pro" (product name, not translated) */
-					sprintf( esc_html__( 'In %s', 'wp-menu-cart' ), 'Menu Cart Pro' ),
-					$this->get_svg( 'open-in-new.svg' )
-				); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- SVG loaded from plugin directory.
-			}
-
 			echo '</div>';
 
 			echo $is_pro_locked ? '</a>' : '</label>';
