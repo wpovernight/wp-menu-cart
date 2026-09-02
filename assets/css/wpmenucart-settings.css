@@ -110,16 +110,14 @@ body.settings_page_wpo_wpmenucart_options_page {
 	cursor: pointer;
 }
 .wpmenucart-mode-card:not(.wpmenucart-mode-card--has-conflict):hover {
-	border-color: #1570efb3;
-	box-shadow: 0 0 0 1px #1570efb3;
+	border-color: #1570efb2;
+	box-shadow: 0 0 0 2px #1570efb2;
 	background: #2b6bd80f;
 }
 .wpmenucart-mode-card--selected,
 .wpmenucart-mode-card--selected:hover {
-	border-width: 2px;
 	border-color: #1570ef;
 	box-shadow: 0 0 0 2px #1570ef;
-	padding: 15px 14px;
 }
 .wpmenucart-mode-card input[type="radio"] {
 	position: absolute;
@@ -139,22 +137,13 @@ body.settings_page_wpo_wpmenucart_options_page {
 	color: inherit;
 }
 .wpmenucart-mode-card--disabled.wpmenucart-mode-card--pro-locked:hover {
-	border-color: transparent;
-	box-shadow: none;
-	background: #2b6ad806;
-}
-.wpmenucart-mode-card--disabled .wpmenucart-mode-card__description {
-	display: none;
-}
-.wpmenucart-mode-card--disabled .pro-feature {
-	display: flex;
-	color: #5818AF;
-	font-size: 14px;
-	font-weight: 600;
-	line-height: 1.2;
+	border-color: #5925dc80;
+	box-shadow: 0 0 0 2px #5925dc80;
+	background: #f4f3ff;
 }
 .wpmenucart-mode-card--disabled .wpmenucart-mode-card__icon,
-.wpmenucart-mode-card--disabled .wpmenucart-mode-card__name {
+.wpmenucart-mode-card--disabled .wpmenucart-mode-card__name,
+.wpmenucart-mode-card--disabled .wpmenucart-mode-card__description {
 	opacity: 0.4;
 }
 
@@ -178,12 +167,8 @@ body.settings_page_wpo_wpmenucart_options_page {
 	right: 6px;
 	line-height: 0;
 }
-.wpmenucart-mode-card--selected .wpmenucart-mode-card__warning-badge,
-.wpmenucart-mode-card--selected .wpmenucart-mode-card__pro-badge {
-	top: 5px;
-	right: 5px;
-}
 .wpmenucart-mode-card__pro-badge {
+	background: #fff;
 	color: #5818AF;
 	line-height: unset;
 	padding: 2px 8px;
