@@ -601,7 +601,7 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 				return;
 			}
 
-			$this->render_upsell_strip( $content['title'], $content['features'], $content['campaign'], $meta_key );
+			$this->render_upsell_strip( $content['title'], $content['features'], $content['campaign'], $content['content'], $meta_key );
 		}
 
 		/**
@@ -639,7 +639,8 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 			$strips = array(
 				'display_modes' => array(
 					'title'    => __( 'Let shoppers open their cart from anywhere', 'wp-menu-cart' ),
-					'campaign' => 'menucartdisplaymodes',
+					'campaign' => 'display-modes-tab',
+					'content'  => 'display-modes-upsell-cross',
 					'features' => array(
 						array(
 							'icons' => array( 'flyout-preview.svg' ),
@@ -661,7 +662,8 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 				),
 				'icon_style'    => array(
 					'title'    => __( 'More ways to style your cart icon', 'wp-menu-cart' ),
-					'campaign' => 'menucarticonstyle',
+					'campaign' => 'icon-style-tab',
+					'content'  => 'icon-style-upsell-cross',
 					'features' => array(
 						array(
 							'icons' => array(
@@ -695,10 +697,11 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 		 * @param  string $title    The strip's heading.
 		 * @param  array  $features Feature icon(s) + label pairs.
 		 * @param  string $campaign UTM campaign slug for the "See what's in Pro" link.
+		 * @param  string $content  UTM content slug for the "See what's in Pro" link.
 		 * @param  string $meta_key User meta key used to persist the dismissal.
 		 * @return void
 		 */
-		protected function render_upsell_strip( string $title, array $features, string $campaign, string $meta_key ): void {
+		protected function render_upsell_strip( string $title, array $features, string $campaign, string $content, string $meta_key ): void {
 			$dismiss_url = wp_nonce_url(
 				add_query_arg( 'wpo_wpmenucart_dismiss_notice', $meta_key ),
 				'wpo_wpmenucart_dismiss_notice_' . $meta_key
@@ -726,7 +729,7 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 						</span>
 					<?php endforeach; ?>
 				</div>
-				<a class="wpmenucart-upsell-strip__link" href="<?php echo esc_url( 'https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=' . $campaign ); ?>" target="_blank" rel="noopener noreferrer">
+				<a class="wpmenucart-upsell-strip__link" href="<?php echo esc_url( 'https://wpovernight.com/downloads/menu-cart-pro?utm_medium=plugin&utm_source=menucart&utm_campaign=' . $campaign . '&utm_content=' . $content ); ?>" target="_blank" rel="noopener noreferrer">
 					<?php esc_html_e( "See what's in Pro", 'wp-menu-cart' ); ?>
 					<?php $this->callbacks->render_svg( 'open-in-new.svg' ); ?>
 				</a>

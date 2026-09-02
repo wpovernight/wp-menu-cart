@@ -283,7 +283,7 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 					'<a class="%s" data-mode="%s" href="%s" target="_blank" rel="noopener noreferrer">',
 					esc_attr( implode( ' ', $card_classes ) ),
 					esc_attr( $mode ),
-					esc_url( 'https://wpovernight.com/downloads/menu-cart-pro?utm_source=wordpress&utm_medium=menucartfree&utm_campaign=cartmode' . $mode )
+					esc_url( 'https://wpovernight.com/downloads/menu-cart-pro?utm_medium=plugin&utm_source=menucart&utm_campaign=cartmode&utm_content=settings-cross-' . $mode )
 				);
 			} else {
 				printf(
