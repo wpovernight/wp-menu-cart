@@ -848,134 +848,6 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 		}
 
 		/**
-		 * Locked color-swatch preview.
-		 *
-		 * @param  array $args
-		 * @return void
-		 */
-		public function color_swatch_callback( array $args ): void {
-			$pro      = $args['pro'] ?? false;
-			$disabled = ! empty( $args['disabled'] );
-
-			extract( $this->normalize_settings_args( $args ) );
-
-			$swatch_color = $current ? $current : '#3858e9';
-
-			$before = '';
-
-			if ( $disabled && $pro ) {
-				$before = '<div class="pro-setting-wrapper">';
-			}
-
-			$before .= sprintf( '<label class="wpmenucart-color-swatch-field" for="%s">', esc_attr( $id ) );
-			$before .= sprintf(
-				'<input type="color" id="%1$s" name="%2$s" value="%3$s" class="wpmenucart-color-swatch-field__input"%4$s />',
-				esc_attr( $id ),
-				esc_attr( $setting_name ),
-				esc_attr( $swatch_color ),
-				( $disabled && $pro ) ? ' disabled' : ''
-			);
-			$before .= '<span class="wpmenucart-color-swatch-field__chevron" aria-hidden="true"></span>';
-			$before .= '</label>'; // .wpmenucart-color-swatch-field
-
-			if ( isset( $description ) ) {
-				$before .= sprintf( '<p class="description">%s</p>', wp_kses_post( $description ) );
-			}
-
-			if ( $disabled && $pro ) {
-				$before .= $this->pro_overlay( 'menucartflyout' );
-				$before .= '</div>'; // .pro-setting-wrapper
-			}
-
-			echo wp_kses( $before, $this->get_allowed_html() );
-		}
-
-		/**
-		 * Locked upload dropzone preview for the custom icon field.
-		 *
-		 * @param  array $args
-		 * @return void
-		 */
-		public function icon_upload_dropzone_callback( array $args ): void {
-			$pro      = $args['pro'] ?? false;
-			$disabled = ! empty( $args['disabled'] );
-
-			extract( $this->normalize_settings_args( $args ) );
-
-			$before = '';
-
-			if ( $disabled && $pro ) {
-				$before = '<div class="pro-setting-wrapper">';
-			}
-
-			printf( '<input id="%1$s" name="%2$s" type="hidden" value="%3$s" />', esc_attr( $id ), esc_attr( $setting_name ), esc_attr( $current ) );
-
-			$dropzone_classes = 'wpmenucart-upload-dropzone';
-			if ( ! ( $disabled && $pro ) ) {
-				$dropzone_classes .= ' wpmenucart-upload-dropzone--active wpo_upload_image_button';
-			}
-
-			$before .= sprintf(
-				'<span class="%1$s" role="button" tabindex="0"%2$s data-input_id="%3$s" data-uploader_title="%4$s" data-uploader_button_text="%5$s" data-remove_button_text="%6$s" data-mime-types="%7$s" data-extensions="%8$s">',
-				esc_attr( $dropzone_classes ),
-				( $disabled && $pro ) ? ' aria-disabled="true"' : '',
-				esc_attr( $id ),
-				esc_attr__( 'Select or upload a custom menu cart icon.', 'wp-menu-cart' ),
-				esc_attr__( 'Set image', 'wp-menu-cart' ),
-				esc_attr__( 'Remove image', 'wp-menu-cart' ),
-				esc_attr( 'image/svg+xml,image/png,image/jpeg,image/gif' ),
-				esc_attr( 'svg,png,jpg,jpeg,gif' )
-			);
-
-			if ( ! empty( $current ) ) {
-				$attachment = wp_get_attachment_image_src( $current, 'thumbnail', false );
-
-				if ( $attachment ) {
-					$before .= '<span class="wpmenucart-upload-dropzone__preview-wrap">';
-
-					$before .= sprintf(
-						'<img src="%1$s" class="wpmenucart-upload-dropzone__preview" id="img-%2$s" />',
-						esc_url( $attachment[0] ),
-						esc_attr( $id )
-					);
-
-					$before .= sprintf(
-						'<span class="wpmenucart-upload-dropzone__remove wpo_remove_image_button" role="button" tabindex="0" data-input_id="%1$s" aria-label="%2$s">&times;</span>',
-						esc_attr( $id ),
-						esc_attr__( 'Remove image', 'wp-menu-cart' )
-					);
-
-					$before .= '</span>'; // .wpmenucart-upload-dropzone__preview-wrap
-				}
-			}
-
-			$before .= '<span class="wpmenucart-upload-dropzone__icon" aria-hidden="true">';
-
-			echo wp_kses( $before, $this->get_allowed_html() );
-
-			// SVG isn't in get_allowed_html()'s tag list, render directly.
-			$this->render_svg( 'upload.svg' );
-
-			$after  = '</span>'; // .wpmenucart-upload-dropzone__icon
-			$after .= '<div class="wpmenucart-upload-dropzone__content">';
-			$after .= '<span class="wpmenucart-upload-dropzone__content-text">' . esc_html__( 'Click to upload', 'wp-menu-cart' ) . ' ' . esc_html__( 'or drag and drop', 'wp-menu-cart' ) . '</span>';
-			$after .= '<span class="wpmenucart-upload-dropzone__content-hint">' . esc_html__( 'SVG, PNG, JPG or GIF (max. 800x400px)', 'wp-menu-cart' ) . '</span>';
-			$after .= '</div>'; // .wpmenucart-upload-dropzone__content
-			$after .= '</span>'; // .wpmenucart-upload-dropzone
-
-			if ( isset( $args['description'] ) ) {
-				$after .= sprintf( '<p class="description">%s</p>', wp_kses_post( $args['description'] ) );
-			}
-
-			if ( $disabled && $pro ) {
-				$after .= $this->pro_overlay( 'menucartflyout' );
-				$after .= '</div>'; // .pro-setting-wrapper
-			}
-
-			echo wp_kses( $after, $this->get_allowed_html() );
-		}
-
-		/**
 		 * Generic toggle switch control, used for the Custom section's own
 		 * on/off toggle and for boolean fields inside it (icon_display).
 		 *
@@ -1124,56 +996,6 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 		}
 
 		/**
-		 * Media upload button with optional Pro overlay.
-		 *
-		 * @param  array $args
-		 *
-		 * @return void
-		 */
-		public function media_upload_callback( array $args ): void {
-			extract( $this->normalize_settings_args( $args ) );
-
-			$disabled = isset( $disabled ) ? ' disabled' : '';
-
-			$html = sprintf(
-				'<input type="button" id="%1$s" name="%2$s" class="btn button-primary" value="%3$s"%4$s />',
-				esc_attr( $id ),
-				esc_attr( $setting_name ),
-				esc_attr( $uploader_button_text ?? '' ),
-				esc_attr( $disabled )
-			);
-
-			if ( isset( $description ) ) {
-				$html .= sprintf( '<p class="description">%s</p>', wp_kses_post( $description ) );
-			}
-
-			echo wp_kses( $html, $this->get_allowed_html() );
-		}
-
-		/**
-		 * Icon radio with locked icons 1-13 when Pro not active.
-		 *
-		 * @param  array $args
-		 *
-		 * @return void
-		 */
-		public function icons_radio_element_callback( array $args ): void {
-			extract( $this->normalize_settings_args( $args ) );
-
-			$icons  = '';
-			$radios = '';
-
-			foreach ( $options as $key => $iconnumber ) {
-				$icons  .= sprintf( '<td style="padding-bottom:0;font-size:16pt;" align="center"><label for="%1$s[%2$s]"><i class="wpmenucart-icon-shopping-cart-%3$s"></i></label></td>', esc_attr( $id ), esc_attr( $key ), esc_attr( $iconnumber ) );
-				$radios .= sprintf( '<td style="padding-top:0" align="center"><input type="radio" class="radio" id="%1$s[%2$s]" name="%3$s" value="%2$s"%4$s /></td>', esc_attr( $id ), esc_attr( $key ), esc_attr( $setting_name ), checked( $current, $key, false ) );
-			}
-
-			$html = '<table><tr>' . $icons . '</tr><tr>' . $radios . '</tr></table>';
-
-			echo wp_kses( $html, $this->get_allowed_html() );
-		}
-
-		/**
 		 * Allowed HTML for wp_kses output.
 		 *
 		 * @return array
@@ -1189,10 +1011,9 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 				'select' => array( 'id' => array(), 'name' => array(), 'class' => array(), 'disabled' => array() ),
 				'option' => array( 'value' => array(), 'selected' => array(), 'disabled' => array() ),
 				'div'    => array( 'id' => array(), 'class' => array(), 'style' => array(), 'data-show_for_option_name' => array(), 'data-show_for_option_values' => array(), 'data-keep_current_value' => array() ),
-				'span'   => array( 'id' => array(), 'class' => array(), 'style' => array(), 'role' => array(), 'tabindex' => array(), 'aria-disabled' => array(), 'aria-hidden' => array(), 'aria-label' => array(), 'data-input_id' => array(), 'data-uploader_title' => array(), 'data-uploader_button_text' => array(), 'data-remove_button_text' => array(), 'data-mime-types' => array(), 'data-extensions' => array() ),
+				'span'   => array( 'id' => array(), 'class' => array(), 'style' => array(), 'role' => array(), 'tabindex' => array(), 'aria-disabled' => array(), 'aria-hidden' => array(), 'aria-label' => array() ),
 				'p'      => array( 'id' => array(), 'class' => array(), 'style' => array() ),
 				'i'      => array( 'class' => array() ),
-				'img'    => array( 'id' => array(), 'class' => array(), 'src' => array() ),
 				'b'      => array(), 'br' => array(), 'em' => array(), 'strong' => array(),
 			);
 		}

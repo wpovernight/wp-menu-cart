@@ -754,6 +754,8 @@ input[type="color"].wpmenucart-color-swatch-field__input {
 .wpmenucart-toggle-switch ~ .wpmenucart-custom-field-row__label-row,
 .wpmenucart-toggle-switch ~ .wpmenucart-custom-field-row__description {
 	margin-left: 42px;
+}
+
 /* Pro upsell strip */
 .wpmenucart-upsell-strip {
 	background: #F9F6FE;

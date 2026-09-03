@@ -210,40 +210,6 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 						),
 					),
 				),
-				'custom_icon'                => array(
-					'section'  => 'icon_style_custom',
-					'page'     => self::PAGE_ICON_STYLE,
-					'title'    => __( 'Upload Custom Icon', 'wp-menu-cart' ),
-					'callback' => $this->resolve_callback( 'icon_upload_dropzone_callback' ),
-					'args'     => array(
-						'option_name'       => $option_name,
-						'id'                => 'custom_icon',
-						'description'       => __( 'Overrides the selected icon above. Supports SVG (recommended) or PNG.', 'wp-menu-cart' ),
-						'disabled'          => true,
-						'pro'               => true,
-						'custom_attributes' => array(
-							'data-show_for_option_name' => $option_name . '[icon_display]',
-							'data-keep_current_value'   => 'true',
-						),
-					),
-				),
-				'cart_icon_color'            => array(
-					'section'  => 'icon_style_custom',
-					'page'     => self::PAGE_ICON_STYLE,
-					'title'    => __( 'Override icon colour', 'wp-menu-cart' ),
-					'callback' => $this->resolve_callback( 'color_swatch_callback' ),
-					'args'     => array(
-						'option_name'       => $option_name,
-						'id'                => 'cart_icon_color',
-						'description'       => __( "By default, the icon inherits your menu's text color.", 'wp-menu-cart' ),
-						'disabled'          => true,
-						'pro'               => true,
-						'custom_attributes' => array(
-							'data-show_for_option_name' => $option_name . '[icon_display]',
-							'data-keep_current_value'   => 'true',
-						),
-					),
-				),
 				'items_display'              => array(
 					'section'  => 'icon_style_custom',
 					'page'     => self::PAGE_ICON_STYLE,
@@ -736,15 +702,8 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 					'content'  => 'icon-style-upsell-cross',
 					'features' => array(
 						array(
-							'icons' => array(
-								'icon-swatch-mall.svg',
-								'icon-swatch-storefront.svg',
-								'icon-swatch-grocery.svg',
-								'icon-swatch-package.svg',
-								'icon-swatch-basket.svg',
-								'icon-swatch-bag.svg',
-							),
-							'label' => __( '13 more cart icons', 'wp-menu-cart' ),
+							'icons' => array( 'icon-swatch-mall.svg' ),
+							'label' => __( '2 templates', 'wp-menu-cart' ),
 						),
 						array(
 							'icons' => array( 'palette.svg' ),
@@ -753,6 +712,10 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 						array(
 							'icons' => array( 'upload.svg' ),
 							'label' => __( 'Upload a custom icon image', 'wp-menu-cart' ),
+						),
+						array(
+							'icons' => array( 'flyout-preview.svg' ),
+							'label' => __( 'Custom item content', 'wp-menu-cart' ),
 						),
 					),
 				),
