@@ -312,7 +312,8 @@ if ( ! class_exists( 'WpMenuCart_Nav_Menu' ) ) :
 				return $this->remove_cart_item( $menu_items, $cart_item_id );
 			}
 
-			$menu_id = isset( $args->menu->term_id ) ? $args->menu->term_id : 0;
+			$menu_object = ( $args->menu instanceof WP_Term ) ? $args->menu : wp_get_nav_menu_object( $args->menu );
+			$menu_id     = ( $menu_object && ! is_wp_error( $menu_object ) ) ? $menu_object->term_id : 0;
 
 			// Remove the item entirely when the cart should not render on this page.
 			if ( false === WPO_Menu_Cart()->main->should_render_menucart() ) {
