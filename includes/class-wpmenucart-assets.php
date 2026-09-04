@@ -111,10 +111,7 @@ if ( ! class_exists( 'WpMenuCart_Assets' ) ) :
 				WPMENUCART_VERSION
 			);
 
-			// Hide built-in theme carts
-			if ( isset( WPO_Menu_Cart()->main_settings['hide_theme_cart'] ) ) {
-				wp_add_inline_style( 'wpmenucart', '.et-cart-info { display:none !important; } .site-header-cart { display:none !important; }' );
-			}
+			WpMenuCart_Theme_Compat::maybe_hide_divi_cart();
 
 			// The single source of truth for the wpmenucart_ajax JS global. Attached
 			// to wpmenucart-remove since it's the only script enqueued unconditionally
@@ -313,10 +310,7 @@ if ( ! class_exists( 'WpMenuCart_Assets' ) ) :
 			// add inline font css
 			$wp_styles->add_inline_style( 'wp-edit-blocks', $this->get_parsed_font_css() );
 
-			// Hide built-in theme carts in the block editor.
-			if ( isset( WPO_Menu_Cart()->main_settings['hide_theme_cart'] ) ) {
-				$wp_styles->add_inline_style( 'wpmenucart', '.et-cart-info { display:none !important; } .site-header-cart { display:none !important; }' );
-			}
+			WpMenuCart_Theme_Compat::maybe_hide_divi_cart( $wp_styles );
 		}
 
 		/**
