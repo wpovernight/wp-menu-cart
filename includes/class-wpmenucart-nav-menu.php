@@ -312,7 +312,9 @@ if ( ! class_exists( 'WpMenuCart_Nav_Menu' ) ) :
 				return $this->remove_cart_item( $menu_items, $cart_item_id );
 			}
 
-			$menu_id = isset( $args->menu->term_id ) ? $args->menu->term_id : 0;
+			$menu_object = wp_get_nav_menu_object( $args->menu );
+			$menu_id     = is_object( $menu_object ) && isset( $menu_object->term_id ) ? (int) $menu_object->term_id : 0;
+			$menu_slug   = is_object( $menu_object ) && isset( $menu_object->slug ) ? $menu_object->slug : '';
 
 			// Remove the item entirely when the cart should not render on this page.
 			if ( false === WPO_Menu_Cart()->main->should_render_menucart() ) {
@@ -326,8 +328,7 @@ if ( ! class_exists( 'WpMenuCart_Nav_Menu' ) ) :
 				return $this->remove_cart_item( $menu_items, $cart_item_id );
 			}
 
-			$menu_slug = isset( $args->menu->slug ) ? $args->menu->slug : '';
-			$marker    = $this->apply_placeholder_marker( $cart_item );
+			$marker = $this->apply_placeholder_marker( $cart_item );
 
 			// Stash per-render data keyed by the args object hash so multiple menus
 			// in the same request each get their own slot without overwriting each other.
