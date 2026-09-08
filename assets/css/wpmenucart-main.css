@@ -41,6 +41,11 @@
 /* Hides from IE-mac \*/
 * html .wpmenucart .clearfix {height: 1%;}
 .wpmenucart .clearfix {display: block;}
+
+.wpmenucartli {
+	line-height: inherit !important;
+}
+
 /* End hide from IE-mac */
 /* Force Inline Display */
 li.wpmenucartli a.wpmenucart-contents span{

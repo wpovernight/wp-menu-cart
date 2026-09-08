@@ -181,7 +181,12 @@ if ( ! class_exists( 'WpMenuCart_Main' ) ) :
 		 * @return string
 		 */
 		public function wpmenucart_menu_item(): string {
-			$item_data = WPO_Menu_Cart()->shop->menu_item();
+			$item_data       = WPO_Menu_Cart()->shop->menu_item();
+			$template_markup = apply_filters( 'wpo_wpmenucart_icon_style_menu_item', null, $item_data );
+
+			if ( null !== $template_markup ) {
+				return $template_markup;
+			}
 
 			// Check empty cart settings
 			if ( 0 === $item_data['cart_contents_count'] && ! isset( WPO_Menu_Cart()->main_settings['always_display'] ) && ! WPO_Menu_Cart()->is_block_editor() ) {
@@ -225,9 +230,13 @@ if ( ! class_exists( 'WpMenuCart_Main' ) ) :
 
 			$menu_item_a_content = '';
 			if ( isset( WPO_Menu_Cart()->main_settings['icon_display'] ) ) {
-				// Only icon 0 is available in free.
-				$icon                 = '0';
-				$menu_item_icon       = '<i class="wpmenucart-icon-shopping-cart-' . $icon . '" role="img" aria-label="' . __( 'Cart','wp-menu-cart' ) . '"></i>';
+				$icon           = WPO_Menu_Cart()->main_settings['cart_icon'] ?? '0';
+				$menu_item_icon = apply_filters(
+					'wpo_wpmenucart_icon_markup',
+					'<i class="wpmenucart-icon-shopping-cart-' . esc_attr( $icon ) . '" role="img" aria-label="' . esc_attr__( 'Cart', 'wp-menu-cart' ) . '"></i>',
+					$icon
+				);
+
 				$menu_item_a_content .= $menu_item_icon;
 			} else {
 				$menu_item_icon = '';
@@ -245,6 +254,8 @@ if ( ! class_exists( 'WpMenuCart_Main' ) ) :
 				case 3: //items & price
 					$menu_item_a_content .= '<span class="cartcontents">' . $cart_contents . '</span><span class="amount">' . $item_data['cart_total'] . '</span>';
 					break;
+				default:
+					$menu_item_a_content .= apply_filters( 'wpo_wpmenucart_items_display_custom_content', '', $item_data, $cart_contents );
 			}
 
 			$menu_item_a_content = apply_filters( 'wpmenucart_menu_item_a_content', $menu_item_a_content, $menu_item_icon, $cart_contents, $item_data );
