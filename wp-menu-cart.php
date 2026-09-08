@@ -87,6 +87,11 @@ class WpMenuCart {
 	public $conflict_detector;
 
 	/**
+	 * @var WpMenuCart_Theme_Compat
+	 */
+	public $theme_compat;
+
+	/**
 	 * @var WpMenuCart
 	 */
 	protected static $_instance = null;
@@ -246,6 +251,9 @@ class WpMenuCart {
 
 		include_once( 'includes/class-wpmenucart-conflict-detector.php' );
 		$this->conflict_detector = new WpMenuCart_Conflict_Detector();
+
+		include_once( 'includes/class-wpmenucart-theme-compat.php' );
+		$this->theme_compat = new WpMenuCart_Theme_Compat();
 
 		include_once( 'includes/class-wpmenucart-settings.php' );
 		$this->settings = new WpMenuCart_Settings();
