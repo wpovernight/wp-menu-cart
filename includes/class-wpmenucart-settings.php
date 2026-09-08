@@ -71,6 +71,16 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 				update_option( $option_name, $option_values );
 			}
 
+			// Existing installs may have a cart_icon value from before the
+			// icon set was reduced (Pro previously offered up to 14 icons).
+			// Reset it here.
+			$allowed_cart_icons = apply_filters( 'wpo_wpmenucart_allowed_cart_icons', array( '0' ) );
+
+			if ( ! empty( $option_values ) && isset( $option_values['cart_icon'] ) && ! in_array( (string) $option_values['cart_icon'], $allowed_cart_icons, true ) ) {
+				$option_values['cart_icon'] = '0';
+				update_option( $option_name, $option_values );
+			}
+
 			// Register Sections
 			$sections = apply_filters( 'wpo_wpmenucart_main_settings_sections', array(
 				'cart_display_modes'  => array(
