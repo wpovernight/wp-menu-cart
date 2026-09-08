@@ -365,7 +365,31 @@ class WpMenuCart {
 	 * @return void
 	 */
 	protected function upgrade( string $installed_version ): void {
-		// Reserved for future version-gated migrations.
+		// Only run this migration for versions before 3.3.0.
+		// Version 3.3.0 introduced the Icon Style template system: the Custom
+		// section toggle, and a reduced cart_icon set.
+		if ( version_compare( $installed_version, '3.3.0', '<' ) ) {
+			$main = get_option( 'wpo_wpmenucart_main_settings', array() );
+
+			if ( is_array( $main ) && ! empty( $main ) ) {
+				$main['icon_style_custom_enabled'] = 1;
+				$main['icon_display']              = 1;
+
+				// cart_icon may hold a value from before the icon set was
+				// reduced (Pro previously offered up to 14 icons). The
+				// frontend has no fallback for an unrecognized value, it
+				// just silently renders nothing.
+				$allowed_cart_icons = apply_filters( 'wpo_wpmenucart_allowed_cart_icons', array( '0' ) );
+
+				if ( isset( $main['cart_icon'] ) && ! in_array( (string) $main['cart_icon'], $allowed_cart_icons, true ) ) {
+					$main['cart_icon'] = '0';
+				}
+
+				update_option( 'wpo_wpmenucart_main_settings', $main );
+
+				$this->main_settings = $main;
+			}
+		}
 	}
 
 	/**
