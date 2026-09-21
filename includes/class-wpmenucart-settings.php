@@ -734,7 +734,7 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 			<div class="wpmenucart-upsell-strip">
 				<div class="wpmenucart-upsell-strip__header">
 					<span class="wpmenucart-upsell-strip__lock" aria-hidden="true">
-						<?php $this->callbacks->render_svg( 'lock.svg' ); ?>
+						<?php $this->callbacks->print_svg( 'lock.svg' ); ?>
 					</span>
 					<strong class="wpmenucart-upsell-strip__title"><?php echo esc_html( $title ); ?></strong>
 					<span class="wpmenucart-upsell-strip__badge"><?php esc_html_e( 'Pro', 'wp-menu-cart' ); ?></span>
@@ -746,7 +746,7 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 						<span class="wpmenucart-upsell-strip__feature">
 							<span class="wpmenucart-upsell-strip__feature-icons" aria-hidden="true">
 								<?php foreach ( $feature['icons'] as $icon ) : ?>
-									<?php $this->callbacks->render_svg( $icon ); ?>
+									<?php $this->callbacks->print_svg( $icon ); ?>
 								<?php endforeach; ?>
 							</span>
 							<?php echo esc_html( $feature['label'] ); ?>
@@ -755,7 +755,7 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 				</div>
 				<a class="wpmenucart-upsell-strip__link" href="<?php echo esc_url( 'https://wpovernight.com/downloads/menu-cart-pro?utm_medium=plugin&utm_source=menucart&utm_campaign=' . $campaign . '&utm_content=' . $content ); ?>" target="_blank" rel="noopener noreferrer">
 					<?php esc_html_e( "See what's in Pro", 'wp-menu-cart' ); ?>
-					<?php $this->callbacks->render_svg( 'open-in-new.svg' ); ?>
+					<?php $this->callbacks->print_svg( 'open-in-new.svg' ); ?>
 				</a>
 			</div>
 			<?php
