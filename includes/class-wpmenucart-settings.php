@@ -48,7 +48,7 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 			$option_group      = self::OPTION_NAME;
 			$option_name       = self::OPTION_NAME;
 			$option_values     = get_option( $option_name, array() );
-			$legacy_icon_style = $this->callbacks->pro_needs_legacy_icon_style();
+			$legacy_icon_style = $this->callbacks->pro_older_than( '5.1.0' );
 
 			register_setting( $option_group, $option_name, $this->resolve_callback( 'validate' ) );
 

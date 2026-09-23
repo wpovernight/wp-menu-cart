@@ -955,7 +955,7 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 				$output['icon_style_template'] = $this->resolve_available_icon_style( $output['icon_style_template'] );
 			}
 
-			$allowed_cart_icons = $this->pro_needs_legacy_icon_style()
+			$allowed_cart_icons = $this->pro_older_than( '5.1.0' )
 				? array_map( 'strval', range( 0, 13 ) )
 				: apply_filters( 'wpo_wpmenucart_allowed_cart_icons', array( '0' ) );
 
@@ -968,7 +968,7 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 			// since it's new to this redesign, so they're allowed through on the
 			// legacy-icon-style check instead, the same way as the cart icon list.
 			if ( isset( $output['items_display'] ) && 'custom' === $output['items_display']
-				&& ! $this->pro_needs_legacy_icon_style()
+				&& ! $this->pro_older_than( '5.1.0' )
 				&& ! apply_filters( 'wpo_wpmenucart_items_display_custom_unlocked', false ) ) {
 				$output['items_display'] = '3';
 			}
@@ -1004,22 +1004,9 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 		 * @param  string $version Minimum Pro version that has the fix or feature.
 		 * @return bool
 		 */
-		protected function pro_older_than( string $version ): bool {
+		public function pro_older_than( string $version ): bool {
 			return defined( 'WPO_MENU_CART_PRO_VERSION' )
 				&& version_compare( WPO_MENU_CART_PRO_VERSION, $version, '<' );
-		}
-
-		/**
-		 * Whether Pro is active but too old to render the redesigned Icon
-		 * Style templates. Pro 5.1.0 rewrote how the cart icon picker and the
-		 * Contents-of-menu-cart custom panel render, so Pro versions before
-		 * that still expect the old field shapes. Gates the legacy icon radio
-		 * grid and the items_display callback fix.
-		 *
-		 * @return bool
-		 */
-		public function pro_needs_legacy_icon_style(): bool {
-			return $this->pro_older_than( '5.1.0' );
 		}
 
 		/**
