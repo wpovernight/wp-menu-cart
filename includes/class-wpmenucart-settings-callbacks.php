@@ -967,6 +967,17 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 		}
 
 		/**
+		 * Whether the active Pro version is older than $version.
+		 *
+		 * @param  string $version Minimum Pro version that has the fix or feature.
+		 * @return bool
+		 */
+		public function pro_older_than( string $version ): bool {
+			return defined( 'WPO_MENU_CART_PRO_VERSION' )
+				&& version_compare( WPO_MENU_CART_PRO_VERSION, $version, '<' );
+		}
+
+		/**
 		 * Output an SVG file from the plugin's images directory.
 		 *
 		 * @param  string $filename SVG filename without path, e.g. 'checkmark.svg'.
