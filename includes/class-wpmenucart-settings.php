@@ -266,7 +266,7 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 			// custom_icon themselves; they expect to find these here, locked,
 			// so their own wpo_wpmenucart_main_settings_fields hook (which runs
 			// as part of the apply_filters() call just below) can unlock them.
-			if ( $this->callbacks->pro_needs_legacy_field_registration() ) {
+			if ( $this->callbacks->pro_older_than( '5.1.0' ) ) {
 				$fields = $this->array_insert_after( $fields, 'cart_icon', $this->legacy_pro_fields( $option_name ) );
 			}
 

@@ -978,19 +978,6 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 		}
 
 		/**
-		 * Whether Pro is active but too old to register its own
-		 * cart_icon_color and custom_icon settings fields. Pro 5.1.0
-		 * switched from unlocking Free's pre-registered pro-only fields
-		 * (stripping their 'disabled'/'pro' args) to registering its own
-		 * fields directly, and Free stopped registering those fields.
-		 *
-		 * @return bool
-		 */
-		public function pro_needs_legacy_field_registration(): bool {
-			return $this->pro_older_than( '5.1.0' );
-		}
-
-		/**
 		 * Output an SVG file from the plugin's images directory.
 		 *
 		 * @param  string $filename SVG filename without path, e.g. 'checkmark.svg'.
