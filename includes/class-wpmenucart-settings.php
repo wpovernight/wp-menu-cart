@@ -262,6 +262,14 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 				),
 			);
 
+			// Pro versions older than 5.1.0 don't register cart_icon_color and
+			// custom_icon themselves; they expect to find these here, locked,
+			// so their own wpo_wpmenucart_main_settings_fields hook (which runs
+			// as part of the apply_filters() call just below) can unlock them.
+			if ( $this->callbacks->pro_older_than( '5.1.0' ) ) {
+				$fields = $this->array_insert_after( $fields, 'cart_icon', $this->legacy_pro_fields( $option_name ) );
+			}
+
 			$fields = apply_filters( 'wpo_wpmenucart_main_settings_fields', $fields, $option_name );
 
 			foreach ( $fields as $field_id => $field ) {
@@ -277,6 +285,62 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 					);
 				}
 			}
+		}
+
+		/**
+		 * Field definitions for cart_icon_color and custom_icon, served only
+		 * to sites running a Pro version older than 5.1.0.
+		 *
+		 * @param  string $option_name
+		 * @return array
+		 */
+		protected function legacy_pro_fields( string $option_name ): array {
+			return array(
+				'cart_icon_color' => array(
+					'section'  => 'icon_style_custom',
+					'page'     => self::PAGE_ICON_STYLE,
+					'title'    => __( 'Override icon color', 'wp-menu-cart' ),
+					'callback' => $this->resolve_callback( 'optional_color_picker_element_callback' ),
+					'args'     => array(
+						'option_name' => $option_name,
+						'id'          => 'cart_icon_color',
+						'disabled'    => true,
+						'pro'         => true,
+					),
+				),
+				'custom_icon'     => array(
+					'section'  => 'icon_style_custom',
+					'page'     => self::PAGE_ICON_STYLE,
+					'title'    => __( 'Custom Icon', 'wp-menu-cart' ),
+					'callback' => $this->resolve_callback( 'media_upload_callback' ),
+					'args'     => array(
+						'option_name'          => $option_name,
+						'id'                   => 'custom_icon',
+						'uploader_button_text' => __( 'Set image', 'wp-menu-cart' ),
+						'uploader_title'       => __( 'Select or upload a custom menu cart icon.', 'wp-menu-cart' ),
+						'remove_button_text'   => __( 'Remove image', 'wp-menu-cart' ),
+						'description'          => __( 'Upload a custom menu cart icon here if you do not want to use one of the icons above. Make sure you resize the icon before uploading. Icon should usually be 15-30px tall.', 'wp-menu-cart' ),
+						'disabled'             => true,
+						'pro'                  => true,
+					),
+				),
+			);
+		}
+
+		/**
+		 * Insert elements into an associative array right after a given key.
+		 *
+		 * @param  array  $array The original array.
+		 * @param  string $key   The key to insert after. Appended at the end if not found.
+		 * @param  array  $new   The elements to insert.
+		 * @return array
+		 */
+		protected function array_insert_after( array $array, string $key, array $new ): array {
+			$keys  = array_keys( $array );
+			$index = array_search( $key, $keys, true );
+			$pos   = ( false === $index ) ? count( $array ) : $index + 1;
+
+			return array_merge( array_slice( $array, 0, $pos, true ), $new, array_slice( $array, $pos, null, true ) );
 		}
 
 		/**
@@ -521,7 +585,7 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 
 			if ( isset( $pages[ $current_subtab ] ) ) :
 				?>
-				<form method="post" action="options.php">
+				<form method="post" action="options.php" id="wpo-wpmenucart-settings">
 					<?php settings_fields( self::OPTION_NAME ); ?>
 					<input type="hidden" name="wpo_wpmenucart_settings_page" value="<?php echo esc_attr( $pages[ $current_subtab ] ); ?>" />
 					<?php
