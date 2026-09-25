@@ -1015,7 +1015,7 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 		 * @param  string $filename SVG filename without path, e.g. 'checkmark.svg'.
 		 * @return void
 		 */
-		public function render_svg( string $filename ): void {
+		protected function render_svg( string $filename ): void {
 			echo $this->get_svg( $filename ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- SVG loaded from plugin directory.
 		}
 
