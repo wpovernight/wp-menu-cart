@@ -376,13 +376,20 @@ class WpMenuCart {
 				$main['icon_display']              = 1;
 
 				// cart_icon may hold a value from before the icon set was
-				// reduced (Pro previously offered up to 14 icons). The
-				// frontend has no fallback for an unrecognized value, it
-				// just silently renders nothing.
-				$allowed_cart_icons = apply_filters( 'wpo_wpmenucart_allowed_cart_icons', array( '0' ) );
+				// reduced (Pro previously offered up to 14 icons). Sites
+				// running a Pro version older than 5.1.0 still render and
+				// accept those legacy values through the Icon Style fallback,
+				// so leave them alone here. Everywhere else, the unrecognized
+				// value get reset to the default.
+				$legacy_icon_style = isset( $this->settings->callbacks )
+					&& $this->settings->callbacks->pro_older_than( '5.1.0' );
 
-				if ( isset( $main['cart_icon'] ) && ! in_array( (string) $main['cart_icon'], $allowed_cart_icons, true ) ) {
-					$main['cart_icon'] = '0';
+				if ( ! $legacy_icon_style ) {
+					$allowed_cart_icons = apply_filters( 'wpo_wpmenucart_allowed_cart_icons', array( '0' ) );
+
+					if ( isset( $main['cart_icon'] ) && ! in_array( (string) $main['cart_icon'], $allowed_cart_icons, true ) ) {
+						$main['cart_icon'] = '0';
+					}
 				}
 
 				update_option( 'wpo_wpmenucart_main_settings', $main );
