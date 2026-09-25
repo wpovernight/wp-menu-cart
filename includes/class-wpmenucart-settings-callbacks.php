@@ -848,6 +848,33 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 		}
 
 		/**
+		 * Legacy icon radio grid, served only to sites running a Pro version
+		 * older than 5.1.0, which can't render the new Icon Style templates.
+		 * Old Pro is confirmed active whenever this runs, so every icon
+		 * renders as selectable. The icon glyphs come from Pro's own icon
+		 * font (wpmenucart-icons-pro.css), loaded by Pro itself.
+		 *
+		 * @param  array $args Field arguments.
+		 * @return void
+		 */
+		public function icons_radio_element_callback( array $args ): void {
+			extract( $this->normalize_settings_args( $args ) );
+
+			$icons  = '';
+			$radios = '';
+
+			foreach ( $options as $key => $iconnumber ) {
+				$icons  .= sprintf( '<td style="padding-bottom:0;font-size:16pt;" align="center"><label for="%1$s[%2$s]"><i class="wpmenucart-icon-shopping-cart-%3$s"></i></label></td>', esc_attr( $id ), esc_attr( $key ), esc_attr( $iconnumber ) );
+				$radios .= sprintf( '<td style="padding-top:0" align="center"><input type="radio" class="radio" id="%1$s[%2$s]" name="%3$s" value="%2$s"%4$s /></td>', esc_attr( $id ), esc_attr( $key ), esc_attr( $setting_name ), checked( $current, $key, false ) );
+			}
+
+			$html  = '<table><tr>' . $icons . '</tr><tr>' . $radios . '</tr></table>';
+			$html .= '<p class="description"><i>' . __( '<strong>Please note:</strong> you need to open your website in a new tab/browser window after updating the cart icon for the change to be visible!', 'wp-menu-cart' ) . '</i></p>';
+
+			echo wp_kses( $html, $this->get_allowed_html() );
+		}
+
+		/**
 		 * Generic toggle switch control, used for the Custom section's own
 		 * on/off toggle and for boolean fields inside it (icon_display).
 		 *
@@ -928,15 +955,20 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 				$output['icon_style_template'] = $this->resolve_available_icon_style( $output['icon_style_template'] );
 			}
 
-			// Only the default cart icon is available in free. Pro extends this list.
-			$allowed_cart_icons = apply_filters( 'wpo_wpmenucart_allowed_cart_icons', array( '0' ) );
+			$allowed_cart_icons = WPO_Menu_Cart()->pro_older_than( '5.1.0' )
+				? array_map( 'strval', range( 0, 13 ) )
+				: apply_filters( 'wpo_wpmenucart_allowed_cart_icons', array( '0' ) );
 
 			if ( isset( $output['cart_icon'] ) && ! in_array( (string) $output['cart_icon'], $allowed_cart_icons, true ) ) {
 				$output['cart_icon'] = '0';
 			}
 
-			// The Custom placeholder option for items_display requires Pro.
+			// The Custom placeholder option for items_display requires Pro. Pro
+			// versions before 5.1.0 never hook wpo_wpmenucart_items_display_custom_unlocked,
+			// since it's new to this redesign, so they're allowed through on the
+			// legacy-icon-style check instead, the same way as the cart icon list.
 			if ( isset( $output['items_display'] ) && 'custom' === $output['items_display']
+				&& ! WPO_Menu_Cart()->pro_older_than( '5.1.0' )
 				&& ! apply_filters( 'wpo_wpmenucart_items_display_custom_unlocked', false ) ) {
 				$output['items_display'] = '3';
 			}
@@ -964,17 +996,6 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 			}
 
 			return $output;
-		}
-
-		/**
-		 * Whether the active Pro version is older than $version.
-		 *
-		 * @param  string $version Minimum Pro version that has the fix or feature.
-		 * @return bool
-		 */
-		public function pro_older_than( string $version ): bool {
-			return defined( 'WPO_MENU_CART_PRO_VERSION' )
-				&& version_compare( WPO_MENU_CART_PRO_VERSION, $version, '<' );
 		}
 
 		/**

@@ -45,9 +45,10 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 		 * @return void
 		 */
 		public function main_settings(): void {
-			$option_group  = self::OPTION_NAME;
-			$option_name   = self::OPTION_NAME;
-			$option_values = get_option( $option_name, array() );
+			$option_group      = self::OPTION_NAME;
+			$option_name       = self::OPTION_NAME;
+			$option_values     = get_option( $option_name, array() );
+			$legacy_icon_style = WPO_Menu_Cart()->pro_older_than( '5.1.0' );
 
 			register_setting( $option_group, $option_name, $this->resolve_callback( 'validate' ) );
 
@@ -180,27 +181,43 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 						'inline_toggle'  => true,
 					),
 				),
-				'cart_icon'                  => array(
-					'section'  => 'icon_style_custom',
-					'page'     => self::PAGE_ICON_STYLE,
-					'title'    => __( 'Choose a cart icon', 'wp-menu-cart' ),
-					'callback' => $this->resolve_callback( 'select_with_locked_options' ),
-					'args'     => array(
-						'option_name'       => $option_name,
-						'id'                => 'cart_icon',
-						'options'           => array(
-							'0' => __( 'Default Cart (FontAwesome)', 'wp-menu-cart' ),
-							'1' => __( 'Shopping Bag', 'wp-menu-cart' ),
-							'2' => __( 'Woven Basket', 'wp-menu-cart' ),
+				'cart_icon' => $legacy_icon_style
+					? array(
+						'section'  => 'icon_style_custom',
+						'page'     => self::PAGE_ICON_STYLE,
+						'title'    => __( 'Choose a cart icon', 'wp-menu-cart' ),
+						// Called directly rather than through resolve_callback(): Pro's
+						// own pre-5.1.0 override of this method has an unclosed <i> tag
+						// that breaks the layout of every row after it, so this
+						// deliberately skips Pro's version rather than deferring to it.
+						'callback' => array( $this->callbacks, 'icons_radio_element_callback' ),
+						'args'     => array(
+							'option_name' => $option_name,
+							'id'          => 'cart_icon',
+							'options'     => range( 0, 13 ),
 						),
-						'locked_options'    => array( '1', '2' ),
-						'description'       => __( 'Select from our library of standard e-commerce icons.', 'wp-menu-cart' ),
-						'custom_attributes' => array(
-							'data-show_for_option_name' => $option_name . '[icon_display]',
-							'data-keep_current_value'   => 'true',
+					)
+					: array(
+						'section'  => 'icon_style_custom',
+						'page'     => self::PAGE_ICON_STYLE,
+						'title'    => __( 'Choose a cart icon', 'wp-menu-cart' ),
+						'callback' => $this->resolve_callback( 'select_with_locked_options' ),
+						'args'     => array(
+							'option_name'       => $option_name,
+							'id'                => 'cart_icon',
+							'options'           => array(
+								'0' => __( 'Default Cart (FontAwesome)', 'wp-menu-cart' ),
+								'1' => __( 'Shopping Bag', 'wp-menu-cart' ),
+								'2' => __( 'Woven Basket', 'wp-menu-cart' ),
+							),
+							'locked_options'    => array( '1', '2' ),
+							'description'       => __( 'Select from our library of standard e-commerce icons.', 'wp-menu-cart' ),
+							'custom_attributes' => array(
+								'data-show_for_option_name' => $option_name . '[icon_display]',
+								'data-keep_current_value'   => 'true',
+							),
 						),
 					),
-				),
 				'items_display'              => array(
 					'section'  => 'icon_style_custom',
 					'page'     => self::PAGE_ICON_STYLE,
@@ -266,11 +283,26 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 			// custom_icon themselves; they expect to find these here, locked,
 			// so their own wpo_wpmenucart_main_settings_fields hook (which runs
 			// as part of the apply_filters() call just below) can unlock them.
-			if ( $this->callbacks->pro_older_than( '5.1.0' ) ) {
+			if ( WPO_Menu_Cart()->pro_older_than( '5.1.0' ) ) {
 				$fields = $this->array_insert_after( $fields, 'cart_icon', $this->legacy_pro_fields( $option_name ) );
 			}
 
 			$fields = apply_filters( 'wpo_wpmenucart_main_settings_fields', $fields, $option_name );
+
+			if ( $legacy_icon_style && isset( $fields['items_display']['args']['custom'] ) ) {
+				// Pro versions before 5.1.0 rewrite this field to render through
+				// select() instead of select_with_locked_options(). select()'s
+				// custom-content panel doesn't carry the class the conditional
+				// visibility script looks for, which leaves the panel stuck
+				// visible on load and hides the entire field, dropdown included,
+				// the moment a non-custom option is picked. Pro's own custom-content
+				// sub-callback is left as-is; only the wrapping callback needs fixing.
+				// Old Pro's own unlock loop only clears the 'pro'/'disabled' keys the
+				// card-style fields use, it has no concept of locked_options, so that
+				// stays locked unless cleared here too.
+				$fields['items_display']['callback']               = $this->resolve_callback( 'select_with_locked_options' );
+				$fields['items_display']['args']['locked_options'] = array();
+			}
 
 			foreach ( $fields as $field_id => $field ) {
 				// The fixed show_if logic: Show if 'show_if' isn't set, or if it evaluates to true.

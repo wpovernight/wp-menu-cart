@@ -3,7 +3,7 @@
  * Plugin Name:          WP Menu Cart
  * Plugin URI:           https://wpovernight.com/downloads/menu-cart-pro/
  * Description:          Extension for your e-commerce plugin (WooCommerce or Easy Digital Downloads) that places a cart icon with number of items and total cost in the menu bar. Activate the plugin, set your options and you're ready to go! Will automatically conform to your theme styles.
- * Version:              3.3.0-i95.1
+ * Version:              3.3.0-i96.1
  * Author:               WP Overnight
  * Author URI:           https://wpovernight.com/
  * License:              GPLv2 or later
@@ -24,7 +24,7 @@ class WpMenuCart {
 	/**
 	 * @var string
 	 */
-	protected $plugin_version = '3.3.0-i95.1';
+	protected $plugin_version = '3.3.0-i96.1';
 
 	/**
 	 * @var string
@@ -376,13 +376,19 @@ class WpMenuCart {
 				$main['icon_display']              = 1;
 
 				// cart_icon may hold a value from before the icon set was
-				// reduced (Pro previously offered up to 14 icons). The
-				// frontend has no fallback for an unrecognized value, it
-				// just silently renders nothing.
-				$allowed_cart_icons = apply_filters( 'wpo_wpmenucart_allowed_cart_icons', array( '0' ) );
+				// reduced (Pro previously offered up to 14 icons). Sites
+				// running a Pro version older than 5.1.0 still render and
+				// accept those legacy values through the Icon Style fallback,
+				// so leave them alone here. Everywhere else, the unrecognized
+				// value get reset to the default.
+				$legacy_icon_style = $this->pro_older_than( '5.1.0' );
 
-				if ( isset( $main['cart_icon'] ) && ! in_array( (string) $main['cart_icon'], $allowed_cart_icons, true ) ) {
-					$main['cart_icon'] = '0';
+				if ( ! $legacy_icon_style ) {
+					$allowed_cart_icons = apply_filters( 'wpo_wpmenucart_allowed_cart_icons', array( '0' ) );
+
+					if ( isset( $main['cart_icon'] ) && ! in_array( (string) $main['cart_icon'], $allowed_cart_icons, true ) ) {
+						$main['cart_icon'] = '0';
+					}
 				}
 
 				update_option( 'wpo_wpmenucart_main_settings', $main );
@@ -760,6 +766,17 @@ class WpMenuCart {
 			</p>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Whether the active Pro version is older than $version.
+	 *
+	 * @param  string $version Minimum Pro version that has the fix or feature.
+	 * @return bool
+	 */
+	public function pro_older_than( string $version ): bool {
+		return defined( 'WPO_MENU_CART_PRO_VERSION' )
+			&& version_compare( WPO_MENU_CART_PRO_VERSION, $version, '<' );
 	}
 
 	/**
