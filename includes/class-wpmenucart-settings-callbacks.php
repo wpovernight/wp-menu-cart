@@ -955,7 +955,7 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 				$output['icon_style_template'] = $this->resolve_available_icon_style( $output['icon_style_template'] );
 			}
 
-			$allowed_cart_icons = $this->pro_older_than( '5.1.0' )
+			$allowed_cart_icons = WPO_Menu_Cart()->pro_older_than( '5.1.0' )
 				? array_map( 'strval', range( 0, 13 ) )
 				: apply_filters( 'wpo_wpmenucart_allowed_cart_icons', array( '0' ) );
 
@@ -968,7 +968,7 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 			// since it's new to this redesign, so they're allowed through on the
 			// legacy-icon-style check instead, the same way as the cart icon list.
 			if ( isset( $output['items_display'] ) && 'custom' === $output['items_display']
-				&& ! $this->pro_older_than( '5.1.0' )
+				&& ! WPO_Menu_Cart()->pro_older_than( '5.1.0' )
 				&& ! apply_filters( 'wpo_wpmenucart_items_display_custom_unlocked', false ) ) {
 				$output['items_display'] = '3';
 			}
@@ -996,17 +996,6 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 			}
 
 			return $output;
-		}
-
-		/**
-		 * Whether the active Pro version is older than $version.
-		 *
-		 * @param  string $version Minimum Pro version that has the fix or feature.
-		 * @return bool
-		 */
-		public function pro_older_than( string $version ): bool {
-			return defined( 'WPO_MENU_CART_PRO_VERSION' )
-				&& version_compare( WPO_MENU_CART_PRO_VERSION, $version, '<' );
 		}
 
 		/**

@@ -48,7 +48,7 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 			$option_group      = self::OPTION_NAME;
 			$option_name       = self::OPTION_NAME;
 			$option_values     = get_option( $option_name, array() );
-			$legacy_icon_style = $this->callbacks->pro_older_than( '5.1.0' );
+			$legacy_icon_style = WPO_Menu_Cart()->pro_older_than( '5.1.0' );
 
 			register_setting( $option_group, $option_name, $this->resolve_callback( 'validate' ) );
 
@@ -283,7 +283,7 @@ if ( ! class_exists( 'WpMenuCart_Settings' ) ) :
 			// custom_icon themselves; they expect to find these here, locked,
 			// so their own wpo_wpmenucart_main_settings_fields hook (which runs
 			// as part of the apply_filters() call just below) can unlock them.
-			if ( $this->callbacks->pro_older_than( '5.1.0' ) ) {
+			if ( WPO_Menu_Cart()->pro_older_than( '5.1.0' ) ) {
 				$fields = $this->array_insert_after( $fields, 'cart_icon', $this->legacy_pro_fields( $option_name ) );
 			}
 
