@@ -988,16 +988,6 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 		}
 
 		/**
-		 * Public entry point for rendering an SVG from outside the class hierarchy.
-		 *
-		 * @param  string $filename SVG filename without path, e.g. 'checkmark.svg'.
-		 * @return void
-		 */
-		public function print_svg( string $filename ): void {
-			$this->render_svg( $filename );
-		}
-
-		/**
 		 * Get an SVG file's contents from the plugin's images directory.
 		 *
 		 * Caches loaded SVGs in memory to avoid repeated filesystem reads.
