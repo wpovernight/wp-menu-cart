@@ -5,7 +5,7 @@ Tags: woocommerce, edd, menu, cart, shopping cart
 Requires at least: 3.4
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 3.1.0
+Stable tag: 3.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -84,6 +84,17 @@ Once the plugin is activated navigate to Settings > Menu Cart Setup. Select your
 == Frequently Asked Questions ==
 
 == Changelog ==
+
+= 3.2.0 (2026-09-28) =
+* New: Redesigned the Menu Icon Style settings with templates and custom styling options
+* New: Refreshed Pro feature previews and upgrade links throughout the settings
+* Fix: Restore legacy cart icons for Pro versions older than 5.1.0
+* Fix: Restore protected `render_svg()` to prevent fatal error with Pro
+* Fix: Register cart_icon_color and custom_icon fields for Pro versions older than 5.1.0
+* Fix: Hide mobile cart, hide Storefront cart via unhook, Divi via CSS
+* Fix: Cart item disappearing in some Divi menu configurations
+* Translations: Updated translation template (POT)
+* Tested up to WooCommerce 11.1
 
 = 3.1.0 (2026-08-03) =
 * New: Refactor menu cart placeholder matching and logging for easier maintenance
