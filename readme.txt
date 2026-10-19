@@ -5,7 +5,7 @@ Tags: woocommerce, edd, menu, cart, shopping cart
 Requires at least: 3.4
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 3.2.0
+Stable tag: 3.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -84,6 +84,11 @@ Once the plugin is activated navigate to Settings > Menu Cart Setup. Select your
 == Frequently Asked Questions ==
 
 == Changelog ==
+
+= 3.2.1 (2026-10-19) =
+* Fix: Harden escaping of cart item data in the cart slide-out
+* Translations: Updated translation template (POT)
+* Tested up to WooCommerce 11.2
 
 = 3.2.0 (2026-09-28) =
 * New: Redesigned the Menu Icon Style settings with templates and custom styling options

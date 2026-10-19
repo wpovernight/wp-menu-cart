@@ -2,21 +2,21 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Menu Cart 3.1.0\n"
+"Project-Id-Version: WP Menu Cart 3.2.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-menu-cart\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-03T08:29:15+00:00\n"
+"POT-Creation-Date: 2026-10-19T09:31:23+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: wp-menu-cart\n"
 
 #. Plugin Name of the plugin
 #: wp-menu-cart.php
-#: includes/class-wpmenucart-settings.php:401
+#: includes/class-wpmenucart-settings.php:470
 msgid "WP Menu Cart"
 msgstr ""
 
@@ -112,23 +112,23 @@ msgstr ""
 msgid "Item removal is not allowed here."
 msgstr ""
 
-#: includes/class-wpmenucart-main.php:199
+#: includes/class-wpmenucart-main.php:204
 msgid "View your shopping cart"
 msgstr ""
 
-#: includes/class-wpmenucart-main.php:200
+#: includes/class-wpmenucart-main.php:205
 msgid "Start shopping"
 msgstr ""
 
 #. translators: item count
-#: includes/class-wpmenucart-main.php:202
+#: includes/class-wpmenucart-main.php:207
 #, php-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-wpmenucart-main.php:230
+#: includes/class-wpmenucart-main.php:236
 #: assets/js/wpmenucart-navigation-block.js:24
 msgid "Cart"
 msgstr ""
@@ -141,8 +141,8 @@ msgstr ""
 #: includes/class-wpmenucart-nav-menu.php:220
 #: includes/class-wpmenucart-nav-menu.php:244
 #: includes/class-wpmenucart-nav-menu.php:245
-#: includes/class-wpmenucart-settings.php:323
-#: includes/class-wpmenucart-settings.php:324
+#: includes/class-wpmenucart-settings.php:392
+#: includes/class-wpmenucart-settings.php:393
 msgid "Menu Cart"
 msgstr ""
 
@@ -150,180 +150,221 @@ msgstr ""
 msgid "Add to Menu"
 msgstr ""
 
-#: includes/class-wpmenucart-settings-callbacks.php:194
+#: includes/class-wpmenucart-settings-callbacks.php:166
 msgid "Desktop Cart Mode"
 msgstr ""
 
-#: includes/class-wpmenucart-settings-callbacks.php:203
+#: includes/class-wpmenucart-settings-callbacks.php:175
 msgid "Mobile Cart Mode"
 msgstr ""
 
-#: includes/class-wpmenucart-settings-callbacks.php:246
+#: includes/class-wpmenucart-settings-callbacks.php:218
 msgid "Screens"
 msgstr ""
 
-#: includes/class-wpmenucart-settings-callbacks.php:341
+#: includes/class-wpmenucart-settings-callbacks.php:272
+msgid "Templates"
+msgstr ""
+
+#: includes/class-wpmenucart-settings-callbacks.php:312
+msgid "Templates are disabled while Custom Section is enabled."
+msgstr ""
+
+#: includes/class-wpmenucart-settings-callbacks.php:332
+#: includes/class-wpmenucart-settings.php:233
+msgid "Custom"
+msgstr ""
+
+#: includes/class-wpmenucart-settings-callbacks.php:511
 msgid "Theme conflict detected."
 msgstr ""
 
-#: includes/class-wpmenucart-settings-callbacks.php:345
+#: includes/class-wpmenucart-settings-callbacks.php:515
 msgid "Requires Menu Cart Pro."
 msgstr ""
 
-#: includes/class-wpmenucart-settings-callbacks.php:388
+#: includes/class-wpmenucart-settings-callbacks.php:516
+#: includes/class-wpmenucart-settings.php:836
+msgid "Pro"
+msgstr ""
+
+#: includes/class-wpmenucart-settings-callbacks.php:555
 msgid "Theme Conflict Detected"
 msgstr ""
 
-#: includes/class-wpmenucart-settings-callbacks.php:413
-msgid "Sidebar Slide-out Settings"
-msgstr ""
-
-#: includes/class-wpmenucart-settings-callbacks.php:422
-msgid "Sidebar width"
-msgstr ""
-
-#: includes/class-wpmenucart-settings-callbacks.php:432
-msgid "Overlay opacity"
-msgstr ""
-
-#: includes/class-wpmenucart-settings-callbacks.php:453
+#: includes/class-wpmenucart-settings-callbacks.php:595
 msgid "Desktop only"
 msgstr ""
 
-#: includes/class-wpmenucart-settings-callbacks.php:454
+#: includes/class-wpmenucart-settings-callbacks.php:595
 msgid "Mobile only"
 msgstr ""
 
-#: includes/class-wpmenucart-settings-callbacks.php:495
+#: includes/class-wpmenucart-settings-callbacks.php:618
+msgid "Sidebar Slide-out Settings"
+msgstr ""
+
+#: includes/class-wpmenucart-settings-callbacks.php:623
+msgid "Sidebar width"
+msgstr ""
+
+#: includes/class-wpmenucart-settings-callbacks.php:633
+msgid "Overlay opacity"
+msgstr ""
+
+#: includes/class-wpmenucart-settings-callbacks.php:695
 msgid "None"
 msgstr ""
 
-#: includes/class-wpmenucart-settings-callbacks.php:496
+#: includes/class-wpmenucart-settings-callbacks.php:696
 msgid "Don't use a template"
 msgstr ""
 
-#: includes/class-wpmenucart-settings-callbacks.php:500
+#: includes/class-wpmenucart-settings-callbacks.php:700
 msgid "Sidebar Slide-out"
 msgstr ""
 
-#: includes/class-wpmenucart-settings-callbacks.php:501
+#: includes/class-wpmenucart-settings-callbacks.php:701
 msgid "Full cart slides in from the side"
 msgstr ""
 
-#: includes/class-wpmenucart-settings-callbacks.php:505
+#: includes/class-wpmenucart-settings-callbacks.php:705
 msgid "Floating Cart"
 msgstr ""
 
-#: includes/class-wpmenucart-settings-callbacks.php:506
+#: includes/class-wpmenucart-settings-callbacks.php:706
 msgid "Fixed floating button"
 msgstr ""
 
-#: includes/class-wpmenucart-settings-callbacks.php:512
+#: includes/class-wpmenucart-settings-callbacks.php:712
 msgid "Dropdown Preview"
 msgstr ""
 
-#: includes/class-wpmenucart-settings-callbacks.php:513
+#: includes/class-wpmenucart-settings-callbacks.php:713
 msgid "Hover/click shows cart contents"
 msgstr ""
 
-#: includes/class-wpmenucart-settings-callbacks.php:717
-msgid "Additional icons are only available in"
+#: includes/class-wpmenucart-settings-callbacks.php:729
+msgid "Cart button"
 msgstr ""
 
-#: includes/class-wpmenucart-settings-callbacks.php:765
-msgid "This feature only available in"
+#: includes/class-wpmenucart-settings-callbacks.php:730
+msgid "Shape and total options"
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:68
-#: includes/class-wpmenucart-settings.php:498
+#: includes/class-wpmenucart-settings-callbacks.php:736
+msgid "Icon badge"
+msgstr ""
+
+#: includes/class-wpmenucart-settings-callbacks.php:737
+msgid "Count overlays the icon"
+msgstr ""
+
+#. translators: %s: option label
+#: includes/class-wpmenucart-settings-callbacks.php:813
+#, php-format
+msgid "%s (Pro)"
+msgstr ""
+
+#: includes/class-wpmenucart-settings-callbacks.php:872
+msgid "<strong>Please note:</strong> you need to open your website in a new tab/browser window after updating the cart icon for the change to be visible!"
+msgstr ""
+
+#: includes/class-wpmenucart-settings.php:69
+#: includes/class-wpmenucart-settings.php:567
 msgid "Cart Display Modes"
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:75
-#: includes/class-wpmenucart-settings.php:499
+#: includes/class-wpmenucart-settings.php:76
+#: includes/class-wpmenucart-settings.php:568
 msgid "Menu Icon Style"
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:80
+#: includes/class-wpmenucart-settings.php:83
 msgid "General Settings"
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:96
+#: includes/class-wpmenucart-settings.php:99
 msgid "E-commerce Plugin"
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:102
+#: includes/class-wpmenucart-settings.php:105
 msgid "Select which e-commerce plugin you would like Menu Cart to work with."
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:108
+#: includes/class-wpmenucart-settings.php:111
 msgid "Current theme is block type"
 msgstr ""
 
 #. translators: 1. theme name, 2. here docs link
-#: includes/class-wpmenucart-settings.php:117
+#: includes/class-wpmenucart-settings.php:120
 #, php-format
 msgid "Your current theme, %1$s, is a block theme, therefore, you need to configure the cart menu using the navigation block. Please follow the instructions to do it %2$s."
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:119
+#: includes/class-wpmenucart-settings.php:122
 msgid "here"
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:127
+#: includes/class-wpmenucart-settings.php:130
 msgid "Hide theme shopping cart icon"
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:138
+#: includes/class-wpmenucart-settings.php:141
 msgid "Always display cart"
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:143
+#: includes/class-wpmenucart-settings.php:146
 msgid "Always display cart, even if it's empty."
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:149
+#: includes/class-wpmenucart-settings.php:152
 msgid "Show on cart & checkout page"
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:154
+#: includes/class-wpmenucart-settings.php:157
 msgid "To avoid distracting your customers with duplicate information we do not display the menu cart item on the cart & checkout pages by default"
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:161
+#: includes/class-wpmenucart-settings.php:174
 msgid "Display shopping cart icon"
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:171
-msgid "Choose a cart icon."
+#: includes/class-wpmenucart-settings.php:179
+msgid "Shows a graphical icon next to your cart totals in the menu."
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:197
-msgid "Override icon color"
+#: includes/class-wpmenucart-settings.php:180
+msgid "The icon appears before your cart total in the menu. Turn it off to show text only."
+msgstr ""
+
+#: includes/class-wpmenucart-settings.php:188
+#: includes/class-wpmenucart-settings.php:203
+msgid "Choose a cart icon"
 msgstr ""
 
 #: includes/class-wpmenucart-settings.php:209
-msgid "Custom Icon"
+msgid "Default Cart (FontAwesome)"
+msgstr ""
+
+#: includes/class-wpmenucart-settings.php:210
+msgid "Shopping Bag"
+msgstr ""
+
+#: includes/class-wpmenucart-settings.php:211
+msgid "Woven Basket"
 msgstr ""
 
 #: includes/class-wpmenucart-settings.php:214
-msgid "Set image"
+msgid "Select from our library of standard e-commerce icons."
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:215
-msgid "Select or upload a custom menu cart icon."
+#: includes/class-wpmenucart-settings.php:224
+msgid "Contents of the menu cart"
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:216
-msgid "Remove image"
-msgstr ""
-
-#: includes/class-wpmenucart-settings.php:217
-msgid "Upload a custom menu cart icon here if you do not want to use one of the icons above. Make sure you resize the icon before uploading. Icon should usually be 15-30px tall."
-msgstr ""
-
-#: includes/class-wpmenucart-settings.php:225
-msgid "Contents of the menu cart item"
+#: includes/class-wpmenucart-settings.php:230
+msgid "Items & Price (Default)"
 msgstr ""
 
 #: includes/class-wpmenucart-settings.php:231
@@ -334,180 +375,169 @@ msgstr ""
 msgid "Price Only"
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:233
-msgid "Both price and items"
+#: includes/class-wpmenucart-settings.php:236
+msgid "Decide what data displays alongside the icon."
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:240
+#: includes/class-wpmenucart-settings.php:242
 msgid "Price to display"
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:246
+#: includes/class-wpmenucart-settings.php:248
 msgid "Cart total (including discounts)"
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:247
+#: includes/class-wpmenucart-settings.php:249
 msgid "Subtotal (total of products)"
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:248
+#: includes/class-wpmenucart-settings.php:250
 msgid "Checkout total (including discounts, fees & shipping)"
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:257
-msgid "Enter a custom CSS class (optional)"
+#: includes/class-wpmenucart-settings.php:253
+msgid "Choose which calculation to show to the customer."
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:270
+#: includes/class-wpmenucart-settings.php:260
 msgid "Use WPML String Translation"
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:281
+#: includes/class-wpmenucart-settings.php:271
 msgid "Use custom AJAX"
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:286
+#: includes/class-wpmenucart-settings.php:276
 msgid "Enable this option to use the custom AJAX / live update functions instead of the default ones from your shop plugin. Only use when you have issues with AJAX!"
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:341
+#: includes/class-wpmenucart-settings.php:334
+msgid "Override icon color"
+msgstr ""
+
+#: includes/class-wpmenucart-settings.php:346
+msgid "Custom Icon"
+msgstr ""
+
+#: includes/class-wpmenucart-settings.php:351
+msgid "Set image"
+msgstr ""
+
+#: includes/class-wpmenucart-settings.php:352
+msgid "Select or upload a custom menu cart icon."
+msgstr ""
+
+#: includes/class-wpmenucart-settings.php:353
+msgid "Remove image"
+msgstr ""
+
+#: includes/class-wpmenucart-settings.php:354
+msgid "Upload a custom menu cart icon here if you do not want to use one of the icons above. Make sure you resize the icon before uploading. Icon should usually be 15-30px tall."
+msgstr ""
+
+#: includes/class-wpmenucart-settings.php:410
 msgid "Settings"
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:388
+#: includes/class-wpmenucart-settings.php:457
 msgid "Cart Design & Behavior"
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:389
+#: includes/class-wpmenucart-settings.php:458
 msgid "Global Settings"
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:578
+#: includes/class-wpmenucart-settings.php:647
 msgid "General"
 msgstr ""
 
 #. translators: %s: link to Appearance > Menus
-#: includes/class-wpmenucart-settings.php:627
+#: includes/class-wpmenucart-settings.php:696
 #, php-format
 msgid "The Menu Cart item is now added via %s, just like any other menu item."
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:628
+#: includes/class-wpmenucart-settings.php:697
 msgid "Appearance &gt; Menus"
 msgstr ""
 
-#. translators: %s: Menu Cart Pro link
-#: includes/class-wpmenucart-settings.php:637
-#, php-format
-msgid "Adding the cart to multiple menus is available in %s."
+#: includes/class-wpmenucart-settings.php:764
+msgid "Let shoppers open their cart from anywhere"
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:653
-msgid "Want To Stand Out?"
+#: includes/class-wpmenucart-settings.php:770
+msgid "Cart details flyout"
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:653
-msgid "Go Pro."
+#: includes/class-wpmenucart-settings.php:774
+msgid "Floating and dropdown menus"
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:655
-msgid "Unlimited Menus"
+#: includes/class-wpmenucart-settings.php:778
+msgid "Cart in every menu"
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:656
-msgid "Choice of 14 icons"
+#: includes/class-wpmenucart-settings.php:782
+msgid "Place the cart anywhere"
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:657
-msgid "Packed with customization options"
+#: includes/class-wpmenucart-settings.php:787
+msgid "More ways to style your cart icon"
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:658
-msgid "Access to Shortcode"
+#: includes/class-wpmenucart-settings.php:793
+msgid "2 templates"
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:659
-msgid "Top Notch Support"
+#: includes/class-wpmenucart-settings.php:797
+msgid "Set your own colour to match the theme"
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:664
-msgid "Sell In Style With Menu Cart Pro!"
+#: includes/class-wpmenucart-settings.php:801
+msgid "Upload a custom icon image"
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:666
-msgid "Go Pro with Menu Cart Pro. Includes all the great standard features found in this free version plus:"
+#: includes/class-wpmenucart-settings.php:805
+msgid "Custom item content"
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:669
-msgid "A choice of over 10 cart icons"
+#: includes/class-wpmenucart-settings.php:837
+#: wp-menu-cart.php:765
+msgid "Dismiss"
 msgstr ""
 
-#: includes/class-wpmenucart-settings.php:670
-msgid "A fully featured cart details flyout"
-msgstr ""
-
-#: includes/class-wpmenucart-settings.php:672
-msgid "Adjust the content & URLs via the settings"
-msgstr ""
-
-#: includes/class-wpmenucart-settings.php:673
-msgid "Enter custom styles and apply custom classes via the settings"
-msgstr ""
-
-#: includes/class-wpmenucart-settings.php:674
-msgid "WPML compatible"
-msgstr ""
-
-#: includes/class-wpmenucart-settings.php:675
-msgid "Automatic updates on any great new features"
-msgstr ""
-
-#: includes/class-wpmenucart-settings.php:676
-msgid "Put the cart anywhere with the [wpmenucart] shortcode"
-msgstr ""
-
-#. translators: 1,2: <a> tags
-#: includes/class-wpmenucart-settings.php:681
-#, php-format
-msgid "Need to see more? %1$sClick here%2$s to check it out. Add a product to your cart and watch what happens!"
-msgstr ""
-
-#: includes/class-wpmenucart-settings.php:687
-msgid "Buy Now"
+#: includes/class-wpmenucart-settings.php:853
+msgid "See what's in Pro"
 msgstr ""
 
 #. translators: 1. Shop name, 2. Shop version
-#: wp-menu-cart.php:406
+#: wp-menu-cart.php:444
 #, php-format
 msgid "WP Menu Cart requires %1$s version %2$s or higher to be installed & activated!"
 msgstr ""
 
-#: wp-menu-cart.php:479
+#: wp-menu-cart.php:517
 msgid "WP Menu Cart could not detect an active shop plugin. Make sure you have activated at least one of the supported plugins."
 msgstr ""
 
-#: wp-menu-cart.php:484
+#: wp-menu-cart.php:522
 msgid "Hide this notice"
 msgstr ""
 
-#: wp-menu-cart.php:492
+#: wp-menu-cart.php:530
 msgid "You do not have sufficient permissions to perform this action."
 msgstr ""
 
-#: wp-menu-cart.php:507
+#: wp-menu-cart.php:545
 msgid "An old version of WooCommerce Menu Cart is currently activated, you need to disable or uninstall it for WP Menu Cart to function properly."
 msgstr ""
 
 #. translators: 1. PHP version
-#: wp-menu-cart.php:519
+#: wp-menu-cart.php:557
 #, php-format
 msgid "WP Menu Cart requires PHP %s or higher."
 msgstr ""
 
-#: wp-menu-cart.php:522
+#: wp-menu-cart.php:560
 msgid "How to update your PHP version"
-msgstr ""
-
-#: wp-menu-cart.php:727
-msgid "Dismiss"
 msgstr ""
