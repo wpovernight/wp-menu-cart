@@ -414,7 +414,8 @@ if ( ! class_exists( 'WpMenuCart_Main' ) ) :
 		 */
 		public function display_mini_cart_slideout(): void {
 			if ( true === $this->should_render_menucart() && $this->is_cart_mode_active( 'sidebar' ) ) {
-				echo wp_kses( $this->get_mini_cart_slideout(), $this->get_slideout_allowed_html() );
+				// get_mini_cart_slideout() already sanitizes its output with wp_kses()
+				echo $this->get_mini_cart_slideout(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
 		}
 
@@ -429,7 +430,7 @@ if ( ! class_exists( 'WpMenuCart_Main' ) ) :
 			$slideout = new WpMenuCart_Template( 'menucart-slideout', $nav_menu_items, $args );
 			$slideout = $slideout->get_output();
 
-			return $slideout;
+			return wp_kses( $slideout, $this->get_slideout_allowed_html() );
 		}
 
 		/**
@@ -438,18 +439,19 @@ if ( ! class_exists( 'WpMenuCart_Main' ) ) :
 		 * @return array
 		 */
 		private function get_slideout_allowed_html(): array {
-		    return array(
-		        'div'    => array( 'class' => true, 'role' => true, 'aria-modal' => true, 'aria-label' => true, 'data-key' => true, 'data-cart-count' => true ),
-		        'ul'     => array( 'class' => true, 'style' => true ),
-		        'li'     => array( 'class' => true ),
-		        'h2'     => array( 'class' => true ),
-		        'h3'     => array( 'class' => true ),
-		        'p'      => array( 'class' => true ),
-		        'span'   => array( 'class' => true ),
-		        'button' => array( 'type' => true, 'class' => true, 'aria-label' => true ),
-		        'a'      => array( 'href' => true, 'class' => true ),
-		        'img'    => array( 'src' => true, 'alt' => true, 'class' => true, 'width' => true, 'height' => true ),
-		    );
+			return array(
+				'div'    => array( 'class' => true, 'role' => true, 'aria-modal' => true, 'aria-label' => true, 'data-key' => true, 'data-source' => true, 'data-cart-count' => true, 'tabindex' => true ),
+				'ul'     => array( 'class' => true, 'style' => true ),
+				'li'     => array( 'class' => true ),
+				'h2'     => array( 'class' => true ),
+				'h3'     => array( 'class' => true ),
+				'p'      => array( 'class' => true ),
+				'span'   => array( 'class' => true, 'translate' => true, 'dir' => true ),
+				'bdi'    => array(),
+				'button' => array( 'type' => true, 'class' => true, 'aria-label' => true ),
+				'a'      => array( 'href' => true, 'class' => true ),
+				'img'    => array( 'src' => true, 'alt' => true, 'class' => true, 'width' => true, 'height' => true, 'srcset' => true, 'sizes' => true, 'loading' => true, 'decoding' => true, 'fetchpriority' => true ),
+			);
 		}
 
 		/**
