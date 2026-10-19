@@ -206,7 +206,7 @@ if ( ! class_exists( 'WpMenuCart_Data' ) ) :
 						}
 					}
 
-					$meta_items[] = $label . ': ' . ucfirst( $value );
+					$meta_items[] = esc_html( $label ) . ': ' . esc_html( ucfirst( (string) $value ) );
 				}
 
 				if ( ! empty( $meta_items ) ) {
