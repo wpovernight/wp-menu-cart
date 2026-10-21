@@ -723,7 +723,7 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 		 * @return array[] Array of template definition arrays with keys: value, name, description.
 		 */
 		public function get_icon_style_options(): array {
-			return apply_filters( 'wpo_wpmenucart_icon_style_options', array(
+			$options = apply_filters( 'wpo_wpmenucart_icon_style_options', array(
 				array(
 					'value'       => 'cart_button',
 					'name'        => __( 'Cart button', 'wp-menu-cart' ),
@@ -739,6 +739,18 @@ if ( ! class_exists( 'WpMenuCart_Settings_Callbacks' ) ) :
 					'pro'         => true,
 				),
 			) );
+
+			// Pro older than 5.1.0 doesn't hook the filter, so don't send existing Pro customers to the upsell.
+			if ( WPO_Menu_Cart()->pro_older_than( '5.1.0' ) ) {
+				foreach ( $options as &$option ) {
+					$option['pro']              = false;
+					$option['disabled']         = true;
+					$option['disabled_tooltip'] = __( 'Update WP Menu Cart Pro to version 5.1.0 or later to use this template.', 'wp-menu-cart' );
+				}
+				unset( $option );
+			}
+
+			return $options;
 		}
 
 		/**
