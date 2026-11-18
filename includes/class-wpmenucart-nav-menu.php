@@ -422,6 +422,7 @@ if ( ! class_exists( 'WpMenuCart_Nav_Menu' ) ) :
 			$data['cart_item']->url = $data['original_url'];
 
 			$common_classes = WPO_Menu_Cart()->main->get_common_li_classes( $items_html );
+			WPO_Menu_Cart()->main->remember_menu_link_classes( $items_html );
 			$cart_html      = WPO_Menu_Cart()->main->generate_menu_item_li( $common_classes, 'classic' );
 			$cart_html      = apply_filters( 'wpmenucart_menu_item_wrapper', $cart_html, $data['menu_slug'], $args );
 

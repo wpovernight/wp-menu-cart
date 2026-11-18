@@ -8,6 +8,13 @@ if ( ! class_exists( 'WpMenuCart_Main' ) ) :
 	class WpMenuCart_Main {
 
 		/**
+		 * Link classes found in the menu rendered during this request, null when none has been inspected.
+		 *
+		 * @var string|null
+		 */
+		protected $menu_link_classes = null;
+
+		/**
 		 * @var array
 		 */
 		public $menu_items;
@@ -164,6 +171,7 @@ if ( ! class_exists( 'WpMenuCart_Main' ) ) :
 		 */
 		public function add_itemcart_to_menu( string $items ): string {
 			$common_classes = $this->get_common_li_classes( $items );
+			$this->remember_menu_link_classes( $items );
 			$menu_item_li   = $this->generate_menu_item_li( $common_classes, 'classic' );
 
 			if ( apply_filters( 'wpmenucart_prepend_menu_item', false ) ) {
@@ -224,6 +232,15 @@ if ( ! class_exists( 'WpMenuCart_Main' ) ) :
 
 			if ( defined( 'UBERMENU_VERSION' ) && ( version_compare( UBERMENU_VERSION, '3.0.0' ) >= 0 ) ) {
 				$menu_item_classes .= ' ubermenu-target';
+			}
+
+			// wp block specific, the class core puts on every navigation link
+			$menu_item_classes .= ' wp-block-navigation-item__content';
+
+			// classes the theme puts on its own menu links (e.g. Astra's "menu-link"), so the cart link gets the same styling
+			$theme_link_classes = $this->get_menu_link_classes();
+			if ( '' !== $theme_link_classes ) {
+				$menu_item_classes .= ' ' . esc_attr( $theme_link_classes );
 			}
 
 			$menu_item = '<a class="' . $menu_item_classes . '" href="' . $menu_item_href . '" title="' . $menu_item_title . '">';
@@ -320,6 +337,110 @@ if ( ! class_exists( 'WpMenuCart_Main' ) ) :
 		}
 
 		/**
+		 * Get the classes that all top level menu links have in common (e.g. "menu-link" in Astra).
+		 *
+		 * Same idea as get_common_li_classes(), but for the <a> inside each top level <li>.
+		 *
+		 * @param  string $items nav_menu HTML containing all <li> menu items
+		 * @return string|null   flat (imploded) list of common classes, null when there was no link to inspect
+		 */
+		public function get_common_a_classes( string $items ): ?string {
+			if ( '' === trim( $items ) || ! class_exists( 'DOMDocument' ) || ! class_exists( 'DOMXPath' ) ) {
+				return null;
+			}
+
+			$libxml_previous_state = libxml_use_internal_errors( true ); // enable user error handling
+
+			$dom_items = new DOMDocument();
+			$dom_items->loadHTML( $items );
+			$xpath      = new DOMXPath( $dom_items );
+			$item_links = array(); // links of real menu items, <li class="menu-item ...">
+			$other      = array(); // links of other top level <li>s, e.g. the search toggle or cart icon a theme adds itself
+
+			foreach ( $dom_items->getElementsByTagName( 'li' ) as $li ) {
+				// the items come without a wrapping <ul>, so only submenu <li>s have a list as parent
+				if ( in_array( strtolower( $li->parentNode->nodeName ), array( 'ul', 'ol' ), true ) ) {
+					continue;
+				}
+
+				// the item's own link: a direct child, or inside a wrapper element, but never one from a submenu
+				$links = $xpath->query( './a | ./*[not(self::ul or self::ol)]//a', $li );
+
+				if ( ! $links || 0 === $links->length ) {
+					continue;
+				}
+
+				$link_classes = preg_split( '/\s+/', trim( $links->item( 0 )->getAttribute( 'class' ) ), -1, PREG_SPLIT_NO_EMPTY );
+				$li_classes   = preg_split( '/\s+/', trim( $li->getAttribute( 'class' ) ), -1, PREG_SPLIT_NO_EMPTY );
+
+				// never learn from a cart item that is already rendered
+				if ( in_array( 'wpmenucartli', $li_classes, true ) ) {
+					continue;
+				}
+
+				if ( in_array( 'menu-item', $li_classes, true ) ) {
+					$item_links[] = $link_classes;
+				} else {
+					$other[] = $link_classes;
+				}
+			}
+
+			libxml_clear_errors();
+			libxml_use_internal_errors( $libxml_previous_state );
+
+			// themes add extra <li>s with differently styled links, so real menu items are the reference when there are any
+			$a_classes = ! empty( $item_links ) ? $item_links : $other;
+
+			if ( empty( $a_classes ) ) {
+				return null;
+			}
+
+			$common_a_classes = array_shift( $a_classes );
+			foreach ( $a_classes as $a_class ) {
+				$common_a_classes = array_intersect( $common_a_classes, $a_class );
+			}
+
+			// leave out our own classes and state classes, those describe one item and not the theme's default link
+			$common_a_classes = array_filter( $common_a_classes, function ( $class ) {
+				return ! preg_match( '/^(wpmenucart|current|active|is-active|is-open|open|selected|focus|hover)([-_].*)?$/i', $class );
+			} );
+
+			return (string) apply_filters( 'wpmenucart_common_a_classes', implode( ' ', array_unique( $common_a_classes ) ), $items );
+		}
+
+		/**
+		 * Remember the classes the theme puts on its own menu links.
+		 *
+		 * Called with the menu HTML right before the cart item is built, so the cart link gets
+		 * them in this request. They are also saved on the cart <li> (data-wpmenucart-link-classes)
+		 * so that AJAX refreshes, which have no menu HTML, can give the rebuilt link the same classes.
+		 *
+		 * @param  string $items nav_menu HTML containing all <li> menu items
+		 * @return void
+		 */
+		public function remember_menu_link_classes( string $items ): void {
+			$classes = $this->get_common_a_classes( $items );
+
+			// nothing to learn from (empty menu, no DOM extension): keep what we know
+			if ( null === $classes ) {
+				return;
+			}
+
+			$this->menu_link_classes = $classes;
+		}
+
+		/**
+		 * Get the classes to put on the cart link so it looks like the theme's other menu links.
+		 *
+		 * @return string
+		 */
+		public function get_menu_link_classes(): string {
+			$classes = (string) $this->menu_link_classes;
+
+			return trim( (string) apply_filters( 'wpmenucart_menu_link_classes', $classes ) );
+		}
+
+		/**
 		 * Gets the menu item <li>
 		 *
 		 * @param  string $classes
@@ -358,7 +479,10 @@ if ( ! class_exists( 'WpMenuCart_Main' ) ) :
 			// DEPRECATED: These filters are now deprecated in favour of the more precise filters in the functions!
 			$menu_item_li = apply_filters_deprecated( 'wpmenucart_menu_item_filter', array( $this->wpmenucart_menu_item() ), '2.5.3', '' );
 
-			return '<li class="' . $classes . '" id="wpmenucartli">' . $menu_item_li . '</li>';
+			$link_classes = $this->get_menu_link_classes();
+			$link_data    = '' !== $link_classes ? ' data-wpmenucart-link-classes="' . esc_attr( $link_classes ) . '"' : '';
+
+			return '<li class="' . $classes . '" id="wpmenucartli"' . $link_data . '>' . $menu_item_li . '</li>';
 		}
 
 		/**
