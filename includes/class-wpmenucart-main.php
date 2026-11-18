@@ -8,14 +8,6 @@ if ( ! class_exists( 'WpMenuCart_Main' ) ) :
 	class WpMenuCart_Main {
 
 		/**
-		 * Option that remembers the classes the active theme puts on its own menu links, per theme.
-		 *
-		 * AJAX refreshes rebuild the cart link without the menu HTML in front of them,
-		 * so they read the classes back from here.
-		 */
-		const LINK_CLASSES_OPTION = 'wpo_wpmenucart_menu_link_classes';
-
-		/**
 		 * Link classes found in the menu rendered during this request, null when none has been inspected.
 		 *
 		 * @var string|null
@@ -420,8 +412,8 @@ if ( ! class_exists( 'WpMenuCart_Main' ) ) :
 		 * Remember the classes the theme puts on its own menu links.
 		 *
 		 * Called with the menu HTML right before the cart item is built, so the cart link gets
-		 * them in this request, and stored so that AJAX refreshes (which have no menu HTML) can
-		 * give the rebuilt cart link the same classes.
+		 * them in this request. They are also saved on the cart <li> (data-wpmenucart-link-classes)
+		 * so that AJAX refreshes, which have no menu HTML, can give the rebuilt link the same classes.
 		 *
 		 * @param  string $items nav_menu HTML containing all <li> menu items
 		 * @return void
@@ -435,15 +427,6 @@ if ( ! class_exists( 'WpMenuCart_Main' ) ) :
 			}
 
 			$this->menu_link_classes = $classes;
-
-			$stylesheet = get_stylesheet();
-			$stored     = get_option( self::LINK_CLASSES_OPTION, array() );
-			$stored     = is_array( $stored ) ? $stored : array();
-
-			if ( ! isset( $stored[ $stylesheet ] ) || $classes !== $stored[ $stylesheet ] ) {
-				$stored[ $stylesheet ] = $classes;
-				update_option( self::LINK_CLASSES_OPTION, $stored, false );
-			}
 		}
 
 		/**
@@ -452,13 +435,7 @@ if ( ! class_exists( 'WpMenuCart_Main' ) ) :
 		 * @return string
 		 */
 		public function get_menu_link_classes(): string {
-			if ( null !== $this->menu_link_classes ) {
-				$classes = $this->menu_link_classes;
-			} else {
-				$stored     = get_option( self::LINK_CLASSES_OPTION, array() );
-				$stylesheet = get_stylesheet();
-				$classes    = ( is_array( $stored ) && isset( $stored[ $stylesheet ] ) ) ? (string) $stored[ $stylesheet ] : '';
-			}
+			$classes = (string) $this->menu_link_classes;
 
 			return trim( (string) apply_filters( 'wpmenucart_menu_link_classes', $classes ) );
 		}
@@ -502,7 +479,10 @@ if ( ! class_exists( 'WpMenuCart_Main' ) ) :
 			// DEPRECATED: These filters are now deprecated in favour of the more precise filters in the functions!
 			$menu_item_li = apply_filters_deprecated( 'wpmenucart_menu_item_filter', array( $this->wpmenucart_menu_item() ), '2.5.3', '' );
 
-			return '<li class="' . $classes . '" id="wpmenucartli">' . $menu_item_li . '</li>';
+			$link_classes = $this->get_menu_link_classes();
+			$link_data    = '' !== $link_classes ? ' data-wpmenucart-link-classes="' . esc_attr( $link_classes ) . '"' : '';
+
+			return '<li class="' . $classes . '" id="wpmenucartli"' . $link_data . '>' . $menu_item_li . '</li>';
 		}
 
 		/**

@@ -16,7 +16,9 @@ jQuery( function( $ ) {
 				}
 
 				if ( ajaxResponse.data.menu_cart ) {
-					$( '.wpmenucartli' ).html( ajaxResponse.data.menu_cart );
+					$( '.wpmenucartli' ).html( ajaxResponse.data.menu_cart ).each( function() {
+						$( this ).children( 'a' ).addClass( $( this ).attr( 'data-wpmenucart-link-classes' ) );
+					} );
 				}
 
 				if ( $( '.wpmenucart-slideout' ).length && ajaxResponse.data.mini_cart_slideout ) {

@@ -167,7 +167,9 @@ jQuery(
 						if ( response && response.success && response.data ) {
 							setTimeout( function() {
 								if ( response.data.menu_cart ) {
-									$( '.wpmenucartli' ).html( response.data.menu_cart );
+									$( '.wpmenucartli' ).html( response.data.menu_cart ).each( function() {
+										$( this ).children( 'a' ).addClass( $( this ).attr( 'data-wpmenucart-link-classes' ) );
+									} );
 								}
 								if ( $slideout.length && response.data.mini_cart_slideout ) {
 									var newInnerContent = $( response.data.mini_cart_slideout ).find( '.wpmenucart-slideout__panel' ).html();

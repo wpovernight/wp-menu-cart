@@ -18,7 +18,9 @@ jQuery( function( $ ) {
 				}
 
 				if ( response.data.menu_cart ) {
-					$( '.wpmenucartli' ).html( response.data.menu_cart );
+					$( '.wpmenucartli' ).html( response.data.menu_cart ).each( function() {
+						$( this ).children( 'a' ).addClass( $( this ).attr( 'data-wpmenucart-link-classes' ) );
+					} );
 				}
 
 				if ( $( '.wpmenucart-slideout' ).length && response.data.mini_cart_slideout ) {
