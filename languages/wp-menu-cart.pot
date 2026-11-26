@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Menu Cart 3.2.1\n"
+"Project-Id-Version: WP Menu Cart 3.2.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-menu-cart\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-19T09:31:23+00:00\n"
+"POT-Creation-Date: 2026-11-26T12:58:24+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: wp-menu-cart\n"
@@ -260,13 +260,17 @@ msgstr ""
 msgid "Count overlays the icon"
 msgstr ""
 
+#: includes/class-wpmenucart-settings-callbacks.php:748
+msgid "Update WP Menu Cart Pro to version 5.1.0 or later to use this template."
+msgstr ""
+
 #. translators: %s: option label
-#: includes/class-wpmenucart-settings-callbacks.php:813
+#: includes/class-wpmenucart-settings-callbacks.php:825
 #, php-format
 msgid "%s (Pro)"
 msgstr ""
 
-#: includes/class-wpmenucart-settings-callbacks.php:872
+#: includes/class-wpmenucart-settings-callbacks.php:884
 msgid "<strong>Please note:</strong> you need to open your website in a new tab/browser window after updating the cart icon for the change to be visible!"
 msgstr ""
 
